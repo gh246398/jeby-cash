@@ -141,11 +141,11 @@ footer{text-align:center;padding:22px;color:#786b6f;font-size:12px;line-height:2
 <script>
 "use strict";
 
-const URL="https://hpsuqttshdcebacpkrrt.supabase.co";
-const KEY="sb_publishable_uSb5y_wtc2oi0qq7YLG83Q_muNekrs9";
+const SUPABASE_URL="https://hpsuqttshdcebacpkrrt.supabase.co";
+const SUPABASE_KEY="sb_publishable_uSb5y_wtc2oi0qq7YLG83Q_muNekrs9";
 
 const $=id=>document.getElementById(id);
-let db,user,wallet;
+let db=null,user=null,wallet=null;
 
 function message(t,type=""){
  const el=$("msg");
@@ -299,10 +299,12 @@ $("signUp").onclick=async()=>{
 };
 
 $("signOut").onclick=async()=>{
- const {error}=await db.auth.signOut();
- if(error){message(errorText(error),"error");return}
- loggedOut();
- message("تم تسجيل الخروج.","success");
+ try{
+  const {error}=await db.auth.signOut();
+  if(error)throw error;
+  loggedOut();
+  message("تم تسجيل الخروج.","success");
+ }catch(e){message(errorText(e),"error")}
 };
 
 $("refresh").onclick=refresh;
@@ -365,7 +367,7 @@ $("sendTransfer").onclick=async()=>{
 (async()=>{
  try{
   if(!window.supabase)throw Error("تعذر تحميل مكتبة Supabase.");
-  db=window.supabase.createClient(URL,KEY);
+  db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
   await authenticate();
  }catch(e){message(errorText(e),"error")}
 })();
