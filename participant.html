@@ -64,7 +64,13 @@ footer{text-align:center;padding:18px;color:#786b6f;font-size:12px}
 <script>
 const URL='https://hpsuqttshdcebacpkrrt.supabase.co';
 const KEY='sb_publishable_uSb5y_wtc2oi0qq7YLG83Q_muNekrs9';
+if (!window.supabase) {
+  alert('تعذر تحميل مكتبة Supabase');
+  throw new Error('Supabase library not loaded');
+}
+
 const db=window.supabase.createClient(URL,KEY);
+alert('تم تشغيل JavaScript والاتصال الأولي بمكتبة Supabase');
 const $=id=>document.getElementById(id);
 
 function message(s){
