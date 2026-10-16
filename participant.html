@@ -3,57 +3,191 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>جيبي كاش | محفظتك في جيبك</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f8f5f1;color:#35262b;font-family:Tahoma,Arial,sans-serif}
-header{background:#571d35;color:white;padding:28px 18px;text-align:center;border-bottom:5px solid #bb944f}
-header h1{margin:0;font-size:34px}
-header p{color:#ead6ae}
-main{max-width:480px;margin:25px auto;padding:16px}
-.card{background:white;padding:22px;border-radius:18px;box-shadow:0 5px 24px #00000012;margin-bottom:20px}
-h2{color:#571d35}
+body{margin:0;background:#f8f5f1;color:#30232a;font-family:Tahoma,Arial,sans-serif}
+header{background:#571d35;color:white;padding:26px 18px;text-align:center}
+h1{margin:0;font-size:32px}
+header p{color:#e9c98b}
+.wrap{max-width:470px;margin:24px auto;padding:0 16px}
+.card{background:white;padding:24px;border-radius:18px;box-shadow:0 6px 22px #0001;margin-bottom:16px}
+h2{color:#571d35;margin-top:0}
 label{display:block;margin:14px 0 6px;font-weight:bold}
-input{width:100%;padding:13px;border:1px solid #ddd;border-radius:10px;font-size:16px}
-button{width:100%;padding:14px;margin-top:18px;border:0;border-radius:10px;background:#571d35;color:white;font-size:17px;font-weight:bold;cursor:pointer}
-.note{font-size:13px;color:#777;line-height:1.8}
-.gold{color:#a77c32}
-footer{text-align:center;padding:20px;font-size:12px;color:#777}
+input{width:100%;padding:13px;border:1px solid #d8ccd0;border-radius:9px;font-size:16px;direction:ltr;text-align:left}
+button{background:#571d35;color:white;border:0;border-radius:9px;padding:13px 16px;margin-top:15px;width:100%;font-size:16px;cursor:pointer}
+button.alt{background:#a77c32}
+button:disabled{opacity:.6}
+#msg{padding:12px;border-radius:8px;white-space:pre-wrap;display:none;background:#fff0d9;margin-bottom:16px}
+.note{color:#67565e;font-size:13px;line-height:1.8}
+.wallet{font-size:25px;color:#571d35;font-weight:bold;direction:ltr;text-align:center}
+.hidden{display:none}
+footer{text-align:center;padding:18px;color:#786b6f;font-size:12px}
 </style>
 </head>
 <body>
 <header>
 <h1>جيبي كاش</h1>
-<p>JEBY CASH — محفظتك في جيبك</p>
+<p>محفظتك في جيبك</p>
 </header>
-<main>
-<div class="card">
+<main class="wrap">
+<div id="msg" role="status" aria-live="polite"></div>
+
+<section class="card" id="authBox">
+<h2>دخول المشتركين</h2>
+<label for="fullName">الاسم الكامل (عند إنشاء حساب)</label>
+<input id="fullName" autocomplete="name" placeholder="الاسم الكامل" dir="rtl" style="text-align:right">
+<label for="email">البريد الإلكتروني</label>
+<input id="email" type="email" autocomplete="email" placeholder="name@example.com">
+<label for="password">كلمة المرور</label>
+<input id="password" type="password" autocomplete="current-password" minlength="10" placeholder="10 أحرف على الأقل">
+<button id="signIn">تسجيل الدخول</button>
+<button id="signUp" class="alt">إنشاء حساب جديد</button>
+<p class="note">قد تصلك رسالة تأكيد على البريد الإلكتروني قبل السماح بالدخول. لا تشارك كلمة مرورك مع أحد.</p>
+</section>
+
+<section class="card hidden" id="accountBox">
 <h2>مرحبًا بك في محفظتك التعليمية</h2>
-<p>تدرّب على إدارة الأموال والتحويلات والمحاسبة في بيئة افتراضية.</p>
-<p class="note">هذه محفظة تدريبية فقط، ولا تنفذ أي مدفوعات أو تحويلات مالية حقيقية.</p>
-</div>
-<div class="card">
-<h2>دخول المشترك</h2>
-<label>رقم المحفظة</label>
-<input id="wallet" inputmode="numeric" placeholder="مثال: 100101">
-<label>كلمة المرور</label>
-<input id="password" type="password" placeholder="أدخل كلمة المرور">
-<button onclick="login()">تسجيل الدخول</button>
-<p id="message" class="note"></p>
-</div>
-<div class="card">
-<h2>إنشاء حساب جديد</h2>
-<p class="note">سيتم تفعيل التسجيل وإصدار أرقام المحافظ بعد ربط قاعدة البيانات ونظام المصادقة.</p>
-<button onclick="alert('التسجيل غير مفعل في هذه النسخة التجريبية')">تسجيل مشترك جديد</button>
-</div>
+<p id="userEmail"></p>
+<p id="displayName"></p>
+<p>رقم المحفظة:</p>
+<div class="wallet" id="walletNumber">جارٍ التحميل...</div>
+<p class="note">هذه محفظة تعليمية افتراضية، وليست وسيلة دفع حقيقية. الأرصدة والتحويلات غير مفعلة في هذه النسخة.</p>
+<button id="refresh">تحديث بيانات المحفظة</button>
+<button id="signOut" class="alt">تسجيل الخروج</button>
+</section>
 </main>
-<footer>جيبي كاش | بيئة تعليمية افتراضية</footer>
+<footer>جيبي كاش | بيئة تدريبية، لا تُستخدم لتحويل أموال حقيقية</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-function login(){
- document.getElementById('message').textContent=
- 'تسجيل الدخول غير مفعل بعد. يلزم ربط نظام الحسابات الآمن.';
+const URL='https://hpsuqttshdcebacpkrrt.supabase.co';
+const KEY='sb_publishable_uSb5y_wtc2oi0qq7YLG83Q_muNekrs9';
+const db=window.supabase.createClient(URL,KEY);
+const $=id=>document.getElementById(id);
+
+function message(s){
+  $('msg').textContent=s;
+  $('msg').style.display=s?'block':'none';
 }
+function busy(v){
+  $('signIn').disabled=v;
+  $('signUp').disabled=v;
+}
+function errorText(e){
+  return e?.message||'حدث خطأ غير متوقع';
+}
+
+async function loadProfile(user){
+  $('authBox').classList.add('hidden');
+  $('accountBox').classList.remove('hidden');
+  $('userEmail').textContent='البريد: '+(user.email||'');
+  $('walletNumber').textContent='جارٍ التحميل...';
+  $('displayName').textContent='';
+
+  const {data,error}=await db.from('jeby_profiles')
+    .select('full_name,wallet_number')
+    .eq('user_id',user.id)
+    .maybeSingle();
+
+  if(error){
+    $('walletNumber').textContent='غير متاح';
+    message('تعذّر قراءة بيانات المحفظة: '+errorText(error));
+    return;
+  }
+  if(!data){
+    $('walletNumber').textContent='لم يُنشأ بعد';
+    message('تم تسجيل الدخول، لكن سجل المحفظة لم يُنشأ بعد. يلزم إعداد قاعدة البيانات لإنشائه تلقائيًا.');
+    return;
+  }
+  $('displayName').textContent='الاسم: '+(data.full_name||'—');
+  $('walletNumber').textContent=data.wallet_number==null?'لم يُنشأ بعد':String(data.wallet_number);
+}
+
+async function render(session){
+  if(session?.user){
+    await loadProfile(session.user);
+  }else{
+    $('authBox').classList.remove('hidden');
+    $('accountBox').classList.add('hidden');
+  }
+}
+
+$('signUp').onclick=async()=>{
+  const name=$('fullName').value.trim();
+  const email=$('email').value.trim();
+  const password=$('password').value;
+  if(!name||!email||password.length<10){
+    message('أدخل الاسم والبريد وكلمة مرور من 10 أحرف على الأقل.');
+    return;
+  }
+  busy(true);
+  try{
+    const {data,error}=await db.auth.signUp({
+      email,password,
+      options:{
+        data:{full_name:name},
+        emailRedirectTo:location.origin+'/participant.html'
+      }
+    });
+    if(error)throw error;
+    message(data.session?'تم إنشاء الحساب وتسجيل الدخول.':'تم إرسال طلب التسجيل. راجع بريدك لتأكيد الحساب إذا طُلب ذلك.');
+    if(data.session)await render(data.session);
+  }catch(e){
+    message(errorText(e));
+  }finally{
+    busy(false);
+  }
+};
+
+$('signIn').onclick=async()=>{
+  const email=$('email').value.trim();
+  const password=$('password').value;
+  if(!email||!password){
+    message('أدخل البريد الإلكتروني وكلمة المرور.');
+    return;
+  }
+  busy(true);
+  try{
+    const {data,error}=await db.auth.signInWithPassword({email,password});
+    if(error)throw error;
+    message('');
+    await render(data.session);
+  }catch(e){
+    message(errorText(e));
+  }finally{
+    busy(false);
+  }
+};
+
+$('signOut').onclick=async()=>{
+  const {error}=await db.auth.signOut();
+  if(error){
+    message(errorText(error));
+  }else{
+    message('تم تسجيل الخروج.');
+    await render(null);
+  }
+};
+
+$('refresh').onclick=async()=>{
+  const {data}=await db.auth.getUser();
+  if(data.user){
+    message('');
+    await loadProfile(data.user);
+  }
+};
+
+(async()=>{
+  try{
+    const {data,error}=await db.auth.getSession();
+    if(error)throw error;
+    await render(data.session);
+  }catch(e){
+    message('تعذر الاتصال بخدمة التسجيل: '+errorText(e));
+  }
+})();
 </script>
 </body>
 </html>
