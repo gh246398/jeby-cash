@@ -7,204 +7,481 @@
 <title>جيبي كاش | محفظتك في جيبك</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f8f5f1;color:#30232a;font-family:Tahoma,Arial,sans-serif}
-header{background:#571d35;color:white;padding:26px 18px;text-align:center}
-h1{margin:0;font-size:32px}
-header p{color:#e9c98b}
+body{
+  margin:0;
+  background:#f8f5f1;
+  color:#30232a;
+  font-family:Tahoma,Arial,sans-serif
+}
+header{
+  background:#571d35;
+  color:white;
+  padding:28px 18px;
+  text-align:center
+}
+h1{margin:0;font-size:34px}
+header p{color:#e9c98b;font-size:17px}
 .wrap{max-width:470px;margin:24px auto;padding:0 16px}
-.card{background:white;padding:24px;border-radius:18px;box-shadow:0 6px 22px #0001;margin-bottom:16px}
+.card{
+  background:white;
+  padding:24px;
+  border-radius:18px;
+  box-shadow:0 6px 22px #0001;
+  margin-bottom:16px
+}
 h2{color:#571d35;margin-top:0}
 label{display:block;margin:14px 0 6px;font-weight:bold}
-input{width:100%;padding:13px;border:1px solid #d8ccd0;border-radius:9px;font-size:16px;direction:ltr;text-align:left}
-button{background:#571d35;color:white;border:0;border-radius:9px;padding:13px 16px;margin-top:15px;width:100%;font-size:16px;cursor:pointer}
+input{
+  width:100%;
+  padding:13px;
+  border:1px solid #d8ccd0;
+  border-radius:9px;
+  font-size:16px
+}
+input.ltr{direction:ltr;text-align:left}
+button{
+  background:#571d35;
+  color:white;
+  border:0;
+  border-radius:9px;
+  padding:13px 16px;
+  margin-top:15px;
+  width:100%;
+  font-size:16px;
+  cursor:pointer
+}
 button.alt{background:#a77c32}
-button:disabled{opacity:.6}
-#msg{padding:12px;border-radius:8px;white-space:pre-wrap;display:none;background:#fff0d9;margin-bottom:16px}
+button:disabled{opacity:.6;cursor:wait}
+#msg{
+  padding:12px;
+  border-radius:8px;
+  white-space:pre-wrap;
+  display:none;
+  background:#fff0d9;
+  margin-bottom:16px;
+  line-height:1.8
+}
+#msg.error{background:#ffe4e4;color:#8a2020}
+#msg.success{background:#e7f6ea;color:#176534}
 .note{color:#67565e;font-size:13px;line-height:1.8}
-.wallet{font-size:25px;color:#571d35;font-weight:bold;direction:ltr;text-align:center}
-.hidden{display:none}
-footer{text-align:center;padding:18px;color:#786b6f;font-size:12px}
+.wallet{
+  font-size:27px;
+  color:#571d35;
+  font-weight:bold;
+  direction:ltr;
+  text-align:center;
+  padding:15px;
+  background:#f8f5f1;
+  border-radius:12px
+}
+.hidden{display:none!important}
+footer{
+  text-align:center;
+  padding:18px;
+  color:#786b6f;
+  font-size:12px;
+  line-height:1.8
+}
 </style>
 </head>
+
 <body>
+
 <header>
 <h1>جيبي كاش</h1>
 <p>محفظتك في جيبك</p>
 </header>
+
 <main class="wrap">
+
 <div id="msg" role="status" aria-live="polite"></div>
 
 <section class="card" id="authBox">
 <h2>دخول المشتركين</h2>
+
 <label for="fullName">الاسم الكامل (عند إنشاء حساب)</label>
-<input id="fullName" autocomplete="name" placeholder="الاسم الكامل" dir="rtl" style="text-align:right">
+<input
+  id="fullName"
+  autocomplete="name"
+  placeholder="الاسم الكامل"
+>
+
 <label for="email">البريد الإلكتروني</label>
-<input id="email" type="email" autocomplete="email" placeholder="name@example.com">
+<input
+  id="email"
+  class="ltr"
+  type="email"
+  autocomplete="email"
+  placeholder="name@example.com"
+>
+
 <label for="password">كلمة المرور</label>
-<input id="password" type="password" autocomplete="current-password" minlength="10" placeholder="10 أحرف على الأقل">
+<input
+  id="password"
+  class="ltr"
+  type="password"
+  autocomplete="current-password"
+  minlength="10"
+  placeholder="10 أحرف على الأقل"
+>
+
 <button id="signIn">تسجيل الدخول</button>
 <button id="signUp" class="alt">إنشاء حساب جديد</button>
-<p class="note">قد تصلك رسالة تأكيد على البريد الإلكتروني قبل السماح بالدخول. لا تشارك كلمة مرورك مع أحد.</p>
+
+<p class="note">
+قد تصلك رسالة لتأكيد البريد الإلكتروني قبل السماح بالدخول.
+لا تشارك كلمة مرورك مع أحد.
+</p>
 </section>
 
 <section class="card hidden" id="accountBox">
+
 <h2>مرحبًا بك في محفظتك التعليمية</h2>
+
 <p id="userEmail"></p>
 <p id="displayName"></p>
-<p>رقم المحفظة:</p>
+
+<p><strong>رقم المحفظة:</strong></p>
 <div class="wallet" id="walletNumber">جارٍ التحميل...</div>
-<p class="note">هذه محفظة تعليمية افتراضية، وليست وسيلة دفع حقيقية. الأرصدة والتحويلات غير مفعلة في هذه النسخة.</p>
+
+<p class="note">
+هذه محفظة تعليمية افتراضية وليست وسيلة دفع حقيقية.
+الأرصدة والتحويلات المالية غير مفعلة في هذه النسخة.
+</p>
+
 <button id="refresh">تحديث بيانات المحفظة</button>
 <button id="signOut" class="alt">تسجيل الخروج</button>
+
 </section>
+
 </main>
-<footer>جيبي كاش | بيئة تدريبية، لا تُستخدم لتحويل أموال حقيقية</footer>
+
+<footer>
+جيبي كاش | بيئة تدريبية لا تُستخدم لتحويل أموال حقيقية
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
 <script>
-  alert('اختبار تشغيل جيبي كاش');
+"use strict";
 
-const URL = 'https://hpsuqttshdcebacpkrrt.supabase.co';
+/* إعدادات مشروع جيبي كاش */
 
-alert('فحص المكتبة: ' + typeof window.supabase);const KEY='sb_publishable_uSb5y_wtc2oi0qq7YLG83Q_muNekrs9';
-if (!window.supabase) {
-  alert('تعذر تحميل مكتبة Supabase');
-  throw new Error('Supabase library not loaded');
+const SUPABASE_URL =
+  "https://hpsuqttshdcebacpkrrt.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_uSb5y_wtc2oi0qq7YLG83Q_muNekrs9";
+
+const $ = id => document.getElementById(id);
+
+let db = null;
+
+/* عرض رسائل النظام */
+
+function message(text, type = "") {
+  const el = $("msg");
+  el.textContent = text || "";
+  el.className = type;
+  el.style.display = text ? "block" : "none";
 }
 
-let db;
-
-try {
-alert('عنوان الاتصال الفعلي: ' + JSON.stringify(URL));  db = window.supabase.createClient(URL, KEY);
-  db = window.supabase.createClient(URL, KEY);
-  alert('نجح إنشاء اتصال Supabase');
-} catch (e) {
-  alert('خطأ الاتصال: ' + e.message);
-  throw e;
-}
-const $=id=>document.getElementById(id);
-
-function message(s){
-  $('msg').textContent=s;
-  $('msg').style.display=s?'block':'none';
-}
-function busy(v){
-  $('signIn').disabled=v;
-  $('signUp').disabled=v;
-}
-function errorText(e){
-  return e?.message||'حدث خطأ غير متوقع';
+function errorText(error) {
+  return error?.message || "حدث خطأ غير متوقع.";
 }
 
-async function loadProfile(user){
-  $('authBox').classList.add('hidden');
-  $('accountBox').classList.remove('hidden');
-  $('userEmail').textContent='البريد: '+(user.email||'');
-  $('walletNumber').textContent='جارٍ التحميل...';
-  $('displayName').textContent='';
+function busy(value) {
+  $("signIn").disabled = value;
+  $("signUp").disabled = value;
+}
 
-  const {data,error}=await db.from('jeby_profiles')
-    .select('full_name,wallet_number')
-    .eq('user_id',user.id)
-    .maybeSingle();
+/* التحقق من إعدادات الاتصال */
 
-  if(error){
-    $('walletNumber').textContent='غير متاح';
-    message('تعذّر قراءة بيانات المحفظة: '+errorText(error));
-    return;
+function initializeSupabase() {
+  try {
+    if (!window.supabase ||
+        typeof window.supabase.createClient !== "function") {
+      throw new Error(
+        "تعذر تحميل مكتبة Supabase. تحقق من اتصال الإنترنت."
+      );
+    }
+
+    const cleanURL = SUPABASE_URL
+      .trim()
+      .replace(/^["']+|["']+$/g, "");
+
+    const parsedURL = new URL(cleanURL);
+
+    if (
+      parsedURL.protocol !== "https:" ||
+      !parsedURL.hostname.endsWith(".supabase.co")
+    ) {
+      throw new Error("عنوان مشروع Supabase غير صحيح.");
+    }
+
+    db = window.supabase.createClient(
+      parsedURL.origin,
+      SUPABASE_KEY.trim()
+    );
+
+    return true;
+
+  } catch (error) {
+    message(
+      "تعذر تهيئة الاتصال: " + errorText(error),
+      "error"
+    );
+    return false;
   }
-  if(!data){
-    $('walletNumber').textContent='لم يُنشأ بعد';
-    message('تم تسجيل الدخول، لكن سجل المحفظة لم يُنشأ بعد. يلزم إعداد قاعدة البيانات لإنشائه تلقائيًا.');
-    return;
-  }
-  $('displayName').textContent='الاسم: '+(data.full_name||'—');
-  $('walletNumber').textContent=data.wallet_number==null?'لم يُنشأ بعد':String(data.wallet_number);
 }
 
-async function render(session){
-  if(session?.user){
+/* عرض المحفظة */
+
+async function loadProfile(user) {
+
+  $("authBox").classList.add("hidden");
+  $("accountBox").classList.remove("hidden");
+
+  $("userEmail").textContent =
+    "البريد الإلكتروني: " + (user.email || "");
+
+  $("displayName").textContent = "";
+  $("walletNumber").textContent = "جارٍ التحميل...";
+
+  try {
+    const { data, error } = await db
+      .from("jeby_profiles")
+      .select("full_name,wallet_number")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (!data) {
+      $("walletNumber").textContent = "لم يُنشأ بعد";
+
+      message(
+        "تم تسجيل الدخول بنجاح، لكن سجل المحفظة لم يُنشأ بعد. " +
+        "يلزم إعداد قاعدة البيانات لإنشاء المحفظة تلقائيًا.",
+        "error"
+      );
+      return;
+    }
+
+    $("displayName").textContent =
+      "الاسم: " + (data.full_name || "—");
+
+    $("walletNumber").textContent =
+      data.wallet_number == null
+        ? "لم يُنشأ بعد"
+        : String(data.wallet_number);
+
+    message("");
+
+  } catch (error) {
+    $("walletNumber").textContent = "غير متاح";
+
+    message(
+      "تعذر قراءة بيانات المحفظة: " + errorText(error),
+      "error"
+    );
+  }
+}
+
+/* التبديل بين الدخول والمحفظة */
+
+async function render(session) {
+
+  if (session?.user) {
     await loadProfile(session.user);
-  }else{
-    $('authBox').classList.remove('hidden');
-    $('accountBox').classList.add('hidden');
+  } else {
+    $("authBox").classList.remove("hidden");
+    $("accountBox").classList.add("hidden");
   }
 }
 
-$('signUp').onclick=async()=>{
-  const name=$('fullName').value.trim();
-  const email=$('email').value.trim();
-  const password=$('password').value;
-  if(!name||!email||password.length<10){
-    message('أدخل الاسم والبريد وكلمة مرور من 10 أحرف على الأقل.');
+/* إنشاء حساب جديد */
+
+$("signUp").addEventListener("click", async () => {
+
+  if (!db) {
+    message("الاتصال غير مهيأ.", "error");
     return;
   }
+
+  const name = $("fullName").value.trim();
+  const email = $("email").value.trim();
+  const password = $("password").value;
+
+  if (!name || !email || password.length < 10) {
+    message(
+      "أدخل الاسم الكامل والبريد الإلكتروني وكلمة مرور من 10 أحرف على الأقل.",
+      "error"
+    );
+    return;
+  }
+
   busy(true);
-  try{
-    const {data,error}=await db.auth.signUp({
-      email,password,
-      options:{
-        data:{full_name:name},
-        emailRedirectTo:location.origin+'/participant.html'
+
+  try {
+    const { data, error } = await db.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: name
+        },
+        emailRedirectTo:
+          window.location.origin + "/participant.html"
       }
     });
-    if(error)throw error;
-    message(data.session?'تم إنشاء الحساب وتسجيل الدخول.':'تم إرسال طلب التسجيل. راجع بريدك لتأكيد الحساب إذا طُلب ذلك.');
-    if(data.session)await render(data.session);
-  }catch(e){
-    message(errorText(e));
-  }finally{
+
+    if (error) throw error;
+
+    $("password").value = "";
+
+    if (data.session) {
+      message("تم إنشاء الحساب بنجاح.", "success");
+      await render(data.session);
+    } else {
+      message(
+        "تم استقبال طلب التسجيل. راجع بريدك الإلكتروني " +
+        "لتأكيد الحساب إذا طُلب منك ذلك، ثم سجل الدخول.",
+        "success"
+      );
+    }
+
+  } catch (error) {
+    message(
+      "تعذر إنشاء الحساب: " + errorText(error),
+      "error"
+    );
+  } finally {
     busy(false);
   }
-};
+});
 
-$('signIn').onclick=async()=>{
-  const email=$('email').value.trim();
-  const password=$('password').value;
-  if(!email||!password){
-    message('أدخل البريد الإلكتروني وكلمة المرور.');
+/* تسجيل الدخول */
+
+$("signIn").addEventListener("click", async () => {
+
+  if (!db) {
+    message("الاتصال غير مهيأ.", "error");
     return;
   }
+
+  const email = $("email").value.trim();
+  const password = $("password").value;
+
+  if (!email || !password) {
+    message(
+      "أدخل البريد الإلكتروني وكلمة المرور.",
+      "error"
+    );
+    return;
+  }
+
   busy(true);
-  try{
-    const {data,error}=await db.auth.signInWithPassword({email,password});
-    if(error)throw error;
-    message('');
+
+  try {
+    const { data, error } =
+      await db.auth.signInWithPassword({
+        email,
+        password
+      });
+
+    if (error) throw error;
+
+    $("password").value = "";
+
     await render(data.session);
-  }catch(e){
-    message(errorText(e));
-  }finally{
+
+  } catch (error) {
+    message(
+      "تعذر تسجيل الدخول: " + errorText(error),
+      "error"
+    );
+  } finally {
     busy(false);
   }
-};
+});
 
-$('signOut').onclick=async()=>{
-  const {error}=await db.auth.signOut();
-  if(error){
-    message(errorText(error));
-  }else{
-    message('تم تسجيل الخروج.');
+/* تسجيل الخروج */
+
+$("signOut").addEventListener("click", async () => {
+
+  if (!db) return;
+
+  try {
+    const { error } = await db.auth.signOut();
+
+    if (error) throw error;
+
+    $("password").value = "";
+
     await render(null);
-  }
-};
 
-$('refresh').onclick=async()=>{
-  const {data}=await db.auth.getUser();
-  if(data.user){
-    message('');
-    await loadProfile(data.user);
-  }
-};
+    message("تم تسجيل الخروج بنجاح.", "success");
 
-(async()=>{
-  try{
-    const {data,error}=await db.auth.getSession();
-    if(error)throw error;
+  } catch (error) {
+    message(
+      "تعذر تسجيل الخروج: " + errorText(error),
+      "error"
+    );
+  }
+});
+
+/* تحديث بيانات المحفظة */
+
+$("refresh").addEventListener("click", async () => {
+
+  if (!db) return;
+
+  try {
+    const { data, error } = await db.auth.getUser();
+
+    if (error) throw error;
+
+    if (data.user) {
+      await loadProfile(data.user);
+    } else {
+      await render(null);
+      message("يرجى تسجيل الدخول مجددًا.", "error");
+    }
+
+  } catch (error) {
+    message(
+      "تعذر تحديث البيانات: " + errorText(error),
+      "error"
+    );
+  }
+});
+
+/* بدء تشغيل التطبيق */
+
+async function startApp() {
+
+  const ready = initializeSupabase();
+
+  if (!ready) return;
+
+  try {
+    const { data, error } = await db.auth.getSession();
+
+    if (error) throw error;
+
     await render(data.session);
-  }catch(e){
-    message('تعذر الاتصال بخدمة التسجيل: '+errorText(e));
+
+  } catch (error) {
+    message(
+      "تعذر بدء جلسة المستخدم: " + errorText(error),
+      "error"
+    );
   }
-})();
+}
+
+startApp();
+
 </script>
 </body>
 </html>
