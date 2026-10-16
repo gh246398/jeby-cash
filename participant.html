@@ -70,8 +70,15 @@ if (!window.supabase) {
   throw new Error('Supabase library not loaded');
 }
 
-const db=window.supabase.createClient(URL,KEY);
-alert('تم تشغيل JavaScript والاتصال الأولي بمكتبة Supabase');
+let db;
+
+try {
+  db = window.supabase.createClient(URL, KEY);
+  alert('نجح إنشاء اتصال Supabase');
+} catch (e) {
+  alert('خطأ الاتصال: ' + e.message);
+  throw e;
+}
 const $=id=>document.getElementById(id);
 
 function message(s){
