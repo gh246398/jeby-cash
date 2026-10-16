@@ -3,88 +3,43 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>جيبي كاش | محفظتك في جيبك</title>
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;
-  background:#f8f5f1;
-  color:#30232a;
-  font-family:Tahoma,Arial,sans-serif
-}
-header{
-  background:#571d35;
-  color:white;
-  padding:28px 18px;
-  text-align:center
-}
-h1{margin:0;font-size:34px}
-header p{color:#e9c98b;font-size:17px}
-.wrap{max-width:470px;margin:24px auto;padding:0 16px}
-.card{
-  background:white;
-  padding:24px;
-  border-radius:18px;
-  box-shadow:0 6px 22px #0001;
-  margin-bottom:16px
-}
-h2{color:#571d35;margin-top:0}
-label{display:block;margin:14px 0 6px;font-weight:bold}
-input{
-  width:100%;
-  padding:13px;
-  border:1px solid #d8ccd0;
-  border-radius:9px;
-  font-size:16px
-}
-input.ltr{direction:ltr;text-align:left}
-button{
-  background:#571d35;
-  color:white;
-  border:0;
-  border-radius:9px;
-  padding:13px 16px;
-  margin-top:15px;
-  width:100%;
-  font-size:16px;
-  cursor:pointer
-}
+body{margin:0;background:#f7f3ef;color:#30232a;font-family:Tahoma,Arial,sans-serif}
+header{background:#571d35;color:white;text-align:center;padding:25px 15px}
+header h1{margin:0;font-size:32px}
+header p{color:#e9c98b}
+.wrap{max-width:540px;margin:auto;padding:18px}
+.card{background:white;border-radius:18px;padding:22px;margin-bottom:16px;box-shadow:0 5px 20px #0000000c}
+h2,h3{color:#571d35}
+h2{margin-top:0}
+label{display:block;margin:13px 0 6px;font-weight:bold}
+input,select{width:100%;padding:13px;border:1px solid #d8ccd0;border-radius:9px;font-size:16px;background:white}
+input[type=email],input[type=password],input[type=number]{direction:ltr;text-align:left}
+button{background:#571d35;color:white;border:0;border-radius:9px;padding:13px;width:100%;margin-top:12px;font-size:16px;cursor:pointer}
 button.alt{background:#a77c32}
-button:disabled{opacity:.6;cursor:wait}
-#msg{
-  padding:12px;
-  border-radius:8px;
-  white-space:pre-wrap;
-  display:none;
-  background:#fff0d9;
-  margin-bottom:16px;
-  line-height:1.8
-}
-#msg.error{background:#ffe4e4;color:#8a2020}
-#msg.success{background:#e7f6ea;color:#176534}
-.note{color:#67565e;font-size:13px;line-height:1.8}
-.wallet{
-  font-size:27px;
-  color:#571d35;
-  font-weight:bold;
-  direction:ltr;
-  text-align:center;
-  padding:15px;
-  background:#f8f5f1;
-  border-radius:12px
-}
+button:disabled{opacity:.55}
 .hidden{display:none!important}
-footer{
-  text-align:center;
-  padding:18px;
-  color:#786b6f;
-  font-size:12px;
-  line-height:1.8
-}
+.note{font-size:13px;color:#75676e;line-height:1.9}
+.wallet{text-align:center;font-size:30px;font-weight:bold;color:#571d35;background:#f7f3ef;padding:20px;border-radius:12px;direction:ltr}
+.balances{display:grid;grid-template-columns:1fr;gap:10px}
+.balance{background:#f8f4ef;border:1px solid #eee2d9;padding:17px;border-radius:12px}
+.balance strong{display:block;font-size:23px;color:#571d35;margin-top:7px;direction:ltr;text-align:right}
+.tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px}
+.tabs button{margin:0;font-size:14px;padding:11px}
+.tabs button.active{background:#a77c32}
+#msg{display:none;padding:14px;border-radius:10px;background:#fff0d9;color:#633c19;margin-bottom:15px;white-space:pre-wrap;line-height:1.8}
+#msg.error{background:#ffe3e3;color:#8a2020}
+#msg.success{background:#e3f5e9;color:#176237}
+.tx{border-bottom:1px solid #eee;padding:13px 0}
+.tx:last-child{border:0}
+.tx small{color:#777}
+.tx strong{color:#571d35}
+footer{text-align:center;padding:20px;color:#786b6f;font-size:12px}
 </style>
 </head>
-
 <body>
 
 <header>
@@ -93,79 +48,140 @@ footer{
 </header>
 
 <main class="wrap">
-
 <div id="msg" role="status" aria-live="polite"></div>
 
-<section class="card" id="authBox">
+<section id="authBox" class="card">
 <h2>دخول المشتركين</h2>
 
-<label for="fullName">الاسم الكامل (عند إنشاء حساب)</label>
-<input
-  id="fullName"
-  autocomplete="name"
-  placeholder="الاسم الكامل"
->
+<label>الاسم الكامل (لإنشاء حساب جديد)</label>
+<input id="fullName" placeholder="الاسم الكامل" autocomplete="name">
 
-<label for="email">البريد الإلكتروني</label>
-<input
-  id="email"
-  class="ltr"
-  type="email"
-  autocomplete="email"
-  placeholder="name@example.com"
->
+<label>البريد الإلكتروني</label>
+<input id="email" type="email" placeholder="name@example.com" autocomplete="email">
 
-<label for="password">كلمة المرور</label>
-<input
-  id="password"
-  class="ltr"
-  type="password"
-  autocomplete="current-password"
-  minlength="10"
-  placeholder="10 أحرف على الأقل"
->
+<label>كلمة المرور</label>
+<input id="password" type="password" placeholder="10 أحرف على الأقل" minlength="10">
 
 <button id="signIn">تسجيل الدخول</button>
 <button id="signUp" class="alt">إنشاء حساب جديد</button>
 
-<p class="note">
-قد تصلك رسالة لتأكيد البريد الإلكتروني قبل السماح بالدخول.
-لا تشارك كلمة مرورك مع أحد.
-</p>
+<p class="note">قد تحتاج إلى تأكيد بريدك الإلكتروني بعد التسجيل.</p>
 </section>
 
-<section class="card hidden" id="accountBox">
+<div id="appBox" class="hidden">
 
+<section class="card">
 <h2>مرحبًا بك في محفظتك التعليمية</h2>
-
-<p id="userEmail"></p>
 <p id="displayName"></p>
-
-<p><strong>رقم المحفظة:</strong></p>
-<div class="wallet" id="walletNumber">جارٍ التحميل...</div>
-
-<p class="note">
-هذه محفظة تعليمية افتراضية وليست وسيلة دفع حقيقية.
-الأرصدة والتحويلات المالية غير مفعلة في هذه النسخة.
-</p>
-
-<button id="refresh">تحديث بيانات المحفظة</button>
-<button id="signOut" class="alt">تسجيل الخروج</button>
-
+<p id="userEmail"></p>
+<p>رقم المحفظة</p>
+<div id="walletNumber" class="wallet">جارٍ التحميل...</div>
 </section>
 
+<section class="card">
+<h2>أرصدة المحفظة</h2>
+<div class="balances">
+<div class="balance">
+الريال اليمني YER
+<strong id="balYER">—</strong>
+</div>
+<div class="balance">
+الريال السعودي SAR
+<strong id="balSAR">—</strong>
+</div>
+<div class="balance">
+الدولار الأمريكي USD
+<strong id="balUSD">—</strong>
+</div>
+</div>
+<p class="note">الأرصدة افتراضية للتدريب فقط. لا تمثل أموالًا حقيقية.</p>
+<button id="refresh" class="alt">تحديث الأرصدة والعمليات</button>
+</section>
+
+<div class="tabs">
+<button data-tab="transfer" class="active">تحويل</button>
+<button data-tab="deposit">إيداع</button>
+<button data-tab="withdraw">سحب</button>
+<button data-tab="history">سجل العمليات</button>
+</div>
+
+<section id="transfer" class="card">
+<h2>التحويل بين المحافظ</h2>
+
+<label>رقم محفظة المستفيد</label>
+<input id="recipient" inputmode="numeric" placeholder="مثال: 100102">
+
+<label>العملة</label>
+<select id="transferCurrency">
+<option value="YER">ريال يمني</option>
+<option value="SAR">ريال سعودي</option>
+<option value="USD">دولار أمريكي</option>
+</select>
+
+<label>المبلغ الافتراضي</label>
+<input id="transferAmount" type="number" min="0.01" step="0.01" placeholder="0.00">
+
+<label>البيان</label>
+<input id="transferNote" placeholder="سبب التحويل (اختياري)">
+
+<button id="sendTransfer">تنفيذ التحويل الافتراضي</button>
+</section>
+
+<section id="deposit" class="card hidden">
+<h2>الإيداع الافتراضي</h2>
+<p class="note">هذه العملية تدريبية ولا تعني إيداع أموال حقيقية.</p>
+
+<label>العملة</label>
+<select id="depositCurrency">
+<option value="YER">ريال يمني</option>
+<option value="SAR">ريال سعودي</option>
+<option value="USD">دولار أمريكي</option>
+</select>
+
+<label>المبلغ</label>
+<input id="depositAmount" type="number" min="0.01" step="0.01">
+
+<button id="sendDeposit">طلب إيداع افتراضي</button>
+</section>
+
+<section id="withdraw" class="card hidden">
+<h2>السحب الافتراضي</h2>
+<p class="note">السحب هنا محاكاة تدريبية ولا يتيح استلام نقود حقيقية.</p>
+
+<label>العملة</label>
+<select id="withdrawCurrency">
+<option value="YER">ريال يمني</option>
+<option value="SAR">ريال سعودي</option>
+<option value="USD">دولار أمريكي</option>
+</select>
+
+<label>المبلغ</label>
+<input id="withdrawAmount" type="number" min="0.01" step="0.01">
+
+<button id="sendWithdraw">طلب سحب افتراضي</button>
+</section>
+
+<section id="history" class="card hidden">
+<h2>سجل العمليات</h2>
+<div id="transactionList">جارٍ تحميل العمليات...</div>
+</section>
+
+<section class="card">
+<button id="signOut" class="alt">تسجيل الخروج</button>
+</section>
+
+</div>
 </main>
 
 <footer>
-جيبي كاش | بيئة تدريبية لا تُستخدم لتحويل أموال حقيقية
+جيبي كاش | نظام محفظة تعليمية افتراضية
+<br>
+ليس بنكًا ولا وسيلة دفع أو تحويل أموال حقيقية
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-
 <script>
 "use strict";
-
-/* إعدادات مشروع جيبي كاش */
 
 const SUPABASE_URL =
   "https://hpsuqttshdcebacpkrrt.supabase.co";
@@ -176,312 +192,439 @@ const SUPABASE_KEY =
 const $ = id => document.getElementById(id);
 
 let db = null;
+let currentUser = null;
+let currentWallet = null;
 
-/* عرض رسائل النظام */
-
-function message(text, type = "") {
+function showMessage(text, type = "") {
   const el = $("msg");
   el.textContent = text || "";
   el.className = type;
   el.style.display = text ? "block" : "none";
+  if (text) window.scrollTo({top:0,behavior:"smooth"});
 }
 
-function errorText(error) {
-  return error?.message || "حدث خطأ غير متوقع.";
+function errorMessage(error) {
+  return error?.message || "حدث خطأ غير متوقع";
 }
 
-function busy(value) {
-  $("signIn").disabled = value;
-  $("signUp").disabled = value;
+function setBusy(button, busy) {
+  button.disabled = busy;
 }
 
-/* التحقق من إعدادات الاتصال */
+function formatAmount(value) {
+  if (value === null || value === undefined) return "—";
+  const number = Number(value);
+  if (!Number.isFinite(number)) return "—";
+  return number.toLocaleString("en-US", {
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  });
+}
 
-function initializeSupabase() {
-  try {
-    if (!window.supabase ||
-        typeof window.supabase.createClient !== "function") {
-      throw new Error(
-        "تعذر تحميل مكتبة Supabase. تحقق من اتصال الإنترنت."
-      );
-    }
+function validAmount(value) {
+  const n = Number(value);
+  return Number.isFinite(n) && n > 0 && n <= 1000000000;
+}
 
-    const cleanURL = SUPABASE_URL
-      .trim()
-      .replace(/^["']+|["']+$/g, "");
+function showLoggedOut() {
+  currentUser = null;
+  currentWallet = null;
+  $("authBox").classList.remove("hidden");
+  $("appBox").classList.add("hidden");
+}
 
-    const parsedURL = new URL(cleanURL);
+function showLoggedIn(user) {
+  currentUser = user;
+  $("authBox").classList.add("hidden");
+  $("appBox").classList.remove("hidden");
+  $("userEmail").textContent = "البريد: " + (user.email || "");
+}
 
-    if (
-      parsedURL.protocol !== "https:" ||
-      !parsedURL.hostname.endsWith(".supabase.co")
-    ) {
-      throw new Error("عنوان مشروع Supabase غير صحيح.");
-    }
+async function loadProfile() {
+  const {data,error} = await db
+    .from("jeby_profiles")
+    .select("full_name,wallet_number")
+    .eq("user_id",currentUser.id)
+    .maybeSingle();
 
-    db = window.supabase.createClient(
-      parsedURL.origin,
-      SUPABASE_KEY.trim()
+  if (error) throw error;
+
+  if (!data) {
+    currentWallet = null;
+    $("walletNumber").textContent = "غير متاح";
+    $("displayName").textContent = "";
+    throw new Error(
+      "الحساب موجود، لكن بيانات المحفظة غير متوفرة في قاعدة البيانات."
     );
+  }
 
-    return true;
+  currentWallet = data.wallet_number;
+  $("walletNumber").textContent =
+    String(data.wallet_number ?? "غير متاح");
 
-  } catch (error) {
-    message(
-      "تعذر تهيئة الاتصال: " + errorText(error),
-      "error"
+  $("displayName").textContent =
+    "الاسم: " + (data.full_name || "—");
+}
+
+async function loadBalances() {
+  $("balYER").textContent = "—";
+  $("balSAR").textContent = "—";
+  $("balUSD").textContent = "—";
+
+  const {data,error} = await db
+    .from("jeby_balances")
+    .select("currency,balance")
+    .eq("user_id",currentUser.id);
+
+  if (error) {
+    throw new Error(
+      "تعذر قراءة الأرصدة. تأكد من إعداد جدول jeby_balances وصلاحياته: "
+      + error.message
     );
-    return false;
+  }
+
+  for (const item of data || []) {
+    const code = String(item.currency).toUpperCase();
+    const target = $("bal" + code);
+    if (target) target.textContent = formatAmount(item.balance);
+  }
+
+  for (const code of ["YER","SAR","USD"]) {
+    if ($("bal" + code).textContent === "—") {
+      $("bal" + code).textContent = "0.00";
+    }
   }
 }
 
-/* عرض المحفظة */
+function operationTitle(type) {
+  const titles = {
+    transfer:"تحويل",
+    deposit:"إيداع",
+    withdraw:"سحب",
+    withdrawal:"سحب"
+  };
+  return titles[type] || type || "عملية";
+}
 
-async function loadProfile(user) {
+async function loadHistory() {
+  const list = $("transactionList");
+  list.textContent = "جارٍ تحميل العمليات...";
 
-  $("authBox").classList.add("hidden");
-  $("accountBox").classList.remove("hidden");
+  const {data,error} = await db
+    .from("jeby_transactions")
+    .select("*")
+    .or(
+      "from_user_id.eq." + currentUser.id +
+      ",to_user_id.eq." + currentUser.id
+    )
+    .order("created_at",{ascending:false})
+    .limit(50);
 
-  $("userEmail").textContent =
-    "البريد الإلكتروني: " + (user.email || "");
+  if (error) {
+    list.textContent =
+      "تعذر قراءة السجل. يلزم التحقق من جدول العمليات وصلاحياته.";
+    throw error;
+  }
 
-  $("displayName").textContent = "";
-  $("walletNumber").textContent = "جارٍ التحميل...";
+  list.replaceChildren();
+
+  if (!data || data.length === 0) {
+    list.textContent = "لا توجد عمليات مسجلة حتى الآن.";
+    return;
+  }
+
+  for (const tx of data) {
+    const div = document.createElement("div");
+    div.className = "tx";
+
+    const title = document.createElement("strong");
+    title.textContent = operationTitle(tx.type);
+
+    const amount = document.createElement("div");
+    amount.textContent =
+      formatAmount(tx.amount) + " " + (tx.currency || "");
+
+    const date = document.createElement("small");
+    date.textContent = tx.created_at
+      ? new Date(tx.created_at).toLocaleString("ar")
+      : "";
+
+    div.append(title,amount,date);
+    list.appendChild(div);
+  }
+}
+
+async function refreshAll() {
+  if (!currentUser) return;
 
   try {
-    const { data, error } = await db
-      .from("jeby_profiles")
-      .select("full_name,wallet_number")
-      .eq("user_id", user.id)
-      .maybeSingle();
+    await loadProfile();
+  } catch (e) {
+    showMessage(errorMessage(e),"error");
+    return;
+  }
+
+  const results = await Promise.allSettled([
+    loadBalances(),
+    loadHistory()
+  ]);
+
+  const errors = results
+    .filter(x => x.status === "rejected")
+    .map(x => errorMessage(x.reason));
+
+  if (errors.length) {
+    showMessage(errors.join("\n"),"error");
+  } else {
+    showMessage("");
+  }
+}
+
+async function authenticate() {
+  const {data,error} = await db.auth.getUser();
+
+  if (error || !data.user) {
+    showLoggedOut();
+    return;
+  }
+
+  showLoggedIn(data.user);
+  await refreshAll();
+}
+
+async function executeOperation(
+  buttonId, functionName, parameters
+) {
+  const button = $(buttonId);
+  setBusy(button,true);
+
+  try {
+    if (!currentUser || !currentWallet) {
+      throw new Error("يجب تسجيل الدخول ووجود محفظة أولًا.");
+    }
+
+    const confirmed = confirm(
+      "هل تؤكد تنفيذ العملية الافتراضية؟"
+    );
+
+    if (!confirmed) return;
+
+    const {data,error} = await db.rpc(
+      functionName,parameters
+    );
 
     if (error) throw error;
 
-    if (!data) {
-      $("walletNumber").textContent = "لم يُنشأ بعد";
+    showMessage(
+      "تم تأكيد العملية الافتراضية من قاعدة البيانات.",
+      "success"
+    );
 
-      message(
-        "تم تسجيل الدخول بنجاح، لكن سجل المحفظة لم يُنشأ بعد. " +
-        "يلزم إعداد قاعدة البيانات لإنشاء المحفظة تلقائيًا.",
-        "error"
-      );
-      return;
-    }
+    await refreshAll();
 
-    $("displayName").textContent =
-      "الاسم: " + (data.full_name || "—");
-
-    $("walletNumber").textContent =
-      data.wallet_number == null
-        ? "لم يُنشأ بعد"
-        : String(data.wallet_number);
-
-    message("");
-
-  } catch (error) {
-    $("walletNumber").textContent = "غير متاح";
-
-    message(
-      "تعذر قراءة بيانات المحفظة: " + errorText(error),
+  } catch(e) {
+    showMessage(
+      "لم تُنفذ العملية: " + errorMessage(e),
       "error"
     );
+  } finally {
+    setBusy(button,false);
   }
 }
 
-/* التبديل بين الدخول والمحفظة */
-
-async function render(session) {
-
-  if (session?.user) {
-    await loadProfile(session.user);
-  } else {
-    $("authBox").classList.remove("hidden");
-    $("accountBox").classList.add("hidden");
-  }
-}
-
-/* إنشاء حساب جديد */
-
-$("signUp").addEventListener("click", async () => {
-
-  if (!db) {
-    message("الاتصال غير مهيأ.", "error");
-    return;
-  }
-
-  const name = $("fullName").value.trim();
+$("signIn").onclick = async () => {
   const email = $("email").value.trim();
   const password = $("password").value;
 
-  if (!name || !email || password.length < 10) {
-    message(
-      "أدخل الاسم الكامل والبريد الإلكتروني وكلمة مرور من 10 أحرف على الأقل.",
+  if (!email || !password) {
+    showMessage("أدخل البريد وكلمة المرور.","error");
+    return;
+  }
+
+  setBusy("signIn",true);
+
+  try {
+    const {error} = await db.auth.signInWithPassword({
+      email,password
+    });
+
+    if (error) throw error;
+
+    await authenticate();
+
+  } catch(e) {
+    showMessage(errorMessage(e),"error");
+  } finally {
+    setBusy("signIn",false);
+  }
+};
+
+$("signUp").onclick = async () => {
+  const full_name = $("fullName").value.trim();
+  const email = $("email").value.trim();
+  const password = $("password").value;
+
+  if (!full_name || !email || password.length < 10) {
+    showMessage(
+      "أدخل الاسم والبريد وكلمة مرور من 10 أحرف على الأقل.",
       "error"
     );
     return;
   }
 
-  busy(true);
+  setBusy("signUp",true);
 
   try {
-    const { data, error } = await db.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: name
-        },
+    const {data,error} = await db.auth.signUp({
+      email,password,
+      options:{
+        data:{full_name},
         emailRedirectTo:
-          window.location.origin + "/participant.html"
+          location.origin + "/participant.html"
       }
     });
 
     if (error) throw error;
 
-    $("password").value = "";
-
     if (data.session) {
-      message("تم إنشاء الحساب بنجاح.", "success");
-      await render(data.session);
+      await authenticate();
     } else {
-      message(
-        "تم استقبال طلب التسجيل. راجع بريدك الإلكتروني " +
-        "لتأكيد الحساب إذا طُلب منك ذلك، ثم سجل الدخول.",
+      showMessage(
+        "تم إرسال طلب التسجيل. راجع بريدك لتأكيد الحساب.",
         "success"
       );
     }
 
-  } catch (error) {
-    message(
-      "تعذر إنشاء الحساب: " + errorText(error),
-      "error"
-    );
+  } catch(e) {
+    showMessage(errorMessage(e),"error");
   } finally {
-    busy(false);
+    setBusy("signUp",false);
   }
-});
+};
 
-/* تسجيل الدخول */
-
-$("signIn").addEventListener("click", async () => {
-
-  if (!db) {
-    message("الاتصال غير مهيأ.", "error");
-    return;
-  }
-
-  const email = $("email").value.trim();
-  const password = $("password").value;
-
-  if (!email || !password) {
-    message(
-      "أدخل البريد الإلكتروني وكلمة المرور.",
-      "error"
-    );
-    return;
-  }
-
-  busy(true);
-
+$("signOut").onclick = async () => {
   try {
-    const { data, error } =
-      await db.auth.signInWithPassword({
-        email,
-        password
-      });
-
+    const {error} = await db.auth.signOut();
     if (error) throw error;
-
-    $("password").value = "";
-
-    await render(data.session);
-
-  } catch (error) {
-    message(
-      "تعذر تسجيل الدخول: " + errorText(error),
-      "error"
-    );
-  } finally {
-    busy(false);
+    showLoggedOut();
+    showMessage("تم تسجيل الخروج.","success");
+  } catch(e) {
+    showMessage(errorMessage(e),"error");
   }
-});
+};
 
-/* تسجيل الخروج */
+$("refresh").onclick = refreshAll;
 
-$("signOut").addEventListener("click", async () => {
+document.querySelectorAll("[data-tab]").forEach(button => {
+  button.onclick = () => {
+    const tab = button.dataset.tab;
 
-  if (!db) return;
-
-  try {
-    const { error } = await db.auth.signOut();
-
-    if (error) throw error;
-
-    $("password").value = "";
-
-    await render(null);
-
-    message("تم تسجيل الخروج بنجاح.", "success");
-
-  } catch (error) {
-    message(
-      "تعذر تسجيل الخروج: " + errorText(error),
-      "error"
-    );
-  }
-});
-
-/* تحديث بيانات المحفظة */
-
-$("refresh").addEventListener("click", async () => {
-
-  if (!db) return;
-
-  try {
-    const { data, error } = await db.auth.getUser();
-
-    if (error) throw error;
-
-    if (data.user) {
-      await loadProfile(data.user);
-    } else {
-      await render(null);
-      message("يرجى تسجيل الدخول مجددًا.", "error");
+    for (const id of [
+      "transfer","deposit","withdraw","history"
+    ]) {
+      $(id).classList.toggle("hidden",id !== tab);
     }
 
-  } catch (error) {
-    message(
-      "تعذر تحديث البيانات: " + errorText(error),
-      "error"
-    );
-  }
+    document.querySelectorAll("[data-tab]")
+      .forEach(b => {
+        b.classList.toggle("active",b === button);
+      });
+  };
 });
 
-/* بدء تشغيل التطبيق */
+$("sendTransfer").onclick = async () => {
+  const recipient = $("recipient").value.trim();
+  const amount = $("transferAmount").value;
+  const currency = $("transferCurrency").value;
+  const note = $("transferNote").value.trim();
 
-async function startApp() {
+  if (!/^\d{6,12}$/.test(recipient)) {
+    showMessage("أدخل رقم محفظة مستفيد صحيحًا.","error");
+    return;
+  }
 
-  const ready = initializeSupabase();
+  if (recipient === String(currentWallet)) {
+    showMessage(
+      "لا يمكن التحويل إلى محفظتك نفسها.",
+      "error"
+    );
+    return;
+  }
 
-  if (!ready) return;
+  if (!validAmount(amount)) {
+    showMessage("أدخل مبلغًا صحيحًا.","error");
+    return;
+  }
 
+  await executeOperation(
+    "sendTransfer",
+    "jeby_transfer",
+    {
+      p_recipient_wallet:recipient,
+      p_currency:currency,
+      p_amount:Number(amount),
+      p_note:note
+    }
+  );
+};
+
+$("sendDeposit").onclick = async () => {
+  const amount = $("depositAmount").value;
+
+  if (!validAmount(amount)) {
+    showMessage("أدخل مبلغًا صحيحًا.","error");
+    return;
+  }
+
+  await executeOperation(
+    "sendDeposit",
+    "jeby_deposit",
+    {
+      p_currency:$("depositCurrency").value,
+      p_amount:Number(amount)
+    }
+  );
+};
+
+$("sendWithdraw").onclick = async () => {
+  const amount = $("withdrawAmount").value;
+
+  if (!validAmount(amount)) {
+    showMessage("أدخل مبلغًا صحيحًا.","error");
+    return;
+  }
+
+  await executeOperation(
+    "sendWithdraw",
+    "jeby_withdraw",
+    {
+      p_currency:$("withdrawCurrency").value,
+      p_amount:Number(amount)
+    }
+  );
+};
+
+(async function start() {
   try {
-    const { data, error } = await db.auth.getSession();
+    if (!window.supabase) {
+      throw new Error(
+        "تعذر تحميل مكتبة Supabase. تحقق من اتصال الإنترنت."
+      );
+    }
 
-    if (error) throw error;
+    db = window.supabase.createClient(
+      SUPABASE_URL,SUPABASE_KEY
+    );
 
-    await render(data.session);
+    await authenticate();
 
-  } catch (error) {
-    message(
-      "تعذر بدء جلسة المستخدم: " + errorText(error),
+  } catch(e) {
+    showMessage(
+      "خطأ في تشغيل التطبيق: " + errorMessage(e),
       "error"
     );
   }
-}
-
-startApp();
-
+})();
 </script>
 </body>
 </html>
