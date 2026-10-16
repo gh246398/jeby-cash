@@ -75,6 +75,7 @@ if (!window.supabase) {
 let db;
 
 try {
+alert('عنوان الاتصال الفعلي: ' + JSON.stringify(URL));  db = window.supabase.createClient(URL, KEY);
   db = window.supabase.createClient(URL, KEY);
   alert('نجح إنشاء اتصال Supabase');
 } catch (e) {
