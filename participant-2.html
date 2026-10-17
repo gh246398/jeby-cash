@@ -1,0 +1,522 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#571d35">
+<title>جيبي كاش | محفظتك في جيبك</title>
+<link rel="icon" type="image/png" href="./jeby-logo.png">
+<link rel="apple-touch-icon" href="./jeby-logo.png">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f7f3ef;color:#30232a;font-family:Tahoma,Arial,sans-serif}
+header{background:#571d35;color:white;text-align:center;padding:20px 15px 25px;border-bottom:5px solid #a77c32}
+.brand-logo{display:block;width:135px;height:135px;object-fit:contain;margin:0 auto 10px;background:#fff;border-radius:20px;padding:5px;box-shadow:0 4px 18px #0003}
+header h1{font-size:28px;margin:0}
+header p{color:#e9c98b;font-size:17px;margin:8px 0 0}
+.wrap{max-width:600px;margin:auto;padding:16px}
+.card{background:white;border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 5px 20px #0000000c}
+h2,h3{color:#571d35;margin-top:0}
+label{display:block;margin:14px 0 7px;font-weight:bold}
+input,select{width:100%;padding:13px;border:1px solid #d8ccd0;border-radius:10px;font-size:16px;background:white}
+input[type=email],input[type=password],input[type=number]{direction:ltr;text-align:left}
+button{background:#571d35;color:white;border:0;border-radius:10px;padding:14px;width:100%;margin-top:12px;font-size:16px;cursor:pointer}
+button.gold{background:#a77c32}
+button:disabled{opacity:.55;cursor:not-allowed}
+.hidden{display:none!important}
+.note{font-size:13px;color:#75676e;line-height:1.9}
+.wallet{text-align:center;font-size:32px;font-weight:bold;color:#571d35;background:#f7f3ef;padding:20px;border-radius:12px;direction:ltr}
+.balance{background:#f8f4ef;border:1px solid #eee2d9;padding:17px;border-radius:12px;margin:10px 0}
+.balance strong{display:block;font-size:25px;color:#571d35;margin-top:7px;direction:ltr;text-align:right}
+#msg{display:none;padding:15px;border-radius:10px;margin-bottom:15px;white-space:pre-wrap;line-height:1.8;background:#fff0d9}
+#msg.error{background:#ffe3e3;color:#8a2020}
+#msg.success{background:#e3f5e9;color:#176237}
+.tx{border-bottom:1px solid #eee;padding:13px 0}
+.tx:last-child{border:0}
+.tx small{color:#777}
+.tx strong{color:#571d35}
+.service-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.service-button{margin:0;background:#f8f4ef;color:#571d35;border:1px solid #e8ddd4;aspect-ratio:1/1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:12px;padding:7px 4px;line-height:1.35;overflow-wrap:anywhere}
+.service-button .emoji{display:block;font-size:clamp(22px,6vw,31px);line-height:1.1}
+.service-button small{display:block;color:#8a6c3d;font-size:10px}
+.service-button.active{background:#571d35;color:white;border-color:#571d35}
+.service-button.active small{color:#e9c98b}
+.panel{border:1px solid #e8ddd4;background:#fffaf5;border-radius:14px;padding:16px;margin-top:16px;scroll-margin-top:12px}
+.option-list{display:grid;gap:9px}
+.option-button{margin:0;text-align:right;background:white;color:#571d35;border:1px solid #e5d8ce}
+.back{background:#eee4da;color:#571d35}
+footer{text-align:center;padding:22px;color:#786b6f;font-size:12px;line-height:2}
+</style>
+</head>
+<body>
+
+<header>
+<img class="brand-logo" src="./jeby-logo.png" alt="الشعار الرسمي لجيبي كاش">
+<h1>جيبي كاش | JEBY CASH</h1>
+<p>محفظتك في جيبك</p>
+</header>
+
+<main class="wrap">
+<div id="msg" role="status" aria-live="polite"></div>
+
+<section id="authBox" class="card">
+<h2>دخول المشتركين</h2>
+<label>الاسم الكامل (للتسجيل الجديد)</label>
+<input id="fullName" autocomplete="name">
+<label for="authMethod">طريقة الدخول أو التسجيل</label>
+<select id="authMethod"><option value="phone">رقم الجوال</option><option value="email">البريد الإلكتروني (الحسابات السابقة)</option></select>
+<div id="phoneFields">
+<label for="phone">رقم الجوال (بالصيغة الدولية)</label>
+<input id="phone" type="tel" autocomplete="tel" inputmode="tel" dir="ltr" placeholder="+9677XXXXXXXX" maxlength="16">
+</div>
+<div id="emailFields" class="hidden">
+<label for="email">البريد الإلكتروني</label>
+<input id="email" type="email" autocomplete="email">
+</div>
+<label>كلمة المرور</label>
+<input id="password" type="password" minlength="10">
+<button id="signIn">تسجيل الدخول</button>
+<button id="signUp" class="gold">إنشاء حساب جديد</button>
+<p class="note" id="authHelp">يستلزم التسجيل بالجوال تفعيل رسائل SMS الحقيقية في Supabase. لا تستخدم بيانات افتراضية للتحقق.</p>
+<div id="otpBox" class="hidden">
+<label for="otpCode">رمز التحقق الذي وصلك عبر SMS</label>
+<input id="otpCode" inputmode="numeric" autocomplete="one-time-code" maxlength="8" dir="ltr">
+<button type="button" id="verifyPhone">تأكيد رقم الجوال</button>
+<button type="button" id="resendCode" class="gold">إعادة إرسال الرمز</button>
+</div>
+</section>
+
+<div id="appBox" class="hidden">
+
+<section class="card">
+<h2>مرحبًا بك في محفظتك التعليمية</h2>
+<p id="displayName"></p>
+<p id="userEmail"></p>
+<p>رقم المحفظة</p>
+<div id="walletNumber" class="wallet">...</div>
+</section>
+
+<section class="card">
+<h2>أرصدة المحفظة</h2>
+<div class="balance">الريال اليمني YER<strong id="balYER">—</strong></div>
+<div class="balance">الريال السعودي SAR<strong id="balSAR">—</strong></div>
+<div class="balance">الدولار الأمريكي USD<strong id="balUSD">—</strong></div>
+<p class="note">جميع الأرصدة افتراضية للتدريب فقط، ولا تمثل أموالًا حقيقية.</p>
+<button id="refresh" class="gold">تحديث الأرصدة والعمليات</button>
+</section>
+
+<section class="card">
+<h2>عمليات المحفظة</h2>
+<p class="note">اختر العملية المطلوبة. الخدمات الموسومة «قريبًا» واجهات تدريبية لا تخصم من الرصيد.</p>
+
+<div class="service-grid">
+<button type="button" class="service-button active" data-action="transfer"><span class="emoji">💸</span>تحويل<small>مفعّل</small></button>
+<button type="button" class="service-button" data-action="deposit"><span class="emoji">📥</span>إيداع<small>بواسطة الإدارة</small></button>
+<button type="button" class="service-button" data-action="withdraw"><span class="emoji">📤</span>سحب<small>بواسطة الإدارة</small></button>
+<button type="button" class="service-button" data-action="charge"><span class="emoji">📱</span>الشحن والسداد<small>قريبًا</small></button>
+<button type="button" class="service-button" data-action="bills"><span class="emoji">💡</span>فواتير الخدمات<small>قريبًا</small></button>
+<button type="button" class="service-button" data-action="shopping"><span class="emoji">🛍️</span>المشتريات<small>قريبًا</small></button>
+<button type="button" class="service-button" data-action="online"><span class="emoji">🛒</span>شراء أونلاين<small>قريبًا</small></button>
+<button type="button" class="service-button" data-action="cash"><span class="emoji">🏧</span>سحب نقدي<small>قريبًا</small></button>
+<button type="button" class="service-button" data-action="payments"><span class="emoji">🧾</span>المدفوعات<small>قريبًا</small></button>
+<button type="button" class="service-button" data-action="entertainment"><span class="emoji">🎮</span>الألعاب والبطاقات<small>قريبًا</small></button>
+<button type="button" class="service-button" data-action="saving"><span class="emoji">🐷</span>الادخار<small>قريبًا</small></button>
+<button type="button" class="service-button" data-action="projects"><span class="emoji">📊</span>إدارة المشاريع<small>قريبًا</small></button>
+<button type="button" class="service-button" data-action="history"><span class="emoji">📋</span>سجل العمليات<small>مفعّل</small></button>
+</div>
+
+<div id="actionPanel" class="panel">
+<h3 id="panelTitle">التحويل بين المحافظ</h3>
+<div id="panelDescription" class="note hidden"></div>
+
+<div id="transferForm">
+<label>رقم محفظة المستفيد</label>
+<input id="recipient" inputmode="numeric" placeholder="مثال: 100102">
+<label>العملة</label>
+<select id="transferCurrency">
+<option value="YER">ريال يمني</option>
+<option value="SAR">ريال سعودي</option>
+<option value="USD">دولار أمريكي</option>
+</select>
+<label>المبلغ الافتراضي</label>
+<input id="transferAmount" type="number" min="1" step="1" placeholder="0">
+<label>البيان (اختياري)</label>
+<input id="transferNote" maxlength="250">
+<button id="sendTransfer">تنفيذ التحويل الافتراضي</button>
+</div>
+
+<div id="optionPanel" class="hidden">
+<div id="optionList" class="option-list"></div>
+<div id="selectedOption" class="panel hidden">
+<h3 id="selectedOptionTitle"></h3>
+<p class="note">هذه الخدمة قيد التطوير. لن يتم خصم أي مبلغ، ولا توجد عملية دفع حقيقية.</p>
+<button id="backOptions" class="back">العودة إلى الخيارات</button>
+</div>
+</div>
+
+<div id="transactionList" class="hidden">جارٍ التحميل...</div>
+</div>
+</section>
+
+<section class="card">
+<button id="signOut" class="gold">تسجيل الخروج</button>
+</section>
+</div>
+</main>
+
+<footer>
+جيبي كاش | محفظة تعليمية افتراضية<br>
+ليست بنكًا ولا خدمة دفع أو تحويل أموال حقيقية<br>
+لا توجد اتفاقيات بنكية أو خدمات صراف آلي مفعّلة
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+"use strict";
+const SUPABASE_URL="https://hpsuqttshdcebacpkrrt.supabase.co";
+const SUPABASE_KEY="sb_publishable_uSb5y_wtc2oi0qq7YLG83Q_muNekrs9";
+const $=id=>document.getElementById(id);
+let db=null,user=null,wallet=null;
+
+const serviceData={
+ charge:{title:"الشحن والسداد",options:["شحن رصيد الموبايل","سداد الإنترنت الثابت","سداد إنترنت 4G"]},
+ bills:{title:"فواتير الخدمات",options:["فاتورة الكهرباء","فاتورة المياه","فواتير خدمات أخرى"]},
+ shopping:{title:"المشتريات",options:["الدفع لمحفظة متجر","مشتريات البقالة والسوبرماركت","مشتريات المعارض والمحلات"]},
+ online:{title:"شراء أونلاين",options:["التسوق الإلكتروني","طلبات الشراء"]},
+ cash:{title:"السحب النقدي",options:["نقاط الخدمة","الصراف الآلي"]},
+ payments:{title:"المدفوعات",options:["سداد الزكاة","سداد الضرائب","رسوم التعليم","التبرعات"]},
+ entertainment:{title:"الألعاب والبطاقات",options:["الألعاب","بطاقات افتراضية"]},
+ saving:{title:"الادخار",options:["أهداف الادخار","متابعة الادخار"]},
+ projects:{title:"إدارة المشاريع",options:["مشاريعي","ميزانية المشروع","متابعة المصروفات"]}
+};
+
+function message(t,type=""){
+ const el=$("msg");
+ el.textContent=t||"";
+ el.className=type;
+ el.style.display=t?"block":"none";
+ if(t)window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function errorText(e){return e?.message||"حدث خطأ غير متوقع"}
+function busy(id,v){$(id).disabled=v}
+function money(v){
+ const n=Number(v);
+ return Number.isFinite(n)?n.toLocaleString("en-US"):"—";
+}
+
+function loggedOut(){
+ user=null;wallet=null;
+ $("authBox").classList.remove("hidden");
+ $("appBox").classList.add("hidden");
+}
+
+function loggedIn(u){
+ user=u;
+ $("authBox").classList.add("hidden");
+ $("appBox").classList.remove("hidden");
+ $("userEmail").textContent=u.phone?"الجوال: "+u.phone:(u.email?"البريد: "+u.email:"");
+}
+
+async function profile(){
+ const {data,error}=await db.from("jeby_profiles")
+  .select("full_name,wallet_number")
+  .eq("user_id",user.id).maybeSingle();
+ if(error)throw error;
+ if(!data)throw Error("بيانات المحفظة غير متوفرة.");
+ wallet=data.wallet_number;
+ $("walletNumber").textContent=String(wallet);
+ $("displayName").textContent="الاسم: "+(data.full_name||"—");
+}
+
+async function balances(){
+ for(const c of ["YER","SAR","USD"])$("bal"+c).textContent="—";
+ const {data,error}=await db.from("jeby_balances")
+  .select("currency,amount").eq("user_id",user.id);
+ if(error)throw error;
+ for(const c of ["YER","SAR","USD"]){
+  const item=(data||[]).find(x=>x.currency===c);
+  $("bal"+c).textContent=money(item?item.amount:0);
+ }
+}
+
+function operationName(kind){
+ return ({
+  transfer:"تحويل",
+  admin_deposit:"إيداع إداري",
+  admin_withdrawal:"سحب إداري"
+ })[kind]||kind||"عملية";
+}
+
+async function history(){
+ const el=$("transactionList");
+ el.textContent="جارٍ تحميل العمليات...";
+ const {data,error}=await db.from("jeby_transactions")
+  .select("id,kind,amount,currency,created_at,from_user_id,to_user_id,note")
+  .or("from_user_id.eq."+user.id+",to_user_id.eq."+user.id)
+  .order("created_at",{ascending:false}).limit(50);
+ if(error)throw error;
+ el.replaceChildren();
+ if(!data?.length){
+  el.textContent="لا توجد عمليات مسجلة حتى الآن.";
+  return;
+ }
+ for(const tx of data){
+  const item=document.createElement("div");
+  item.className="tx";
+  const title=document.createElement("strong");
+  let direction="";
+  if(tx.kind==="transfer"){
+   direction=tx.from_user_id===user.id?" - صادر":" - وارد";
+  }
+  title.textContent=operationName(tx.kind)+direction;
+  const amount=document.createElement("div");
+  amount.textContent=money(tx.amount)+" "+tx.currency;
+  const date=document.createElement("small");
+  date.textContent=new Date(tx.created_at).toLocaleString("ar");
+  item.append(title,amount,date);
+  if(tx.note){
+   const note=document.createElement("p");
+   note.textContent=tx.note;
+   item.append(note);
+  }
+  el.append(item);
+ }
+}
+
+async function refresh(){
+ if(!user)return;
+ try{
+  await profile();
+  const results=await Promise.allSettled([balances(),history()]);
+  const errors=results.filter(x=>x.status==="rejected")
+   .map(x=>errorText(x.reason));
+  if(errors.length)message(errors.join("\n"),"error");
+  else message("");
+ }catch(e){message(errorText(e),"error")}
+}
+
+async function authenticate(){
+ const {data,error}=await db.auth.getUser();
+ if(error||!data.user){loggedOut();return}
+ loggedIn(data.user);
+ await refresh();
+}
+
+// تسجيل الجوال يستخدم Supabase Phone Auth الحقيقي؛ لا توجد رموز تجريبية.
+const normalizePhone=()=>$("phone").value.trim().replace(/[\s()\-]/g,"");
+const validPhone=p=>/^\+[1-9]\d{7,14}$/.test(p);
+const usingEmail=()=>$("authMethod").value==="email";
+const getIdentity=()=>usingEmail()?$("email").value.trim():normalizePhone();
+$("authMethod").onchange=()=>{
+ const email=usingEmail();
+ $("phoneFields").classList.toggle("hidden",email);
+ $("emailFields").classList.toggle("hidden",!email);
+ $("otpBox").classList.add("hidden");
+ $("authHelp").textContent=email?
+  "الحسابات السابقة تعمل بالبريد الإلكتروني وكلمة المرور. وقد يلزم تأكيد البريد عند التسجيل.":
+  "يتطلب التسجيل بالجوال تفعيل رسائل SMS الحقيقية في Supabase والتحقق من ملكية الرقم.";
+};
+$("signIn").onclick=async()=>{
+ const identity=getIdentity(),password=$("password").value;
+ if(!identity||!password||(!usingEmail()&&!validPhone(identity))){
+  message("أدخل "+(usingEmail()?"البريد الإلكتروني":"رقم الجوال بالصيغة الدولية مثل +967...")+" وكلمة المرور.","error");return;
+ }
+ busy("signIn",true);
+ try{
+  const credentials=usingEmail()?{email:identity,password}:{phone:identity,password};
+  const {error}=await db.auth.signInWithPassword(credentials);
+  if(error)throw error;
+  await authenticate();
+ }catch(e){message(errorText(e),"error")}
+ finally{busy("signIn",false)}
+};
+$("signUp").onclick=async()=>{
+ const full_name=$("fullName").value.trim(),password=$("password").value;
+ const identity=getIdentity(),email=usingEmail();
+ if(full_name.length<3||password.length<10||!identity||(!email&&!validPhone(identity))){
+  message("أدخل الاسم الكامل و"+(email?"البريد":"رقم الجوال بالصيغة الدولية +967...")+" وكلمة مرور من 10 أحرف على الأقل.","error");return;
+ }
+ busy("signUp",true);
+ try{
+  const options={data:{full_name}};
+  if(email)options.emailRedirectTo=location.origin+"/participant.html";
+  const credentials=email?{email:identity,password,options}:{phone:identity,password,options};
+  const {data,error}=await db.auth.signUp(credentials);
+  if(error)throw error;
+  if(data.session){await authenticate();return;}
+  if(email)message("راجع بريدك الإلكتروني لتأكيد الحساب.","success");
+  else{
+   $("otpBox").classList.remove("hidden");
+   message("إذا كانت خدمة SMS مفعلة، فقد أُرسل رمز تحقق إلى جوالك. أدخله أدناه.","success");
+  }
+ }catch(e){message("تعذر إنشاء الحساب: "+errorText(e),"error")}
+ finally{busy("signUp",false)}
+};
+$("verifyPhone").onclick=async()=>{
+ const phone=normalizePhone(),token=$("otpCode").value.trim();
+ if(!validPhone(phone)||!/^\d{4,8}$/.test(token)){
+  message("تحقق من رقم الجوال ورمز التحقق.","error");return;
+ }
+ busy("verifyPhone",true);
+ try{
+  const {error}=await db.auth.verifyOtp({phone,token,type:"sms"});
+  if(error)throw error;
+  $("otpBox").classList.add("hidden");
+  await authenticate();
+ }catch(e){message(errorText(e),"error")}
+ finally{busy("verifyPhone",false)}
+};
+$("resendCode").onclick=async()=>{
+ const phone=normalizePhone();
+ if(!validPhone(phone)){message("أدخل رقم جوال صحيحًا.","error");return;}
+ busy("resendCode",true);
+ try{
+  const {error}=await db.auth.resend({type:"sms",phone});
+  if(error)throw error;
+  message("تم طلب إعادة إرسال الرمز. تحقق من رسائلك.","success");
+ }catch(e){message(errorText(e),"error")}
+ finally{busy("resendCode",false)}
+};
+
+$("signOut").onclick=async()=>{
+ try{
+  const {error}=await db.auth.signOut();
+  if(error)throw error;
+  loggedOut();
+  message("تم تسجيل الخروج.","success");
+ }catch(e){message(errorText(e),"error")}
+};
+
+$("refresh").onclick=refresh;
+
+function showAction(action){
+ document.querySelectorAll("[data-action]").forEach(b=>
+  b.classList.toggle("active",b.dataset.action===action)
+ );
+ $("transferForm").classList.add("hidden");
+ $("optionPanel").classList.add("hidden");
+ $("transactionList").classList.add("hidden");
+ $("panelDescription").classList.add("hidden");
+ $("selectedOption").classList.add("hidden");
+ $("optionList").replaceChildren();
+
+ if(action==="transfer"){
+  $("panelTitle").textContent="التحويل بين المحافظ";
+  $("transferForm").classList.remove("hidden");
+  return;
+ }
+
+ if(action==="history"){
+  $("panelTitle").textContent="سجل العمليات";
+  $("transactionList").classList.remove("hidden");
+  history().catch(e=>message(errorText(e),"error"));
+  return;
+ }
+
+ if(action==="deposit"||action==="withdraw"){
+  $("panelTitle").textContent=action==="deposit"?
+   "الإيداع الافتراضي":"السحب الافتراضي";
+  $("panelDescription").textContent=action==="deposit"?
+   "يتم الإيداع التدريبي من لوحة الإدارة بواسطة مسؤول مخوّل، ويظهر في رصيد المشترك وسجل العمليات.":
+   "يتم السحب التدريبي من لوحة الإدارة بواسطة مسؤول مخوّل. لا يمكن استلام أموال حقيقية.";
+  $("panelDescription").classList.remove("hidden");
+  return;
+ }
+
+ const service=serviceData[action];
+ if(!service)return;
+ $("panelTitle").textContent=service.title;
+ $("optionPanel").classList.remove("hidden");
+ const list=$("optionList");
+
+ service.options.forEach(option=>{
+  const btn=document.createElement("button");
+  btn.type="button";
+  btn.className="option-button";
+  btn.textContent="◀  "+option;
+  btn.onclick=()=>{
+   $("selectedOptionTitle").textContent=option;
+   $("selectedOption").classList.remove("hidden");
+   list.classList.add("hidden");
+  };
+  list.append(btn);
+ });
+ list.classList.remove("hidden");
+}
+
+$("backOptions").onclick=()=>{
+ $("selectedOption").classList.add("hidden");
+ $("optionList").classList.remove("hidden");
+};
+
+document.querySelectorAll("[data-action]").forEach(b=>{
+ b.onclick=()=>{
+  showAction(b.dataset.action);
+  $("actionPanel").scrollIntoView({
+   behavior:"smooth",block:"start"
+  });
+ };
+});
+
+$("sendTransfer").onclick=async()=>{
+ const recipient=$("recipient").value.trim();
+ const currency=$("transferCurrency").value;
+ const raw=$("transferAmount").value.trim();
+ const amount=Number(raw);
+ const note=$("transferNote").value.trim();
+
+ if(!user||!wallet){
+  message("بيانات المحفظة غير جاهزة.","error");return;
+ }
+ if(!/^\d{6,12}$/.test(recipient)){
+  message("رقم المستفيد غير صحيح.","error");return;
+ }
+ if(recipient===String(wallet)){
+  message("لا يمكن التحويل إلى محفظتك.","error");return;
+ }
+ if(!raw||!Number.isSafeInteger(amount)||amount<=0||amount>1000000000){
+  message("أدخل مبلغًا صحيحًا بدون كسور.","error");return;
+ }
+ if(note.length>250){
+  message("البيان طويل جدًا.","error");return;
+ }
+ if(!confirm("تأكيد تحويل "+money(amount)+" "+currency+" إلى "+recipient+"؟")){
+  return;
+ }
+
+ busy("sendTransfer",true);
+ try{
+  const {data,error}=await db.rpc("jeby_transfer",{
+   p_wallet_number:Number(recipient),
+   p_currency:currency,
+   p_amount:amount,
+   p_note:note
+  });
+  if(error)throw error;
+  await refresh();
+  message("تم تنفيذ التحويل الافتراضي. رقم العملية: "+data,"success");
+  $("transferAmount").value="";
+  $("transferNote").value="";
+ }catch(e){
+  message("لم يتم التحويل: "+errorText(e),"error");
+ }finally{
+  busy("sendTransfer",false);
+ }
+};
+
+(async()=>{
+ try{
+  if(!window.supabase){
+   throw Error("تعذر تحميل مكتبة Supabase.");
+  }
+  db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+  await authenticate();
+ }catch(e){
+  message(errorText(e),"error");
+ }
+})();
+</script>
+</body>
+</html>
