@@ -4,45 +4,167 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#571d35">
 <title>جيبي كاش | لوحة الإدارة</title>
+<link rel="icon" type="image/png" href="./jeby-logo.png">
+<link rel="apple-touch-icon" href="./jeby-logo.png">
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f7f3ef;color:#30232a;font-family:Tahoma,Arial,sans-serif}
-header{background:#571d35;color:white;text-align:center;padding:30px 15px;border-bottom:5px solid #ad833b}
-header h1{margin:0;font-size:32px}
+body{
+ margin:0;
+ background:#f7f3ef;
+ color:#30232a;
+ font-family:Tahoma,Arial,sans-serif;
+}
+header{
+ background:#571d35;
+ color:white;
+ text-align:center;
+ padding:24px 15px 30px;
+ border-bottom:5px solid #ad833b;
+}
+.brand-logo{
+ display:block;
+ width:135px;
+ height:135px;
+ object-fit:contain;
+ margin:0 auto 12px;
+ background:white;
+ padding:5px;
+ border-radius:20px;
+ box-shadow:0 4px 18px #0003;
+}
+header h1{margin:0;font-size:28px}
 header p{color:#e9c98b}
 main{max-width:760px;margin:auto;padding:18px}
-.card{background:white;border-radius:18px;padding:22px;margin-bottom:17px;box-shadow:0 5px 20px #0000000c}
+.card{
+ background:white;
+ border-radius:18px;
+ padding:22px;
+ margin-bottom:17px;
+ box-shadow:0 5px 20px #0000000c;
+}
 h2,h3{color:#571d35}
 label{display:block;font-weight:bold;margin:14px 0 7px}
-input,select,textarea{width:100%;padding:13px;border:1px solid #d7cbd0;border-radius:10px;font-size:16px;background:white}
-input[type=email],input[type=password],input[type=number]{direction:ltr;text-align:left}
-button{width:100%;padding:14px;border:0;border-radius:10px;background:#571d35;color:white;font-size:16px;margin-top:12px;cursor:pointer}
+input,select,textarea{
+ width:100%;
+ padding:13px;
+ border:1px solid #d7cbd0;
+ border-radius:10px;
+ font-size:16px;
+ background:white;
+}
+input[type=email],
+input[type=password],
+input[type=number]{
+ direction:ltr;
+ text-align:left;
+}
+button{
+ width:100%;
+ padding:14px;
+ border:0;
+ border-radius:10px;
+ background:#571d35;
+ color:white;
+ font-size:16px;
+ margin-top:12px;
+ cursor:pointer;
+}
 button.gold{background:#a77c32}
 button:disabled{opacity:.55;cursor:not-allowed}
 .hidden{display:none!important}
 .note{color:#766b70;font-size:13px;line-height:1.9}
-#message{display:none;padding:15px;border-radius:12px;margin-bottom:15px;white-space:pre-wrap;line-height:1.8}
-#message.error{display:block;background:#ffe3e3;color:#852525}
-#message.success{display:block;background:#e3f5e9;color:#176237}
-#message.info{display:block;background:#fff0d9;color:#664b19}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.stat{padding:18px;border-radius:12px;background:#f8f4ef}
-.stat strong{display:block;font-size:25px;color:#571d35;margin-top:8px}
-.wallet-item{border:1px solid #e9dde1;border-radius:12px;padding:15px;margin:10px 0}
+#message{
+ display:none;
+ padding:15px;
+ border-radius:12px;
+ margin-bottom:15px;
+ white-space:pre-wrap;
+ line-height:1.8;
+}
+#message.error{
+ display:block;
+ background:#ffe3e3;
+ color:#852525;
+}
+#message.success{
+ display:block;
+ background:#e3f5e9;
+ color:#176237;
+}
+#message.info{
+ display:block;
+ background:#fff0d9;
+ color:#664b19;
+}
+.stats{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px;
+}
+.stat{
+ padding:18px;
+ border-radius:12px;
+ background:#f8f4ef;
+}
+.stat strong{
+ display:block;
+ font-size:25px;
+ color:#571d35;
+ margin-top:8px;
+}
+.wallet-item{
+ border:1px solid #e9dde1;
+ border-radius:12px;
+ padding:15px;
+ margin:10px 0;
+}
 .wallet-item strong{color:#571d35}
 .wallet-item small{color:#777}
-.amounts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}
-.amounts div{background:#f8f4ef;padding:9px;border-radius:8px;font-size:12px;text-align:center;overflow-wrap:anywhere}
-.amounts b{display:block;font-size:15px;margin-top:6px}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.amounts{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:6px;
+ margin-top:12px;
+}
+.amounts div{
+ background:#f8f4ef;
+ padding:9px;
+ border-radius:8px;
+ font-size:12px;
+ text-align:center;
+ overflow-wrap:anywhere;
+}
+.amounts b{
+ display:block;
+ font-size:15px;
+ margin-top:6px;
+}
+.actions{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+}
 .actions button{margin-top:12px}
-footer{text-align:center;color:#766b70;padding:20px;font-size:12px;line-height:2}
+footer{
+ text-align:center;
+ color:#766b70;
+ padding:20px;
+ font-size:12px;
+ line-height:2;
+}
 </style>
 </head>
+
 <body>
 
 <header>
+<img
+ class="brand-logo"
+ src="./jeby-logo.png"
+ alt="الشعار الرسمي لجيبي كاش"
+>
 <h1>جيبي كاش | JEBY CASH</h1>
 <p>محفظتك في جيبك</p>
 <p>لوحة الإدارة التعليمية</p>
@@ -53,11 +175,16 @@ footer{text-align:center;color:#766b70;padding:20px;font-size:12px;line-height:2
 
 <section id="loginBox" class="card">
 <h2>دخول المدير</h2>
-<p class="note">سجّل الدخول بالحساب الذي تم اعتماده مديرًا في قاعدة البيانات.</p>
+<p class="note">
+سجّل الدخول بالحساب الذي تم اعتماده مديرًا في قاعدة البيانات.
+</p>
+
 <label>البريد الإلكتروني</label>
 <input id="email" type="email" autocomplete="email">
+
 <label>كلمة المرور</label>
 <input id="password" type="password" autocomplete="current-password">
+
 <button id="loginBtn">دخول لوحة الإدارة</button>
 </section>
 
@@ -66,19 +193,37 @@ footer{text-align:center;color:#766b70;padding:20px;font-size:12px;line-height:2
 <section class="card">
 <h2>مرحبًا بك في إدارة جيبي كاش</h2>
 <p id="adminEmail"></p>
-<p class="note">جميع العمليات في هذه اللوحة افتراضية وتعليمية، ولا تتضمن أموالًا حقيقية.</p>
+
+<p class="note">
+جميع العمليات في هذه اللوحة افتراضية وتعليمية،
+ولا تتضمن أموالًا حقيقية.
+</p>
+
 <div class="stats">
-<div class="stat">المحافظ المعروضة<strong id="walletCount">0</strong></div>
-<div class="stat">العملات المدعومة<strong>3</strong></div>
+<div class="stat">
+المحافظ المعروضة
+<strong id="walletCount">0</strong>
 </div>
-<button id="refreshBtn" class="gold">تحديث بيانات المحافظ</button>
+<div class="stat">
+العملات المدعومة
+<strong>3</strong>
+</div>
+</div>
+
+<button id="refreshBtn" class="gold">
+تحديث بيانات المحافظ
+</button>
 </section>
 
 <section class="card">
 <h2>إدارة الأرصدة الافتراضية</h2>
 
 <label>رقم محفظة المشترك</label>
-<input id="targetWallet" inputmode="numeric" placeholder="مثال: 100101">
+<input
+ id="targetWallet"
+ inputmode="numeric"
+ placeholder="مثال: 100101"
+>
 
 <label>نوع العملية</label>
 <select id="operation">
@@ -94,25 +239,51 @@ footer{text-align:center;color:#766b70;padding:20px;font-size:12px;line-height:2
 </select>
 
 <label>المبلغ الافتراضي</label>
-<input id="amount" type="number" min="1" step="1" placeholder="مثال: 100000">
+<input
+ id="amount"
+ type="number"
+ min="1"
+ step="1"
+ placeholder="مثال: 100000"
+>
 
 <label>البيان أو سبب العملية</label>
-<textarea id="note" rows="3" maxlength="250" placeholder="مثال: رصيد افتتاحي للتدريب"></textarea>
+<textarea
+ id="note"
+ rows="3"
+ maxlength="250"
+ placeholder="مثال: رصيد افتتاحي للتدريب"
+></textarea>
 
-<button id="executeBtn">تنفيذ العملية الافتراضية</button>
-<p class="note">لا يمكن سحب مبلغ يتجاوز الرصيد الافتراضي المتاح. يتم حفظ العملية في قاعدة البيانات وسجل المشترك.</p>
+<button id="executeBtn">
+تنفيذ العملية الافتراضية
+</button>
+
+<p class="note">
+لا يمكن سحب مبلغ يتجاوز الرصيد الافتراضي المتاح.
+يتم حفظ العملية في قاعدة البيانات وسجل المشترك.
+</p>
 </section>
 
 <section class="card">
 <h2>محافظ المشتركين</h2>
+
 <label>البحث برقم المحفظة أو اسم المشترك</label>
 <input id="search" placeholder="ابحث هنا">
-<p class="note">تُعرض حتى 1000 محفظة في النسخة الحالية.</p>
-<div id="walletList">جارٍ تحميل المحافظ...</div>
+
+<p class="note">
+تُعرض حتى 1000 محفظة في النسخة الحالية.
+</p>
+
+<div id="walletList">
+جارٍ تحميل المحافظ...
+</div>
 </section>
 
 <section class="card">
-<button id="logoutBtn" class="gold">تسجيل الخروج</button>
+<button id="logoutBtn" class="gold">
+تسجيل الخروج
+</button>
 </section>
 
 </div>
@@ -125,15 +296,18 @@ footer{text-align:center;color:#766b70;padding:20px;font-size:12px;line-height:2
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
 <script>
 "use strict";
 
 const SUPABASE_URL =
  "https://hpsuqttshdcebacpkrrt.supabase.co";
+
 const SUPABASE_KEY =
  "sb_publishable_uSb5y_wtc2oi0qq7YLG83Q_muNekrs9";
 
 const $ = id => document.getElementById(id);
+
 let db = null;
 let currentUser = null;
 let wallets = [];
@@ -143,7 +317,13 @@ function notify(text,type="info"){
  box.textContent=text||"";
  box.className=text?type:"";
  box.style.display=text?"block":"none";
- if(text)window.scrollTo({top:0,behavior:"smooth"});
+
+ if(text){
+  window.scrollTo({
+   top:0,
+   behavior:"smooth"
+  });
+ }
 }
 
 function errText(e){
@@ -152,21 +332,26 @@ function errText(e){
 
 function fmt(value){
  const n=Number(value);
- return Number.isFinite(n)?n.toLocaleString("en-US"):"—";
+ return Number.isFinite(n)?
+  n.toLocaleString("en-US"):"—";
 }
 
 function showLogin(){
  currentUser=null;
  wallets=[];
+
  $("loginBox").classList.remove("hidden");
  $("dashboard").classList.add("hidden");
 }
 
 function showDashboard(user){
  currentUser=user;
+
  $("loginBox").classList.add("hidden");
  $("dashboard").classList.remove("hidden");
- $("adminEmail").textContent="حساب المدير: "+(user.email||"");
+
+ $("adminEmail").textContent=
+  "حساب المدير: "+(user.email||"");
 }
 
 async function verifyAdmin(user){
@@ -177,6 +362,7 @@ async function verifyAdmin(user){
   .maybeSingle();
 
  if(error)throw error;
+
  return !!data;
 }
 
@@ -184,18 +370,32 @@ async function loadWallets(){
  if(!currentUser)return;
 
  $("refreshBtn").disabled=true;
- $("walletList").textContent="جارٍ تحميل المحافظ...";
+ $("walletList").textContent=
+  "جارٍ تحميل المحافظ...";
 
  try{
-  const {data,error}=await db.rpc("jeby_admin_wallets");
+  const {data,error}=await db.rpc(
+   "jeby_admin_wallets"
+  );
+
   if(error)throw error;
 
   wallets=Array.isArray(data)?data:[];
-  $("walletCount").textContent=String(wallets.length);
+
+  $("walletCount").textContent=
+   String(wallets.length);
+
   renderWallets();
+
  }catch(e){
-  $("walletList").textContent="تعذر تحميل المحافظ.";
-  notify("خطأ في تحميل المحافظ: "+errText(e),"error");
+  $("walletList").textContent=
+   "تعذر تحميل المحافظ.";
+
+  notify(
+   "خطأ في تحميل المحافظ: "+errText(e),
+   "error"
+  );
+
  }finally{
   $("refreshBtn").disabled=false;
  }
@@ -204,11 +404,13 @@ async function loadWallets(){
 function renderWallets(){
  const q=$("search").value.trim().toLowerCase();
  const list=$("walletList");
+
  list.replaceChildren();
 
  const results=wallets.filter(w=>
   String(w.wallet_number).includes(q) ||
-  String(w.full_name||"").toLowerCase().includes(q)
+  String(w.full_name||"")
+   .toLowerCase().includes(q)
  );
 
  if(!results.length){
@@ -221,20 +423,26 @@ function renderWallets(){
   card.className="wallet-item";
 
   const title=document.createElement("strong");
-  title.textContent=String(w.full_name||"مشترك");
+  title.textContent=
+   String(w.full_name||"مشترك");
 
   const number=document.createElement("p");
-  number.textContent="رقم المحفظة: "+w.wallet_number;
+  number.textContent=
+   "رقم المحفظة: "+w.wallet_number;
 
   const amounts=document.createElement("div");
   amounts.className="amounts";
 
   for(const code of ["YER","SAR","USD"]){
    const cell=document.createElement("div");
+
    const label=document.createElement("span");
    label.textContent=code;
+
    const value=document.createElement("b");
-   value.textContent=fmt(w[code.toLowerCase()]);
+   value.textContent=
+    fmt(w[code.toLowerCase()]);
+
    cell.append(label,value);
    amounts.append(cell);
   }
@@ -242,9 +450,15 @@ function renderWallets(){
   const select=document.createElement("button");
   select.className="gold";
   select.textContent="اختيار هذه المحفظة";
+
   select.onclick=()=>{
-   $("targetWallet").value=String(w.wallet_number);
-   notify("تم اختيار المحفظة "+w.wallet_number,"info");
+   $("targetWallet").value=
+    String(w.wallet_number);
+
+   notify(
+    "تم اختيار المحفظة "+w.wallet_number,
+    "info"
+   );
   };
 
   card.append(title,number,amounts,select);
@@ -264,7 +478,12 @@ async function initializeSession(){
 
  if(!allowed){
   showLogin();
-  notify("هذا الحساب ليس معتمدًا لإدارة جيبي كاش.","error");
+
+  notify(
+   "هذا الحساب ليس معتمدًا لإدارة جيبي كاش.",
+   "error"
+  );
+
   return;
  }
 
@@ -277,7 +496,10 @@ $("loginBtn").onclick=async()=>{
  const password=$("password").value;
 
  if(!email||!password){
-  notify("أدخل البريد الإلكتروني وكلمة المرور.","error");
+  notify(
+   "أدخل البريد الإلكتروني وكلمة المرور.",
+   "error"
+  );
   return;
  }
 
@@ -291,8 +513,13 @@ $("loginBtn").onclick=async()=>{
   if(error)throw error;
 
   await initializeSession();
+
  }catch(e){
-  notify("تعذر الدخول: "+errText(e),"error");
+  notify(
+   "تعذر الدخول: "+errText(e),
+   "error"
+  );
+
  }finally{
   $("loginBtn").disabled=false;
  }
@@ -300,44 +527,66 @@ $("loginBtn").onclick=async()=>{
 
 $("executeBtn").onclick=async()=>{
  if(!currentUser){
-  notify("سجّل الدخول كمدير أولًا.","error");
+  notify(
+   "سجّل الدخول كمدير أولًا.",
+   "error"
+  );
   return;
  }
 
  const walletText=$("targetWallet").value.trim();
  const amountText=$("amount").value.trim();
+
  const amount=Number(amountText);
  const currency=$("currency").value;
  const kind=$("operation").value;
  const note=$("note").value.trim();
 
  if(!/^\d{6,12}$/.test(walletText)){
-  notify("أدخل رقم محفظة صحيحًا.","error");
+  notify(
+   "أدخل رقم محفظة صحيحًا.",
+   "error"
+  );
   return;
  }
 
- if(!amountText || !Number.isSafeInteger(amount) ||
-    amount<=0 || amount>1000000000){
-  notify("أدخل مبلغًا صحيحًا دون كسور.","error");
+ if(
+  !amountText ||
+  !Number.isSafeInteger(amount) ||
+  amount<=0 ||
+  amount>1000000000
+ ){
+  notify(
+   "أدخل مبلغًا صحيحًا دون كسور.",
+   "error"
+  );
   return;
  }
 
  if(note.length>250){
-  notify("البيان يتجاوز 250 حرفًا.","error");
+  notify(
+   "البيان يتجاوز 250 حرفًا.",
+   "error"
+  );
   return;
  }
 
  const walletNumber=Number(walletText);
+
  const target=wallets.find(w=>
   Number(w.wallet_number)===walletNumber
  );
 
  if(!target){
-  notify("المحفظة غير موجودة ضمن المحافظ المعروضة. حدّث القائمة وتحقق من الرقم.","error");
+  notify(
+   "المحفظة غير موجودة ضمن المحافظ المعروضة. حدّث القائمة وتحقق من الرقم.",
+   "error"
+  );
   return;
  }
 
- const operationName=kind==="admin_deposit"?"إيداع":"سحب";
+ const operationName=
+  kind==="admin_deposit"?"إيداع":"سحب";
 
  const confirmation=
   "تأكيد "+operationName+" افتراضي\n"+
@@ -351,13 +600,16 @@ $("executeBtn").onclick=async()=>{
  $("executeBtn").disabled=true;
 
  try{
-  const {data,error}=await db.rpc("jeby_admin_adjust",{
-   p_wallet_number:walletNumber,
-   p_currency:currency,
-   p_amount:amount,
-   p_kind:kind,
-   p_note:note
-  });
+  const {data,error}=await db.rpc(
+   "jeby_admin_adjust",
+   {
+    p_wallet_number:walletNumber,
+    p_currency:currency,
+    p_amount:amount,
+    p_kind:kind,
+    p_note:note
+   }
+  );
 
   if(error)throw error;
 
@@ -367,25 +619,39 @@ $("executeBtn").onclick=async()=>{
   await loadWallets();
 
   notify(
-   "تم تنفيذ العملية الافتراضية بنجاح.\nرقم العملية: "+data,
+   "تم تنفيذ العملية الافتراضية بنجاح.\n"+
+   "رقم العملية: "+data,
    "success"
   );
+
  }catch(e){
-  notify("لم تُنفذ العملية: "+errText(e),"error");
+  notify(
+   "لم تُنفذ العملية: "+errText(e),
+   "error"
+  );
+
  }finally{
   $("executeBtn").disabled=false;
  }
 };
 
 $("refreshBtn").onclick=loadWallets;
+
 $("search").oninput=renderWallets;
 
 $("logoutBtn").onclick=async()=>{
  try{
   const {error}=await db.auth.signOut();
+
   if(error)throw error;
+
   showLogin();
-  notify("تم تسجيل الخروج.","success");
+
+  notify(
+   "تم تسجيل الخروج.",
+   "success"
+  );
+
  }catch(e){
   notify(errText(e),"error");
  }
@@ -394,19 +660,28 @@ $("logoutBtn").onclick=async()=>{
 (async()=>{
  try{
   if(!window.supabase){
-   throw Error("تعذر تحميل مكتبة Supabase.");
+   throw Error(
+    "تعذر تحميل مكتبة Supabase."
+   );
   }
 
   db=window.supabase.createClient(
-   SUPABASE_URL,SUPABASE_KEY
+   SUPABASE_URL,
+   SUPABASE_KEY
   );
 
   await initializeSession();
+
  }catch(e){
   showLogin();
-  notify("خطأ في تشغيل الإدارة: "+errText(e),"error");
+
+  notify(
+   "خطأ في تشغيل الإدارة: "+errText(e),
+   "error"
+  );
  }
 })();
 </script>
+
 </body>
 </html>
