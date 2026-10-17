@@ -64,13 +64,27 @@ footer{text-align:center;padding:22px;color:#786b6f;font-size:12px;line-height:2
 <h2>دخول المشتركين</h2>
 <label>الاسم الكامل (للتسجيل الجديد)</label>
 <input id="fullName" autocomplete="name">
-<label>البريد الإلكتروني</label>
+<label for="authMethod">طريقة الدخول أو التسجيل</label>
+<select id="authMethod"><option value="phone">رقم الجوال</option><option value="email">البريد الإلكتروني (الحسابات السابقة)</option></select>
+<div id="phoneFields">
+<label for="phone">رقم الجوال (بالصيغة الدولية)</label>
+<input id="phone" type="tel" autocomplete="tel" inputmode="tel" dir="ltr" placeholder="+9677XXXXXXXX" maxlength="16">
+</div>
+<div id="emailFields" class="hidden">
+<label for="email">البريد الإلكتروني</label>
 <input id="email" type="email" autocomplete="email">
+</div>
 <label>كلمة المرور</label>
 <input id="password" type="password" minlength="10">
 <button id="signIn">تسجيل الدخول</button>
 <button id="signUp" class="gold">إنشاء حساب جديد</button>
-<p class="note">قد يلزم تأكيد البريد الإلكتروني عند إنشاء الحساب.</p>
+<p class="note" id="authHelp">يستلزم التسجيل بالجوال تفعيل رسائل SMS الحقيقية في Supabase. لا تستخدم بيانات افتراضية للتحقق.</p>
+<div id="otpBox" class="hidden">
+<label for="otpCode">رمز التحقق الذي وصلك عبر SMS</label>
+<input id="otpCode" inputmode="numeric" autocomplete="one-time-code" maxlength="8" dir="ltr">
+<button type="button" id="verifyPhone">تأكيد رقم الجوال</button>
+<button type="button" id="resendCode" class="gold">إعادة إرسال الرمز</button>
+</div>
 </section>
 
 <div id="appBox" class="hidden">
@@ -202,7 +216,7 @@ function loggedIn(u){
  user=u;
  $("authBox").classList.add("hidden");
  $("appBox").classList.remove("hidden");
- $("userEmail").textContent="البريد: "+(u.email||"");
+ $("userEmail").textContent=u.phone?"الجوال: "+u.phone:(u.email?"البريد: "+u.email:"");
 }
 
 async function profile(){
@@ -290,43 +304,80 @@ async function authenticate(){
  await refresh();
 }
 
+// تسجيل الجوال يستخدم Supabase Phone Auth الحقيقي؛ لا توجد رموز تجريبية.
+const normalizePhone=()=>$("phone").value.trim().replace(/[\s()\-]/g,"");
+const validPhone=p=>/^\+[1-9]\d{7,14}$/.test(p);
+const usingEmail=()=>$("authMethod").value==="email";
+const getIdentity=()=>usingEmail()?$("email").value.trim():normalizePhone();
+$("authMethod").onchange=()=>{
+ const email=usingEmail();
+ $("phoneFields").classList.toggle("hidden",email);
+ $("emailFields").classList.toggle("hidden",!email);
+ $("otpBox").classList.add("hidden");
+ $("authHelp").textContent=email?
+  "الحسابات السابقة تعمل بالبريد الإلكتروني وكلمة المرور. وقد يلزم تأكيد البريد عند التسجيل.":
+  "يتطلب التسجيل بالجوال تفعيل رسائل SMS الحقيقية في Supabase والتحقق من ملكية الرقم.";
+};
 $("signIn").onclick=async()=>{
- const email=$("email").value.trim();
- const password=$("password").value;
- if(!email||!password){
-  message("أدخل البريد وكلمة المرور.","error");return;
+ const identity=getIdentity(),password=$("password").value;
+ if(!identity||!password||(!usingEmail()&&!validPhone(identity))){
+  message("أدخل "+(usingEmail()?"البريد الإلكتروني":"رقم الجوال بالصيغة الدولية مثل +967...")+" وكلمة المرور.","error");return;
  }
  busy("signIn",true);
  try{
-  const {error}=await db.auth.signInWithPassword({email,password});
+  const credentials=usingEmail()?{email:identity,password}:{phone:identity,password};
+  const {error}=await db.auth.signInWithPassword(credentials);
   if(error)throw error;
   await authenticate();
  }catch(e){message(errorText(e),"error")}
  finally{busy("signIn",false)}
 };
-
 $("signUp").onclick=async()=>{
- const full_name=$("fullName").value.trim();
- const email=$("email").value.trim();
- const password=$("password").value;
- if(!full_name||!email||password.length<10){
-  message("أدخل الاسم والبريد وكلمة مرور من 10 أحرف على الأقل.","error");
-  return;
+ const full_name=$("fullName").value.trim(),password=$("password").value;
+ const identity=getIdentity(),email=usingEmail();
+ if(full_name.length<3||password.length<10||!identity||(!email&&!validPhone(identity))){
+  message("أدخل الاسم الكامل و"+(email?"البريد":"رقم الجوال بالصيغة الدولية +967...")+" وكلمة مرور من 10 أحرف على الأقل.","error");return;
  }
  busy("signUp",true);
  try{
-  const {data,error}=await db.auth.signUp({
-   email,password,
-   options:{
-    data:{full_name},
-    emailRedirectTo:location.origin+"/participant.html"
-   }
-  });
+  const options={data:{full_name}};
+  if(email)options.emailRedirectTo=location.origin+"/participant.html";
+  const credentials=email?{email:identity,password,options}:{phone:identity,password,options};
+  const {data,error}=await db.auth.signUp(credentials);
   if(error)throw error;
-  if(data.session)await authenticate();
-  else message("راجع بريدك الإلكتروني لتأكيد الحساب.");
- }catch(e){message(errorText(e),"error")}
+  if(data.session){await authenticate();return;}
+  if(email)message("راجع بريدك الإلكتروني لتأكيد الحساب.","success");
+  else{
+   $("otpBox").classList.remove("hidden");
+   message("إذا كانت خدمة SMS مفعلة، فقد أُرسل رمز تحقق إلى جوالك. أدخله أدناه.","success");
+  }
+ }catch(e){message("تعذر إنشاء الحساب: "+errorText(e),"error")}
  finally{busy("signUp",false)}
+};
+$("verifyPhone").onclick=async()=>{
+ const phone=normalizePhone(),token=$("otpCode").value.trim();
+ if(!validPhone(phone)||!/^\d{4,8}$/.test(token)){
+  message("تحقق من رقم الجوال ورمز التحقق.","error");return;
+ }
+ busy("verifyPhone",true);
+ try{
+  const {error}=await db.auth.verifyOtp({phone,token,type:"sms"});
+  if(error)throw error;
+  $("otpBox").classList.add("hidden");
+  await authenticate();
+ }catch(e){message(errorText(e),"error")}
+ finally{busy("verifyPhone",false)}
+};
+$("resendCode").onclick=async()=>{
+ const phone=normalizePhone();
+ if(!validPhone(phone)){message("أدخل رقم جوال صحيحًا.","error");return;}
+ busy("resendCode",true);
+ try{
+  const {error}=await db.auth.resend({type:"sms",phone});
+  if(error)throw error;
+  message("تم طلب إعادة إرسال الرمز. تحقق من رسائلك.","success");
+ }catch(e){message(errorText(e),"error")}
+ finally{busy("resendCode",false)}
 };
 
 $("signOut").onclick=async()=>{
