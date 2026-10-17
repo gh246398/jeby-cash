@@ -12,8 +12,8 @@ header{background:#571d35;color:white;text-align:center;padding:30px 15px;border
 header h1{font-size:34px;margin:0}
 header p{color:#e9c98b;font-size:18px}
 .wrap{max-width:600px;margin:auto;padding:16px}
-.card{background:white;border-radius:18px;padding:21px;margin-bottom:16px;box-shadow:0 5px 20px #0000000c}
-h2{color:#571d35;margin-top:0}
+.card{background:white;border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 5px 20px #0000000c}
+h2,h3{color:#571d35;margin-top:0}
 label{display:block;margin:14px 0 7px;font-weight:bold}
 input,select{width:100%;padding:13px;border:1px solid #d8ccd0;border-radius:10px;font-size:16px;background:white}
 input[type=email],input[type=password],input[type=number]{direction:ltr;text-align:left}
@@ -25,9 +25,6 @@ button:disabled{opacity:.55;cursor:not-allowed}
 .wallet{text-align:center;font-size:32px;font-weight:bold;color:#571d35;background:#f7f3ef;padding:20px;border-radius:12px;direction:ltr}
 .balance{background:#f8f4ef;border:1px solid #eee2d9;padding:17px;border-radius:12px;margin:10px 0}
 .balance strong{display:block;font-size:25px;color:#571d35;margin-top:7px;direction:ltr;text-align:right}
-.tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px}
-.tabs button{margin:0;padding:12px}
-.tabs button.active{background:#a77c32}
 #msg{display:none;padding:15px;border-radius:10px;margin-bottom:15px;white-space:pre-wrap;line-height:1.8;background:#fff0d9}
 #msg.error{background:#ffe3e3;color:#8a2020}
 #msg.success{background:#e3f5e9;color:#176237}
@@ -36,384 +33,214 @@ button:disabled{opacity:.55;cursor:not-allowed}
 .tx small{color:#777}
 .tx strong{color:#571d35}
 .service-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
-.service-button{margin:0;background:#f8f4ef;color:#571d35;border:1px solid #e8ddd4;min-height:110px;font-size:13px;padding:10px 5px;line-height:1.6}
-.service-button .emoji{display:block;font-size:29px}
+.service-button{margin:0;background:#f8f4ef;color:#571d35;border:1px solid #e8ddd4;aspect-ratio:1/1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:12px;padding:7px 4px;line-height:1.35;overflow-wrap:anywhere}
+.service-button .emoji{display:block;font-size:clamp(22px,6vw,31px);line-height:1.1}
 .service-button small{display:block;color:#8a6c3d;font-size:10px}
-.service-button:active{background:#eadccf}
-@media(max-width:350px){.service-grid{grid-template-columns:repeat(2,1fr)}}
+.service-button.active{background:#571d35;color:white;border-color:#571d35}
+.service-button.active small{color:#e9c98b}
+.panel{border:1px solid #e8ddd4;background:#fffaf5;border-radius:14px;padding:16px;margin-top:16px;scroll-margin-top:12px}
+.option-list{display:grid;gap:9px}
+.option-button{margin:0;text-align:right;background:white;color:#571d35;border:1px solid #e5d8ce}
+.back{background:#eee4da;color:#571d35}
 footer{text-align:center;padding:22px;color:#786b6f;font-size:12px;line-height:2}
 </style>
 </head>
 <body>
-
-<header>
-<h1>جيبي كاش | JEBY CASH</h1>
-<p>محفظتك في جيبك</p>
-</header>
-
+<header><h1>جيبي كاش | JEBY CASH</h1><p>محفظتك في جيبك</p></header>
 <main class="wrap">
 <div id="msg" role="status" aria-live="polite"></div>
-
 <section id="authBox" class="card">
 <h2>دخول المشتركين</h2>
-<label>الاسم الكامل (للتسجيل الجديد)</label>
-<input id="fullName" autocomplete="name">
-<label>البريد الإلكتروني</label>
-<input id="email" type="email" autocomplete="email">
-<label>كلمة المرور</label>
-<input id="password" type="password" minlength="10">
-<button id="signIn">تسجيل الدخول</button>
-<button id="signUp" class="gold">إنشاء حساب جديد</button>
+<label>الاسم الكامل (للتسجيل الجديد)</label><input id="fullName" autocomplete="name">
+<label>البريد الإلكتروني</label><input id="email" type="email" autocomplete="email">
+<label>كلمة المرور</label><input id="password" type="password" minlength="10">
+<button id="signIn">تسجيل الدخول</button><button id="signUp" class="gold">إنشاء حساب جديد</button>
 <p class="note">قد يلزم تأكيد البريد الإلكتروني عند إنشاء الحساب.</p>
 </section>
-
 <div id="appBox" class="hidden">
-
 <section class="card">
 <h2>مرحبًا بك في محفظتك التعليمية</h2>
-<p id="displayName"></p>
-<p id="userEmail"></p>
-<p>رقم المحفظة</p>
-<div id="walletNumber" class="wallet">...</div>
+<p id="displayName"></p><p id="userEmail"></p><p>رقم المحفظة</p><div id="walletNumber" class="wallet">...</div>
 </section>
-
 <section class="card">
 <h2>أرصدة المحفظة</h2>
-<div class="balance">الريال اليمني YER
-<strong id="balYER">—</strong></div>
-<div class="balance">الريال السعودي SAR
-<strong id="balSAR">—</strong></div>
-<div class="balance">الدولار الأمريكي USD
-<strong id="balUSD">—</strong></div>
+<div class="balance">الريال اليمني YER<strong id="balYER">—</strong></div>
+<div class="balance">الريال السعودي SAR<strong id="balSAR">—</strong></div>
+<div class="balance">الدولار الأمريكي USD<strong id="balUSD">—</strong></div>
 <p class="note">جميع الأرصدة افتراضية للتدريب فقط، ولا تمثل أموالًا حقيقية.</p>
 <button id="refresh" class="gold">تحديث الأرصدة والعمليات</button>
 </section>
-
-<section class="card">
-<h2>الخدمات الإلكترونية</h2>
-<p class="note">استكشف خدمات جيبي كاش المستقبلية. الخدمات التالية واجهات تجريبية لا تنفذ عمليات مالية.</p>
-
-<div class="service-grid">
-<button type="button" class="service-button" data-service="شحن الموبايل"><span class="emoji">📱</span>شحن الموبايل<small>قريبًا</small></button>
-<button type="button" class="service-button" data-service="شحن الإنترنت"><span class="emoji">🌐</span>شحن الإنترنت<small>قريبًا</small></button>
-<button type="button" class="service-button" data-service="فواتير الكهرباء والمياه"><span class="emoji">💡</span>فواتير الخدمات<small>قريبًا</small></button>
-<button type="button" class="service-button" data-service="شراء أونلاين"><span class="emoji">🛒</span>شراء أونلاين<small>قريبًا</small></button>
-<button type="button" class="service-button" data-service="دفع مشتريات المتاجر"><span class="emoji">🏪</span>دفع للمتاجر<small>قريبًا</small></button>
-<button type="button" class="service-button" data-service="السحب النقدي والصراف الآلي"><span class="emoji">🏧</span>سحب نقدي<small>محاكاة مستقبلية</small></button>
-<button type="button" class="service-button" data-service="مدفوعات الخدمات"><span class="emoji">🧾</span>مدفوعات<small>قريبًا</small></button>
-<button type="button" class="service-button" data-service="التبرعات والزكاة"><span class="emoji">🤲</span>تبرعات وزكاة<small>قريبًا</small></button>
-<button type="button" class="service-button" data-service="رسوم المدارس والجامعات"><span class="emoji">🎓</span>رسوم التعليم<small>قريبًا</small></button>
-<button type="button" class="service-button" data-service="الألعاب والبطاقات الإلكترونية"><span class="emoji">🎮</span>ألعاب وبطاقات<small>قريبًا</small></button>
-<button type="button" class="service-button" data-service="بطاقات دفع افتراضية"><span class="emoji">💳</span>بطاقات افتراضية<small>عرض تعليمي</small></button>
-<button type="button" class="service-button" data-service="الادخار"><span class="emoji">🐷</span>الادخار<small>قريبًا</small></button>
-<button type="button" class="service-button" data-service="إدارة المشاريع"><span class="emoji">📊</span>إدارة المشاريع<small>قريبًا</small></button>
-</div>
-</section>
-
 <section class="card">
 <h2>عمليات المحفظة</h2>
-<div class="tabs">
-<button data-tab="transfer" class="active">تحويل</button>
-<button data-tab="deposit">إيداع</button>
-<button data-tab="withdraw">سحب</button>
-<button data-tab="history">سجل العمليات</button>
+<p class="note">اختر العملية المطلوبة. الخدمات الموسومة «قريبًا» واجهات تدريبية لا تخصم من الرصيد.</p>
+<div class="service-grid">
+<button type="button" class="service-button active" data-action="transfer"><span class="emoji">💸</span>تحويل<small>مفعّل</small></button>
+<button type="button" class="service-button" data-action="deposit"><span class="emoji">📥</span>إيداع<small>بواسطة الإدارة</small></button>
+<button type="button" class="service-button" data-action="withdraw"><span class="emoji">📤</span>سحب<small>بواسطة الإدارة</small></button>
+<button type="button" class="service-button" data-action="charge"><span class="emoji">📱</span>الشحن والسداد<small>قريبًا</small></button>
+<button type="button" class="service-button" data-action="bills"><span class="emoji">💡</span>فواتير الخدمات<small>قريبًا</small></button>
+<button type="button" class="service-button" data-action="shopping"><span class="emoji">🛍️</span>المشتريات<small>قريبًا</small></button>
+<button type="button" class="service-button" data-action="online"><span class="emoji">🛒</span>شراء أونلاين<small>قريبًا</small></button>
+<button type="button" class="service-button" data-action="cash"><span class="emoji">🏧</span>سحب نقدي<small>قريبًا</small></button>
+<button type="button" class="service-button" data-action="payments"><span class="emoji">🧾</span>المدفوعات<small>قريبًا</small></button>
+<button type="button" class="service-button" data-action="entertainment"><span class="emoji">🎮</span>الألعاب والبطاقات<small>قريبًا</small></button>
+<button type="button" class="service-button" data-action="saving"><span class="emoji">🐷</span>الادخار<small>قريبًا</small></button>
+<button type="button" class="service-button" data-action="projects"><span class="emoji">📊</span>إدارة المشاريع<small>قريبًا</small></button>
+<button type="button" class="service-button" data-action="history"><span class="emoji">📋</span>سجل العمليات<small>مفعّل</small></button>
+</div>
+<div id="actionPanel" class="panel">
+<h3 id="panelTitle">التحويل بين المحافظ</h3>
+<div id="panelDescription" class="note hidden"></div>
+<div id="transferForm">
+<label>رقم محفظة المستفيد</label><input id="recipient" inputmode="numeric" placeholder="مثال: 100102">
+<label>العملة</label><select id="transferCurrency"><option value="YER">ريال يمني</option><option value="SAR">ريال سعودي</option><option value="USD">دولار أمريكي</option></select>
+<label>المبلغ الافتراضي</label><input id="transferAmount" type="number" min="1" step="1" placeholder="0">
+<label>البيان (اختياري)</label><input id="transferNote" maxlength="250">
+<button id="sendTransfer">تنفيذ التحويل الافتراضي</button>
+</div>
+<div id="optionPanel" class="hidden"><div id="optionList" class="option-list"></div>
+<div id="selectedOption" class="panel hidden"><h3 id="selectedOptionTitle"></h3><p class="note">هذه الخدمة قيد التطوير. لن يتم خصم أي مبلغ، ولا توجد عملية دفع حقيقية.</p><button id="backOptions" class="back">العودة إلى الخيارات</button></div></div>
+<div id="transactionList" class="hidden">جارٍ التحميل...</div>
 </div>
 </section>
-
-<section id="transfer" class="card">
-<h2>التحويل بين المحافظ</h2>
-<label>رقم محفظة المستفيد</label>
-<input id="recipient" inputmode="numeric" placeholder="مثال: 100102">
-<label>العملة</label>
-<select id="transferCurrency">
-<option value="YER">ريال يمني</option>
-<option value="SAR">ريال سعودي</option>
-<option value="USD">دولار أمريكي</option>
-</select>
-<label>المبلغ الافتراضي</label>
-<input id="transferAmount" type="number" min="1" step="1" placeholder="0">
-<label>البيان (اختياري)</label>
-<input id="transferNote" maxlength="250">
-<button id="sendTransfer">تنفيذ التحويل الافتراضي</button>
-</section>
-
-<section id="deposit" class="card hidden">
-<h2>الإيداع الافتراضي</h2>
-<p class="note">يُنفّذ الإيداع التدريبي من لوحة الإدارة بواسطة مسؤول مخوّل، ثم يظهر في رصيد المشترك وسجل العمليات.</p>
-<button class="gold" disabled>الإيداع بواسطة الإدارة</button>
-</section>
-
-<section id="withdraw" class="card hidden">
-<h2>السحب الافتراضي</h2>
-<p class="note">يُنفّذ السحب التدريبي من لوحة الإدارة بواسطة مسؤول مخوّل، ولا يمكن استلام أموال حقيقية.</p>
-<button class="gold" disabled>السحب بواسطة الإدارة</button>
-</section>
-
-<section id="history" class="card hidden">
-<h2>سجل العمليات</h2>
-<div id="transactionList">جارٍ التحميل...</div>
-</section>
-
-<section class="card">
-<button id="signOut" class="gold">تسجيل الخروج</button>
-</section>
-
+<section class="card"><button id="signOut" class="gold">تسجيل الخروج</button></section>
 </div>
 </main>
-
-<footer>
-جيبي كاش | محفظة تعليمية افتراضية
-<br>
-ليست بنكًا ولا خدمة دفع أو تحويل أموال حقيقية
-<br>
-لا توجد اتفاقيات بنكية أو خدمات صراف آلي مفعّلة
-</footer>
-
+<footer>جيبي كاش | محفظة تعليمية افتراضية<br>ليست بنكًا ولا خدمة دفع أو تحويل أموال حقيقية<br>لا توجد اتفاقيات بنكية أو خدمات صراف آلي مفعّلة</footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 "use strict";
-
 const SUPABASE_URL="https://hpsuqttshdcebacpkrrt.supabase.co";
 const SUPABASE_KEY="sb_publishable_uSb5y_wtc2oi0qq7YLG83Q_muNekrs9";
-
 const $=id=>document.getElementById(id);
 let db=null,user=null,wallet=null;
-
+const serviceData={
+ charge:{title:"الشحن والسداد",options:["شحن رصيد الموبايل","سداد الإنترنت الثابت","سداد إنترنت 4G"]},
+ bills:{title:"فواتير الخدمات",options:["فاتورة الكهرباء","فاتورة المياه","فواتير خدمات أخرى"]},
+ shopping:{title:"المشتريات",options:["الدفع لمحفظة متجر","مشتريات البقالة والسوبرماركت","مشتريات المعارض والمحلات"]},
+ online:{title:"شراء أونلاين",options:["التسوق الإلكتروني","طلبات الشراء"]},
+ cash:{title:"السحب النقدي",options:["نقاط الخدمة","الصراف الآلي"]},
+ payments:{title:"المدفوعات",options:["سداد الزكاة","سداد الضرائب","رسوم التعليم","التبرعات"]},
+ entertainment:{title:"الألعاب والبطاقات",options:["الألعاب","بطاقات افتراضية"]},
+ saving:{title:"الادخار",options:["أهداف الادخار","متابعة الادخار"]},
+ projects:{title:"إدارة المشاريع",options:["مشاريعي","ميزانية المشروع","متابعة المصروفات"]}
+};
 function message(t,type=""){
- const el=$("msg");
- el.textContent=t||"";
- el.className=type;
- el.style.display=t?"block":"none";
+ const el=$("msg");el.textContent=t||"";el.className=type;el.style.display=t?"block":"none";
  if(t)window.scrollTo({top:0,behavior:"smooth"});
 }
-function errorText(e){
- return e?.message||"حدث خطأ غير متوقع";
-}
+function errorText(e){return e?.message||"حدث خطأ غير متوقع"}
 function busy(id,v){$(id).disabled=v}
-function money(v){
- const n=Number(v);
- return Number.isFinite(n)?n.toLocaleString("en-US"):"—";
-}
-function loggedOut(){
- user=null;wallet=null;
- $("authBox").classList.remove("hidden");
- $("appBox").classList.add("hidden");
-}
-function loggedIn(u){
- user=u;
- $("authBox").classList.add("hidden");
- $("appBox").classList.remove("hidden");
- $("userEmail").textContent="البريد: "+(u.email||"");
-}
-
+function money(v){const n=Number(v);return Number.isFinite(n)?n.toLocaleString("en-US"):"—"}
+function loggedOut(){user=null;wallet=null;$("authBox").classList.remove("hidden");$("appBox").classList.add("hidden")}
+function loggedIn(u){user=u;$("authBox").classList.add("hidden");$("appBox").classList.remove("hidden");$("userEmail").textContent="البريد: "+(u.email||"")}
 async function profile(){
- const {data,error}=await db.from("jeby_profiles")
-  .select("full_name,wallet_number")
-  .eq("user_id",user.id).maybeSingle();
- if(error)throw error;
- if(!data)throw Error("بيانات المحفظة غير متوفرة.");
- wallet=data.wallet_number;
- $("walletNumber").textContent=String(wallet);
- $("displayName").textContent="الاسم: "+(data.full_name||"—");
+ const {data,error}=await db.from("jeby_profiles").select("full_name,wallet_number").eq("user_id",user.id).maybeSingle();
+ if(error)throw error;if(!data)throw Error("بيانات المحفظة غير متوفرة.");
+ wallet=data.wallet_number;$("walletNumber").textContent=String(wallet);$("displayName").textContent="الاسم: "+(data.full_name||"—");
 }
-
 async function balances(){
  for(const c of ["YER","SAR","USD"])$("bal"+c).textContent="—";
- const {data,error}=await db.from("jeby_balances")
-  .select("currency,amount").eq("user_id",user.id);
+ const {data,error}=await db.from("jeby_balances").select("currency,amount").eq("user_id",user.id);
  if(error)throw error;
- for(const c of ["YER","SAR","USD"]){
-  const item=(data||[]).find(x=>x.currency===c);
-  $("bal"+c).textContent=money(item?item.amount:0);
- }
+ for(const c of ["YER","SAR","USD"]){const item=(data||[]).find(x=>x.currency===c);$("bal"+c).textContent=money(item?item.amount:0)}
 }
-
-function operationName(kind){
- return ({
-  transfer:"تحويل",
-  admin_deposit:"إيداع إداري",
-  admin_withdrawal:"سحب إداري"
- })[kind]||kind||"عملية";
-}
-
+function operationName(kind){return ({transfer:"تحويل",admin_deposit:"إيداع إداري",admin_withdrawal:"سحب إداري"})[kind]||kind||"عملية"}
 async function history(){
- const el=$("transactionList");
- el.textContent="جارٍ تحميل العمليات...";
+ const el=$("transactionList");el.textContent="جارٍ تحميل العمليات...";
  const {data,error}=await db.from("jeby_transactions")
   .select("id,kind,amount,currency,created_at,from_user_id,to_user_id,note")
   .or("from_user_id.eq."+user.id+",to_user_id.eq."+user.id)
   .order("created_at",{ascending:false}).limit(50);
- if(error)throw error;
- el.replaceChildren();
- if(!data?.length){
-  el.textContent="لا توجد عمليات مسجلة حتى الآن.";
-  return;
- }
+ if(error)throw error;el.replaceChildren();
+ if(!data?.length){el.textContent="لا توجد عمليات مسجلة حتى الآن.";return}
  for(const tx of data){
-  const item=document.createElement("div");
-  item.className="tx";
-  const title=document.createElement("strong");
-  let direction="";
-  if(tx.kind==="transfer"){
-   direction=tx.from_user_id===user.id?" - صادر":" - وارد";
-  }
+  const item=document.createElement("div");item.className="tx";
+  const title=document.createElement("strong");let direction="";
+  if(tx.kind==="transfer")direction=tx.from_user_id===user.id?" - صادر":" - وارد";
   title.textContent=operationName(tx.kind)+direction;
-  const amount=document.createElement("div");
-  amount.textContent=money(tx.amount)+" "+tx.currency;
-  const date=document.createElement("small");
-  date.textContent=new Date(tx.created_at).toLocaleString("ar");
+  const amount=document.createElement("div");amount.textContent=money(tx.amount)+" "+tx.currency;
+  const date=document.createElement("small");date.textContent=new Date(tx.created_at).toLocaleString("ar");
   item.append(title,amount,date);
-  if(tx.note){
-   const note=document.createElement("p");
-   note.textContent=tx.note;
-   item.append(note);
-  }
+  if(tx.note){const note=document.createElement("p");note.textContent=tx.note;item.append(note)}
   el.append(item);
  }
 }
-
 async function refresh(){
  if(!user)return;
  try{
-  await profile();
-  const results=await Promise.allSettled([balances(),history()]);
-  const errors=results.filter(x=>x.status==="rejected")
-   .map(x=>errorText(x.reason));
-  if(errors.length)message(errors.join("\n"),"error");
-  else message("");
+  await profile();const results=await Promise.allSettled([balances(),history()]);
+  const errors=results.filter(x=>x.status==="rejected").map(x=>errorText(x.reason));
+  if(errors.length)message(errors.join("\n"),"error");else message("");
  }catch(e){message(errorText(e),"error")}
 }
-
-async function authenticate(){
- const {data,error}=await db.auth.getUser();
- if(error||!data.user){loggedOut();return}
- loggedIn(data.user);
- await refresh();
-}
-
+async function authenticate(){const {data,error}=await db.auth.getUser();if(error||!data.user){loggedOut();return}loggedIn(data.user);await refresh()}
 $("signIn").onclick=async()=>{
- const email=$("email").value.trim();
- const password=$("password").value;
- if(!email||!password){
-  message("أدخل البريد وكلمة المرور.","error");return;
- }
+ const email=$("email").value.trim(),password=$("password").value;
+ if(!email||!password){message("أدخل البريد وكلمة المرور.","error");return}
  busy("signIn",true);
- try{
-  const {error}=await db.auth.signInWithPassword({email,password});
-  if(error)throw error;
-  await authenticate();
- }catch(e){message(errorText(e),"error")}
- finally{busy("signIn",false)}
+ try{const {error}=await db.auth.signInWithPassword({email,password});if(error)throw error;await authenticate()}
+ catch(e){message(errorText(e),"error")}finally{busy("signIn",false)}
 };
-
 $("signUp").onclick=async()=>{
- const full_name=$("fullName").value.trim();
- const email=$("email").value.trim();
- const password=$("password").value;
- if(!full_name||!email||password.length<10){
-  message("أدخل الاسم والبريد وكلمة مرور من 10 أحرف على الأقل.","error");
-  return;
- }
+ const full_name=$("fullName").value.trim(),email=$("email").value.trim(),password=$("password").value;
+ if(!full_name||!email||password.length<10){message("أدخل الاسم والبريد وكلمة مرور من 10 أحرف على الأقل.","error");return}
  busy("signUp",true);
  try{
-  const {data,error}=await db.auth.signUp({
-   email,password,
-   options:{
-    data:{full_name},
-    emailRedirectTo:location.origin+"/participant.html"
-   }
-  });
-  if(error)throw error;
-  if(data.session)await authenticate();
-  else message("راجع بريدك الإلكتروني لتأكيد الحساب.","success");
- }catch(e){message(errorText(e),"error")}
- finally{busy("signUp",false)}
+  const {data,error}=await db.auth.signUp({email,password,options:{data:{full_name},emailRedirectTo:location.origin+"/participant.html"}});
+  if(error)throw error;if(data.session)await authenticate();else message("راجع بريدك الإلكتروني لتأكيد الحساب.");
+ }catch(e){message(errorText(e),"error")}finally{busy("signUp",false)}
 };
-
 $("signOut").onclick=async()=>{
- try{
-  const {error}=await db.auth.signOut();
-  if(error)throw error;
-  loggedOut();
-  message("تم تسجيل الخروج.","success");
- }catch(e){message(errorText(e),"error")}
+ try{const {error}=await db.auth.signOut();if(error)throw error;loggedOut();message("تم تسجيل الخروج.","success")}
+ catch(e){message(errorText(e),"error")}
 };
-
 $("refresh").onclick=refresh;
-
-document.querySelectorAll("[data-service]").forEach(btn=>{
- btn.onclick=()=>{
-  alert(
-   "خدمة "+btn.dataset.service+
-   " قيد التطوير.\n\n"+
-   "هذه واجهة محاكاة تعليمية فقط.\n"+
-   "لا تنفذ مدفوعات أو تحويلات حقيقية، "+
-   "ولا توجد جهات أو بنوك متعاقدة."
-  );
- };
-});
-
-document.querySelectorAll("[data-tab]").forEach(b=>{
- b.onclick=()=>{
-  const tab=b.dataset.tab;
-  for(const id of ["transfer","deposit","withdraw","history"])
-   $(id).classList.toggle("hidden",id!==tab);
-  document.querySelectorAll("[data-tab]")
-   .forEach(x=>x.classList.toggle("active",x===b));
- };
-});
-
+function showAction(action){
+ document.querySelectorAll("[data-action]").forEach(b=>b.classList.toggle("active",b.dataset.action===action));
+ $("transferForm").classList.add("hidden");$("optionPanel").classList.add("hidden");
+ $("transactionList").classList.add("hidden");$("panelDescription").classList.add("hidden");
+ $("selectedOption").classList.add("hidden");$("optionList").replaceChildren();
+ if(action==="transfer"){$("panelTitle").textContent="التحويل بين المحافظ";$("transferForm").classList.remove("hidden");return}
+ if(action==="history"){$("panelTitle").textContent="سجل العمليات";$("transactionList").classList.remove("hidden");history().catch(e=>message(errorText(e),"error"));return}
+ if(action==="deposit"||action==="withdraw"){
+  $("panelTitle").textContent=action==="deposit"?"الإيداع الافتراضي":"السحب الافتراضي";
+  $("panelDescription").textContent=action==="deposit"
+   ?"يتم الإيداع التدريبي من لوحة الإدارة بواسطة مسؤول مخوّل، ويظهر في رصيد المشترك وسجل العمليات."
+   :"يتم السحب التدريبي من لوحة الإدارة بواسطة مسؤول مخوّل. لا يمكن استلام أموال حقيقية.";
+  $("panelDescription").classList.remove("hidden");return;
+ }
+ const service=serviceData[action];if(!service)return;
+ $("panelTitle").textContent=service.title;$("optionPanel").classList.remove("hidden");
+ const list=$("optionList");
+ service.options.forEach(option=>{
+  const btn=document.createElement("button");btn.type="button";btn.className="option-button";btn.textContent="◀  "+option;
+  btn.onclick=()=>{$("selectedOptionTitle").textContent=option;$("selectedOption").classList.remove("hidden");list.classList.add("hidden")};
+  list.append(btn);
+ });list.classList.remove("hidden");
+}
+$("backOptions").onclick=()=>{$("selectedOption").classList.add("hidden");$("optionList").classList.remove("hidden")};
+document.querySelectorAll("[data-action]").forEach(b=>{b.onclick=()=>{showAction(b.dataset.action);$("actionPanel").scrollIntoView({behavior:"smooth",block:"start"})}});
 $("sendTransfer").onclick=async()=>{
- const recipient=$("recipient").value.trim();
- const currency=$("transferCurrency").value;
- const raw=$("transferAmount").value.trim();
- const amount=Number(raw);
- const note=$("transferNote").value.trim();
-
- if(!user||!wallet){
-  message("بيانات المحفظة غير جاهزة.","error");return;
- }
- if(!/^\d{6,12}$/.test(recipient)){
-  message("رقم المستفيد غير صحيح.","error");return;
- }
- if(recipient===String(wallet)){
-  message("لا يمكن التحويل إلى محفظتك.","error");return;
- }
- if(!raw||!Number.isSafeInteger(amount)||amount<=0||amount>1000000000){
-  message("أدخل مبلغًا صحيحًا بدون كسور.","error");return;
- }
- if(note.length>250){
-  message("البيان طويل جدًا.","error");return;
- }
- if(!confirm("تأكيد تحويل "+money(amount)+" "+currency+" إلى "+recipient+"؟"))
-  return;
-
+ const recipient=$("recipient").value.trim(),currency=$("transferCurrency").value;
+ const raw=$("transferAmount").value.trim(),amount=Number(raw),note=$("transferNote").value.trim();
+ if(!user||!wallet){message("بيانات المحفظة غير جاهزة.","error");return}
+ if(!/^\d{6,12}$/.test(recipient)){message("رقم المستفيد غير صحيح.","error");return}
+ if(recipient===String(wallet)){message("لا يمكن التحويل إلى محفظتك.","error");return}
+ if(!raw||!Number.isSafeInteger(amount)||amount<=0||amount>1000000000){message("أدخل مبلغًا صحيحًا بدون كسور.","error");return}
+ if(note.length>250){message("البيان طويل جدًا.","error");return}
+ if(!confirm("تأكيد تحويل "+money(amount)+" "+currency+" إلى "+recipient+"؟"))return;
  busy("sendTransfer",true);
  try{
-  const {data,error}=await db.rpc("jeby_transfer",{
-   p_wallet_number:Number(recipient),
-   p_currency:currency,
-   p_amount:amount,
-   p_note:note
-  });
-  if(error)throw error;
-  await refresh();
-  message("تم تنفيذ التحويل الافتراضي. رقم العملية: "+data,"success");
-  $("transferAmount").value="";
-  $("transferNote").value="";
- }catch(e){
-  message("لم يتم التحويل: "+errorText(e),"error");
- }finally{
-  busy("sendTransfer",false);
- }
+  const {data,error}=await db.rpc("jeby_transfer",{p_wallet_number:Number(recipient),p_currency:currency,p_amount:amount,p_note:note});
+  if(error)throw error;await refresh();message("تم تنفيذ التحويل الافتراضي. رقم العملية: "+data,"success");
+  $("transferAmount").value="";$("transferNote").value="";
+ }catch(e){message("لم يتم التحويل: "+errorText(e),"error")}
+ finally{busy("sendTransfer",false)}
 };
-
 (async()=>{
- try{
-  if(!window.supabase)throw Error("تعذر تحميل مكتبة Supabase.");
-  db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-  await authenticate();
- }catch(e){message(errorText(e),"error")}
+ try{if(!window.supabase)throw Error("تعذر تحميل مكتبة Supabase.");db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);await authenticate()}
+ catch(e){message(errorText(e),"error")}
 })();
 </script>
 </body>
