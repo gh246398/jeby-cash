@@ -8,11 +8,11 @@
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f7f3ef;color:#30232a;font-family:Tahoma,Arial,sans-serif}
-header{background:#571d35;color:white;text-align:center;padding:32px 15px}
-header h1{font-size:36px;margin:0}
+header{background:#571d35;color:white;text-align:center;padding:30px 15px;border-bottom:5px solid #a77c32}
+header h1{font-size:34px;margin:0}
 header p{color:#e9c98b;font-size:18px}
-.wrap{max-width:560px;margin:auto;padding:18px}
-.card{background:white;border-radius:18px;padding:22px;margin-bottom:16px;box-shadow:0 5px 20px #0000000c}
+.wrap{max-width:600px;margin:auto;padding:16px}
+.card{background:white;border-radius:18px;padding:21px;margin-bottom:16px;box-shadow:0 5px 20px #0000000c}
 h2{color:#571d35;margin-top:0}
 label{display:block;margin:14px 0 7px;font-weight:bold}
 input,select{width:100%;padding:13px;border:1px solid #d8ccd0;border-radius:10px;font-size:16px;background:white}
@@ -35,13 +35,19 @@ button:disabled{opacity:.55;cursor:not-allowed}
 .tx:last-child{border:0}
 .tx small{color:#777}
 .tx strong{color:#571d35}
+.service-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.service-button{margin:0;background:#f8f4ef;color:#571d35;border:1px solid #e8ddd4;min-height:110px;font-size:13px;padding:10px 5px;line-height:1.6}
+.service-button .emoji{display:block;font-size:29px}
+.service-button small{display:block;color:#8a6c3d;font-size:10px}
+.service-button:active{background:#eadccf}
+@media(max-width:350px){.service-grid{grid-template-columns:repeat(2,1fr)}}
 footer{text-align:center;padding:22px;color:#786b6f;font-size:12px;line-height:2}
 </style>
 </head>
 <body>
 
 <header>
-<h1>جيبي كاش</h1>
+<h1>جيبي كاش | JEBY CASH</h1>
 <p>محفظتك في جيبك</p>
 </header>
 
@@ -83,12 +89,36 @@ footer{text-align:center;padding:22px;color:#786b6f;font-size:12px;line-height:2
 <button id="refresh" class="gold">تحديث الأرصدة والعمليات</button>
 </section>
 
+<section class="card">
+<h2>الخدمات الإلكترونية</h2>
+<p class="note">استكشف خدمات جيبي كاش المستقبلية. الخدمات التالية واجهات تجريبية لا تنفذ عمليات مالية.</p>
+
+<div class="service-grid">
+<button type="button" class="service-button" data-service="شحن الموبايل"><span class="emoji">📱</span>شحن الموبايل<small>قريبًا</small></button>
+<button type="button" class="service-button" data-service="شحن الإنترنت"><span class="emoji">🌐</span>شحن الإنترنت<small>قريبًا</small></button>
+<button type="button" class="service-button" data-service="فواتير الكهرباء والمياه"><span class="emoji">💡</span>فواتير الخدمات<small>قريبًا</small></button>
+<button type="button" class="service-button" data-service="شراء أونلاين"><span class="emoji">🛒</span>شراء أونلاين<small>قريبًا</small></button>
+<button type="button" class="service-button" data-service="دفع مشتريات المتاجر"><span class="emoji">🏪</span>دفع للمتاجر<small>قريبًا</small></button>
+<button type="button" class="service-button" data-service="السحب النقدي والصراف الآلي"><span class="emoji">🏧</span>سحب نقدي<small>محاكاة مستقبلية</small></button>
+<button type="button" class="service-button" data-service="مدفوعات الخدمات"><span class="emoji">🧾</span>مدفوعات<small>قريبًا</small></button>
+<button type="button" class="service-button" data-service="التبرعات والزكاة"><span class="emoji">🤲</span>تبرعات وزكاة<small>قريبًا</small></button>
+<button type="button" class="service-button" data-service="رسوم المدارس والجامعات"><span class="emoji">🎓</span>رسوم التعليم<small>قريبًا</small></button>
+<button type="button" class="service-button" data-service="الألعاب والبطاقات الإلكترونية"><span class="emoji">🎮</span>ألعاب وبطاقات<small>قريبًا</small></button>
+<button type="button" class="service-button" data-service="بطاقات دفع افتراضية"><span class="emoji">💳</span>بطاقات افتراضية<small>عرض تعليمي</small></button>
+<button type="button" class="service-button" data-service="الادخار"><span class="emoji">🐷</span>الادخار<small>قريبًا</small></button>
+<button type="button" class="service-button" data-service="إدارة المشاريع"><span class="emoji">📊</span>إدارة المشاريع<small>قريبًا</small></button>
+</div>
+</section>
+
+<section class="card">
+<h2>عمليات المحفظة</h2>
 <div class="tabs">
 <button data-tab="transfer" class="active">تحويل</button>
 <button data-tab="deposit">إيداع</button>
 <button data-tab="withdraw">سحب</button>
 <button data-tab="history">سجل العمليات</button>
 </div>
+</section>
 
 <section id="transfer" class="card">
 <h2>التحويل بين المحافظ</h2>
@@ -135,6 +165,8 @@ footer{text-align:center;padding:22px;color:#786b6f;font-size:12px;line-height:2
 جيبي كاش | محفظة تعليمية افتراضية
 <br>
 ليست بنكًا ولا خدمة دفع أو تحويل أموال حقيقية
+<br>
+لا توجد اتفاقيات بنكية أو خدمات صراف آلي مفعّلة
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -308,6 +340,18 @@ $("signOut").onclick=async()=>{
 };
 
 $("refresh").onclick=refresh;
+
+document.querySelectorAll("[data-service]").forEach(btn=>{
+ btn.onclick=()=>{
+  alert(
+   "خدمة "+btn.dataset.service+
+   " قيد التطوير.\n\n"+
+   "هذه واجهة محاكاة تعليمية فقط.\n"+
+   "لا تنفذ مدفوعات أو تحويلات حقيقية، "+
+   "ولا توجد جهات أو بنوك متعاقدة."
+  );
+ };
+});
 
 document.querySelectorAll("[data-tab]").forEach(b=>{
  b.onclick=()=>{
