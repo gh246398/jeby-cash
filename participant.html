@@ -7,55 +7,195 @@
 <meta name="theme-color" content="#571d35">
 <title>جيبي كاش | المشتركين</title>
 <style>
-:root{--wine:#571d35;--gold:#b58b42;--bg:#f8f4f0;--line:#e9dedf}
+:root{
+--wine:#571d35;
+--gold:#b58b42;
+--bg:#f8f4f0;
+--line:#e9dedf
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:#342a30;font:15px Tahoma,Arial,sans-serif;padding-bottom:76px}
-header{background:linear-gradient(135deg,#46162b,#732b48);color:#fff;padding:20px 18px 26px;border-bottom:4px solid var(--gold)}
+body{
+margin:0;
+background:var(--bg);
+color:#342a30;
+font:15px Tahoma,Arial,sans-serif;
+padding-bottom:75px
+}
+header{
+background:linear-gradient(135deg,#46162b,#732b48);
+color:white;
+padding:20px;
+border-bottom:4px solid var(--gold)
+}
 header h1{margin:0;font-size:25px}
 header small{color:#efd5a1}
-.wrap{max-width:650px;margin:auto;padding:15px}
-.card{background:white;border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:15px;box-shadow:0 5px 22px #40142c09}
-h2{font-size:20px;color:var(--wine);margin:0 0 15px}
-h3{font-size:17px;color:var(--wine)}
+.wrap{max-width:680px;margin:auto;padding:15px}
+.card{
+background:#fff;
+border:1px solid var(--line);
+border-radius:18px;
+padding:18px;
+margin-bottom:15px;
+box-shadow:0 5px 22px #40142c09
+}
+h2{font-size:20px;color:var(--wine);margin:0 0 14px}
+h3{color:var(--wine)}
 .muted{color:#76676f;font-size:13px;line-height:1.8}
 .hide{display:none!important}
 label{display:block;font-weight:bold;margin:12px 0 7px}
-input,select,textarea{width:100%;border:1px solid #d8cdd2;border-radius:12px;padding:13px;font:inherit;background:#fff}
-input[type=number],input[type=password],input[type=email],input[type=tel]{direction:ltr;text-align:left}
-button{border:0;border-radius:12px;padding:13px 15px;background:var(--wine);color:white;font:inherit;cursor:pointer}
+input,select,textarea{
+width:100%;
+border:1px solid #d8cdd2;
+border-radius:12px;
+padding:13px;
+font:inherit;
+background:#fff
+}
+input[type=number],input[type=password],input[type=email]{
+direction:ltr;
+text-align:left
+}
+input[type=checkbox]{width:auto;accent-color:var(--wine)}
+button{
+border:0;
+border-radius:12px;
+padding:12px 15px;
+background:var(--wine);
+color:white;
+font:inherit;
+cursor:pointer
+}
 button:disabled{opacity:.5}
 .full{width:100%;margin-top:12px}
 .light{background:#f5ece7;color:var(--wine)}
 .gold{background:var(--gold)}
 .row{display:flex;align-items:center;gap:10px}
 .between{justify-content:space-between}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.service{background:#fcf8f5;border:1px solid #eee0d7;color:var(--wine);min-height:105px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:12px;text-align:center}
-.service .ic{font-size:28px}
-.service span:last-child{line-height:1.5}
-.wallet{background:linear-gradient(135deg,#5a1e38,#842d51);color:#fff;border-radius:18px;padding:20px}
+.grid{
+display:grid;
+grid-template-columns:repeat(3,minmax(0,1fr));
+gap:10px
+}
+.service{
+background:#fcf8f5;
+border:1px solid #eee0d7;
+color:var(--wine);
+min-height:100px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:8px;
+font-size:12px;
+text-align:center
+}
+.wallet{
+background:linear-gradient(135deg,#5a1e38,#842d51);
+color:white;
+border-radius:18px;
+padding:20px
+}
 .wallet .muted{color:#f0d7df}
 .wallet strong{display:block;font-size:29px;margin:10px 0}
-.wallet button{background:#ffffff25;border:1px solid #ffffff55;font-size:12px;padding:8px}
-.chip{background:#f1e7d7;border:1px solid #dbc7a6;color:#684520;padding:7px 10px;border-radius:999px;font-size:12px}
-.option{width:100%;display:flex;align-items:center;gap:12px;background:#fff;color:#3b2832;border:1px solid var(--line);margin:9px 0;text-align:right;min-height:66px}
-.option .symbol{display:flex;align-items:center;justify-content:center;background:#f5ece9;border-radius:12px;width:46px;height:46px;font-size:23px;flex-shrink:0}
-.option .arrow{margin-right:auto;color:#9b7c64}
-.notice{background:#fff2d8;border:1px solid #e4c899;border-radius:12px;padding:13px;line-height:1.8;color:#624521}
-.error{background:#ffe5e5;border-color:#efb6b6;color:#802323}
-.success{background:#e2f5e9;border-color:#a6dcb8;color:#195c33}
+.wallet button{
+background:#ffffff25;
+border:1px solid #ffffff55;
+font-size:12px;
+padding:8px
+}
+.notice{
+background:#fff2d8;
+border:1px solid #e4c899;
+border-radius:12px;
+padding:13px;
+line-height:1.9;
+color:#624521
+}
+.error{
+background:#ffe5e5;
+border-color:#efb6b6;
+color:#802323
+}
+.success{
+background:#e2f5e9;
+border-color:#a6dcb8;
+color:#195c33
+}
 .tx{border-bottom:1px solid #eee;padding:13px 0}
 .tx:last-child{border:0}
 .tx strong{color:var(--wine)}
-.bottom{position:fixed;bottom:0;right:0;left:0;background:#fff;display:flex;justify-content:space-around;border-top:1px solid #e5d8dc;z-index:4;box-shadow:0 -5px 20px #0001}
-.bottom button{background:transparent;color:#715b65;flex:1;padding:12px 5px;font-size:12px;border-radius:0}
-.bottom button.active{color:var(--wine);font-weight:bold;border-top:3px solid var(--gold)}
+.bottom{
+position:fixed;
+bottom:0;
+right:0;
+left:0;
+background:white;
+display:flex;
+justify-content:space-around;
+border-top:1px solid #e5d8dc;
+z-index:4
+}
+.bottom button{
+background:transparent;
+color:#715b65;
+flex:1;
+padding:12px 5px;
+font-size:12px;
+border-radius:0
+}
+.bottom button.active{
+color:var(--wine);
+font-weight:bold;
+border-top:3px solid var(--gold)
+}
 .toast{position:sticky;top:0;z-index:8;margin-bottom:12px}
-.back{margin:0 0 14px;background:#eee5e5;color:var(--wine)}
-.subtabs{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}
-.subtabs button{background:#f5ece7;color:var(--wine);font-size:12px;padding:9px}
-.subtabs button.selected{background:var(--wine);color:white}
-.fieldnote{font-size:12px;color:#7c6871;margin-top:6px}
+.option{
+width:100%;
+background:#fcf8f5;
+color:var(--wine);
+border:1px solid #eee0d7;
+margin:6px 0;
+text-align:right
+}
+.kv{
+display:flex;
+justify-content:space-between;
+gap:8px;
+border-bottom:1px solid #eee;
+padding:10px 0;
+align-items:flex-start
+}
+.kv span:last-child{
+font-weight:bold;
+text-align:left;
+overflow-wrap:anywhere
+}
+.dialogback{
+position:fixed;
+inset:0;
+background:#0009;
+z-index:30;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:12px
+}
+.dialog{
+background:white;
+width:100%;
+max-width:520px;
+max-height:90vh;
+overflow:auto;
+border-radius:18px;
+padding:20px
+}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.actions button{flex:1}
+@media print{
+header,.bottom,.wrap,.actions,.closePrint{display:none!important}
+.printOnly{display:block!important}
+}
+.printOnly{display:none}
 </style>
 </head>
 <body>
@@ -68,10 +208,8 @@ button:disabled{opacity:.5}
 <span style="font-size:35px">◈</span>
 </div>
 </header>
-
 <main class="wrap">
-<div id="msg" class="toast hide" role="status" aria-live="polite"></div>
-
+<div id="msg" class="toast hide" role="status"></div>
 <section id="auth" class="card">
 <h2>دخول المشتركين</h2>
 <label>الاسم الكامل (للتسجيل فقط)</label>
@@ -82,9 +220,8 @@ button:disabled{opacity:.5}
 <input id="password" type="password" minlength="10">
 <button id="signIn" class="full">تسجيل الدخول</button>
 <button id="signUp" class="full gold">إنشاء حساب</button>
-<p class="muted">قد يتطلب إنشاء الحساب تأكيد البريد الإلكتروني. الخدمات المالية داخل التطبيق محاكاة تعليمية.</p>
+<p class="muted">قد يتطلب إنشاء الحساب تأكيد البريد الإلكتروني. جميع العمليات والأرصدة افتراضية تعليمية.</p>
 </section>
-
 <div id="app" class="hide">
 <section id="homeView">
 <div class="card">
@@ -99,11 +236,11 @@ button:disabled{opacity:.5}
 <div class="muted" style="margin-top:14px">رقم المحفظة: <span id="walletNumber">—</span></div>
 <div class="row between" style="margin-top:13px">
 <span>رصيد المحفظة</span>
-<button id="toggleBalance" aria-label="إظهار أو إخفاء الرصيد">◉ إظهار</button>
+<button id="toggleBalance">◉ إظهار</button>
 </div>
 <strong id="balanceText">••••••</strong>
 <div class="row between">
-<select id="currency" style="width:auto;max-width:65%;color:#571d35">
+<select id="currency" style="max-width:65%;color:#571d35">
 <option value="YER">الريال اليمني YER</option>
 <option value="SAR">الريال السعودي SAR</option>
 <option value="USD">الدولار الأمريكي USD</option>
@@ -111,61 +248,303 @@ button:disabled{opacity:.5}
 <button id="refresh">↻ تحديث</button>
 </div>
 </div>
-<p class="muted">جميع الأرصدة افتراضية للتدريب، ولا تمثل أموالًا حقيقية.</p>
+<p class="muted">الأرصدة الافتراضية غير قابلة للسحب أو الاسترداد النقدي.</p>
 </div>
 <div class="card">
 <h2>الخدمات</h2>
 <div id="serviceGrid" class="grid"></div>
 </div>
 </section>
-
 <section id="detailView" class="card hide">
-<button id="back" class="back">→ رجوع</button>
-<h2 id="detailTitle">الخدمة</h2>
+<button id="back" class="light">→ رجوع</button>
+<h2 id="detailTitle" style="margin-top:12px">الخدمة</h2>
 <div id="detailContent"></div>
 </section>
-
 <section id="reportsView" class="card hide">
-<h2>سجل العمليات</h2>
+<h2>سجل العمليات والإيصالات</h2>
+<div class="row">
+<select id="historyCurrency">
+<option value="">جميع العملات</option>
+<option>YER</option>
+<option>SAR</option>
+<option>USD</option>
+</select>
+<select id="historyType">
+<option value="">جميع العمليات</option>
+<option value="out">الصادرة</option>
+<option value="in">الواردة</option>
+<option value="admin">الإدارية</option>
+</select>
+</div>
 <button id="reloadHistory" class="light full">تحديث السجل</button>
-<div id="historyList" class="muted">جارٍ التحميل...</div>
+<div id="historyList">جارٍ التحميل...</div>
 </section>
-
 <section id="profileView" class="card hide">
 <h2>الملف الشخصي</h2>
 <p><b>الاسم:</b> <span id="profileName">—</span></p>
 <p><b>رقم المحفظة:</b> <span id="profileWallet">—</span></p>
 <p><b>البريد:</b> <span id="profileEmail">—</span></p>
-<p class="muted">الاسم ورقم المحفظة ثابتان ولا يمكن تغييرهما من هذه الواجهة.</p>
 <h3>الخصوصية والأمان</h3>
 <label>كلمة المرور الحالية</label>
-<input id="currentPassword" type="password" autocomplete="current-password">
+<input id="currentPassword" type="password">
 <label>كلمة المرور الجديدة (10 أحرف على الأقل)</label>
-<input id="newPassword" type="password" minlength="10" autocomplete="new-password">
-<label>تأكيد كلمة المرور الجديدة</label>
-<input id="confirmPassword" type="password" minlength="10" autocomplete="new-password">
+<input id="newPassword" type="password" minlength="10">
+<label>تأكيد كلمة المرور</label>
+<input id="confirmPassword" type="password" minlength="10">
 <button id="changePassword" class="full">تغيير كلمة المرور</button>
 <button id="signOut" class="full light">تسجيل الخروج</button>
 </section>
 </div>
 </main>
-
 <nav id="bottom" class="bottom hide">
 <button data-tab="home" class="active">⌂ الرئيسية</button>
 <button data-tab="services">▦ الخدمات</button>
 <button data-tab="reports">▤ التقارير</button>
 <button data-tab="profile">♙ الملف</button>
 </nav>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 'use strict';
-
 const SUPABASE_URL='https://hpsuqttshdcebacpkrrt.supabase.co';
 const KEY='sb_publishable_uSb5y_wtc2oi0qq7YLG83Q_muNekrs9';
 const $=id=>document.getElementById(id);
-let db,user,wallet,fullName='',balances={},balanceReady=false,balanceShown=false,trail=[],serviceKey='';
-
+let db,user,wallet,fullName='',balances={},balanceReady=false,balanceShown=false,transactions=[];
+const money=n=>Number(n).toLocaleString('en-US');
+const el=(tag,cls='',txt)=>{
+const e=document.createElement(tag);
+e.className=cls;
+if(txt!==undefined)e.textContent=txt;
+return e
+};
+function button(txt,cls,fn){
+const b=el('button',cls,txt);
+b.type='button';
+b.onclick=fn;
+return b
+}
+function msg(t,type='notice'){
+const x=$('msg');
+x.textContent=t;
+x.className='toast '+type;
+x.classList.toggle('hide',!t);
+if(t)window.scrollTo({top:0,behavior:'smooth'})
+}
+const error=e=>e?.message||'حدث خطأ غير متوقع';
+function fee(n,c){
+return c==='YER'
+?(n<1000000?0:100+Math.floor((n-1000000)/500000)*50)
+:Math.floor(n/1000)
+}
+function view(v){
+['home','detail','reports','profile'].forEach(x=>
+$(x+'View').classList.toggle('hide',x!==v)
+);
+document.querySelectorAll('[data-tab]').forEach(b=>
+b.classList.toggle('active',b.dataset.tab===(v==='detail'?'services':v))
+)
+}
+function balanceDraw(){
+const c=$('currency').value;
+$('balanceText').textContent=!balanceShown
+?'••••••'
+:balanceReady
+?money(balances[c]||0)+' '+c
+:'تعذر تحميل الرصيد';
+$('toggleBalance').textContent=balanceShown?'◉ إخفاء':'◉ إظهار'
+}
+async function loadProfile(){
+const {data,error:e}=await db.from('jeby_profiles')
+.select('full_name,wallet_number')
+.eq('user_id',user.id)
+.maybeSingle();
+if(e)throw e;
+if(!data)throw Error('بيانات المحفظة غير متوفرة');
+wallet=String(data.wallet_number);
+fullName=data.full_name||'—';
+$('displayName').textContent=fullName;
+$('walletNumber').textContent=wallet;
+$('profileName').textContent=fullName;
+$('profileWallet').textContent=wallet;
+$('profileEmail').textContent=user.email||'—'
+}
+async function loadBalances(){
+balanceReady=false;
+balanceDraw();
+const {data,error:e}=await db.from('jeby_balances')
+.select('currency,amount')
+.eq('user_id',user.id);
+if(e)throw e;
+balances={};
+for(const b of data||[])balances[b.currency]=Number(b.amount);
+balanceReady=true;
+balanceDraw()
+}
+async function loadHistory(){
+const box=$('historyList');
+box.textContent='جارٍ التحميل...';
+const {data,error:e}=await db.from('jeby_transactions')
+.select('id,kind,amount,currency,created_at,from_user_id,to_user_id,note,fee_amount,fee_mode,recipient_amount,sender_debit')
+.or('from_user_id.eq.'+user.id+',to_user_id.eq.'+user.id+',actor_id.eq.'+user.id)
+.order('created_at',{ascending:false})
+.limit(100);
+if(e){
+box.textContent='تعذر تحميل السجل: '+error(e);
+return
+}
+transactions=data||[];
+renderHistory()
+}
+function kind(t){
+return t.kind==='transfer'
+?(t.from_user_id===user.id?'تحويل صادر':'تحويل وارد')
+:t.kind==='admin_deposit'
+?'إيداع إداري'
+:t.kind==='admin_withdrawal'
+?'سحب إداري'
+:t.kind
+}
+function renderHistory(){
+const box=$('historyList');
+box.replaceChildren();
+const c=$('historyCurrency').value;
+const k=$('historyType').value;
+const arr=transactions.filter(t=>
+(!c||t.currency===c)&&
+(!k||(k==='admin'
+?t.kind!=='transfer'
+:t.kind==='transfer'&&(k==='out'
+?t.from_user_id===user.id
+:t.to_user_id===user.id)))
+);
+if(!arr.length){
+box.textContent='لا توجد عمليات مطابقة';
+return
+}
+for(const t of arr){
+const x=el('div','tx');
+x.append(
+el('strong','',kind(t)+' • رقم '+t.id),
+el('div','',money(t.amount)+' '+t.currency),
+el('small','muted',new Date(t.created_at).toLocaleString('ar'))
+);
+if(t.note)x.append(el('p','muted',t.note));
+x.append(button('عرض تفاصيل العملية والإيصال','light',()=>receipt(t)));
+box.append(x)
+}
+}
+function receipt(t){
+const isTransfer=t.kind==='transfer';
+const isOld=isTransfer&&t.fee_mode==null;
+const rows=[
+['رقم العملية المرجعي','JEBY-'+t.id],
+['نوع العملية',kind(t)],
+['التاريخ والوقت',new Date(t.created_at).toLocaleString('ar')],
+['مبلغ الحوالة المدخل',money(t.amount)+' '+t.currency]
+];
+if(isTransfer){
+rows.push(
+['العمولة',isOld?'غير مسجلة للعملية السابقة':money(t.fee_amount)+' '+t.currency],
+['طريقة خصم العمولة',isOld?'غير مسجلة':t.fee_mode==='inside'?'من مبلغ الحوالة':'إضافة على المرسل'],
+['صافي ما يصل للمستفيد',isOld?money(t.amount)+' '+t.currency:money(t.recipient_amount)+' '+t.currency],
+['إجمالي الخصم من المرسل',isOld?money(t.amount)+' '+t.currency:money(t.sender_debit)+' '+t.currency]
+)
+}
+rows.push(['ملاحظات',t.note||'—']);
+const body=[
+'جيبي كاش | JEBY CASH',
+'إيصال عملية افتراضية لأغراض التدريب',
+...rows.map(([k,v])=>k+': '+v),
+'لا يمثل هذا الإيصال إثبات تحويل أموال حقيقية.'
+].join('\n');
+const backdrop=el('div','dialogback');
+const panel=el('div','dialog');
+panel.append(
+el('h2','','تفاصيل العملية'),
+el('p','muted','إيصال تعليمي افتراضي')
+);
+for(const [k,v] of rows){
+const line=el('div','kv');
+line.append(el('span','',k),el('span','',v));
+panel.append(line)
+}
+panel.append(el('p','muted','لا يمثل هذا الإيصال إثبات تحويل أموال حقيقية.'));
+const acts=el('div','actions');
+acts.append(
+button('نسخ','light',async()=>{
+try{
+await navigator.clipboard.writeText(body);
+msg('تم نسخ الإيصال','notice success')
+}catch(e){
+msg('تعذر النسخ','notice error')
+}
+}),
+button('مشاركة','light',async()=>{
+if(navigator.share){
+try{
+await navigator.share({title:'إيصال جيبي كاش',text:body})
+}catch(e){}
+}else{
+try{
+await navigator.clipboard.writeText(body);
+msg('تم نسخ الإيصال للمشاركة','notice success')
+}catch(e){
+msg('المشاركة غير متاحة','notice error')
+}
+}
+}),
+button('طباعة / PDF','',()=>{
+const w=window.open('','_blank');
+if(!w){
+msg('اسمح بفتح النافذة للطباعة','notice error');
+return
+}
+w.document.title='JEBY-'+t.id;
+const e=w.document.createElement('pre');
+e.textContent=body;
+e.style.cssText='white-space:pre-wrap;direction:rtl;font:17px Tahoma;line-height:2;padding:24px';
+w.document.body.append(e);
+w.focus();
+w.print()
+})
+);
+panel.append(acts,button('إغلاق','light full',()=>backdrop.remove()));
+backdrop.append(panel);
+backdrop.onclick=e=>{
+if(e.target===backdrop)backdrop.remove()
+};
+document.body.append(backdrop)
+}
+async function refresh(){
+try{
+await Promise.all([loadProfile(),loadBalances(),loadHistory()]);
+msg('')
+}catch(e){
+msg(error(e),'notice error')
+}
+}
+function logoutUI(){
+$('auth').classList.remove('hide');
+$('app').classList.add('hide');
+$('bottom').classList.add('hide');
+user=null;
+wallet=null;
+balances={};
+balanceReady=false;
+balanceShown=false
+}
+async function authenticate(){
+const {data,error:e}=await db.auth.getUser();
+if(e||!data.user){
+logoutUI();
+return
+}
+user=data.user;
+$('auth').classList.add('hide');
+$('app').classList.remove('hide');
+$('bottom').classList.remove('hide');
+view('home');
+await refresh()
+}
 const services=[
 ['transfer','تحويلات مالية','💸'],
 ['deposit','إيداع','📥'],
@@ -179,328 +558,95 @@ const services=[
 ['saving','الادخار','🏦'],
 ['projects','إدارة المشاريع','📊']
 ];
-
-const tree={
-transfer:{
-'تحويل إلى مشترك':'TRANSFER',
-'تحويل بين حساباتي (مصارفة)':null,
-'حوالات شبكات محلية':null,
-'طلب استلام حوالة':null,
-'بنوك ومحافظ':null,
-'تحويل إلى محافظ أخرى':null
-},
-charge:{
-'شحن الرصيد':{
-'يمن موبايل':null,
-'سبأفون رصيد':null,
-'سبأفون فئات':null,
-'YOU رصيد':null,
-'YOU':null,
-'YOU فوترة':null
-},
-'سداد باقات':{
-'يمن موبايل باقات دفع مسبق':null,
-'يمن موبايل باقات فوترة':null,
-'سبأفون باقات دفع مسبق':null,
-'سبأفون باقات فوترة':null,
-'YOU باقات دفع مسبق':null,
-'YOU باقات فوترة':null
-},
-'الإنترنت والهاتف الثابت':{
-'الإنترنت':null,
-'هاتف ثابت':null,
-'إنترنت فايبر FTTH':null,
-'يمن واي فاي':null,
-'كروت الشبكات':null
-},
-'خدمات يمن فورجي 4G':{
-'باقات يمن فورجي 4G':null,
-'يمن فورجي 4G رصيد اتصال':null,
-'تغيير باقات يمن فورجي 4G':null,
-'تغيير وسداد باقة يمن فورجي إنترنت فقط':null,
-'تغيير وسداد باقة يمن فورجي صوت فقط':null
-},
-'فواتير الماء والكهرباء':{
-'فواتير الماء':null,
-'فواتير الكهرباء':null
-},
-'التعليم العالي والجامعات':{
-'رسوم التعليم العالي':null,
-'رسوم الجامعات':null
-}
-},
-shopping:{
-'عبر جيبي كاش':null,
-'عبر محافظ أخرى':null
-},
-cash:{
-'مواقع الصرافات':null,
-'طلب سحب نقدي':null,
-'سحب من الصراف الآلي YKB':null,
-'سحب من الصراف الآلي كاك بنك':null
-},
-payments:{
-'تسديد الوطنية للتمويل الأصغر':null,
-'تبرعات':null,
-'سداد رسوم حكومية MPS':null,
-'سداد رسوم حكومية E-Sadad':null,
-'مدفوعات الزكاة':null
-},
-online:{
-'كود شراء':null,
-'البطاقات الافتراضية':null
-},
-bills:{
-'الكهرباء':null,
-'المياه':null,
-'الإنترنت':null
-},
-saving:{
-'أهداف الادخار':null,
-'متابعة الادخار':null
-},
-projects:{
-'مشاريعي':null,
-'ميزانية المشروع':null,
-'متابعة المصروفات':null
-}
+const options={
+transfer:[
+'تحويل إلى مشترك',
+'تحويل بين حساباتي (مصارفة)',
+'حوالات شبكات محلية',
+'طلب استلام حوالة',
+'بنوك ومحافظ',
+'تحويل إلى محافظ أخرى'
+],
+charge:[
+'شحن الرصيد',
+'يمن موبايل',
+'سبأفون',
+'YOU',
+'الإنترنت والهاتف الثابت',
+'يمن فورجي 4G',
+'فواتير الماء والكهرباء',
+'رسوم الجامعات'
+],
+shopping:['عبر جيبي كاش','عبر محافظ أخرى'],
+cash:['مواقع الصرافات','طلب سحب نقدي','سحب من الصراف الآلي'],
+payments:['سداد الرسوم','تبرعات','مدفوعات الزكاة'],
+online:['كود شراء','البطاقات الافتراضية'],
+bills:['الكهرباء','المياه','الإنترنت'],
+saving:['أهداف الادخار','متابعة الادخار'],
+projects:['مشاريعي','ميزانية المشروع','متابعة المصروفات']
 };
-
-function el(tag,cls,txt){
-const x=document.createElement(tag);
-if(cls)x.className=cls;
-if(txt!==undefined)x.textContent=txt;
-return x;
+function service(k){
+view('detail');
+$('detailContent').replaceChildren();
+$('detailTitle').textContent=services.find(x=>x[0]===k)?.[1]||'الخدمة';
+const p=$('detailContent');
+if(k==='deposit'||k==='withdraw'){
+p.append(el('div','notice',
+k==='deposit'
+?'الإيداع الافتراضي يتم من لوحة الإدارة بواسطة موظف مخوّل.'
+:'السحب الافتراضي يتم من لوحة الإدارة فقط.'
+));
+return
 }
-
-function showMsg(t,kind='notice'){
-const m=$('msg');
-m.textContent=t;
-m.className='toast '+kind;
-m.classList.toggle('hide',!t);
-if(t)window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function err(e){
-return e?.message||'حدث خطأ غير متوقع';
-}
-
-function money(n){
-return Number(n).toLocaleString('en-US');
-}
-
-function setBusy(id,b){
-$(id).disabled=b;
-}
-
-function activeView(v){
-['home','detail','reports','profile'].forEach(k=>{
-$(k+'View').classList.toggle('hide',k!==v);
-});
-document.querySelectorAll('[data-tab]').forEach(b=>{
-b.classList.toggle('active',b.dataset.tab===(v==='detail'?'services':v));
-});
-}
-
-function drawBalance(){
-const c=$('currency').value;
-$('balanceText').textContent=!balanceShown
-?'••••••'
-:!balanceReady
-?'تعذر تحميل الرصيد'
-:money(balances[c]??0)+' '+c;
-$('toggleBalance').textContent=balanceShown?'◉ إخفاء':'◉ إظهار';
-}
-
-async function loadBalances(){
-balanceReady=false;
-drawBalance();
-const {data,error}=await db.from('jeby_balances')
-.select('currency,amount')
-.eq('user_id',user.id);
-if(error)throw error;
-balances={};
-for(const r of data||[])balances[r.currency]=Number(r.amount);
-balanceReady=true;
-drawBalance();
-}
-
-async function loadProfile(){
-const {data,error}=await db.from('jeby_profiles')
-.select('full_name,wallet_number')
-.eq('user_id',user.id)
-.maybeSingle();
-if(error)throw error;
-if(!data)throw Error('بيانات المحفظة غير متوفرة');
-wallet=String(data.wallet_number);
-fullName=data.full_name||'—';
-$('displayName').textContent=fullName;
-$('walletNumber').textContent=wallet;
-$('profileName').textContent=fullName;
-$('profileWallet').textContent=wallet;
-$('profileEmail').textContent=user.email||'—';
-}
-
-async function loadHistory(){
-const list=$('historyList');
-list.textContent='جارٍ تحميل العمليات...';
-try{
-const {data,error}=await db.from('jeby_transactions')
-.select('id,kind,amount,currency,created_at,from_user_id,to_user_id,note')
-.or('from_user_id.eq.'+user.id+',to_user_id.eq.'+user.id)
-.order('created_at',{ascending:false})
-.limit(50);
-if(error)throw error;
-list.replaceChildren();
-if(!data?.length){
-list.textContent='لا توجد عمليات مسجلة';
-return;
-}
-for(const t of data){
-const item=el('div','tx');
-const title=t.kind==='transfer'
-?'تحويل '+(t.from_user_id===user.id?'صادر':'وارد')
-:t.kind==='admin_deposit'
-?'إيداع إداري'
-:t.kind==='admin_withdrawal'
-?'سحب إداري'
-:t.kind;
-item.append(
-el('strong','',title),
-el('div','',money(t.amount)+' '+t.currency),
-el('small','muted',new Date(t.created_at).toLocaleString('ar'))
-);
-if(t.note)item.append(el('p','muted',t.note));
-list.append(item);
-}
-}catch(e){
-list.textContent='تعذر تحميل العمليات: '+err(e);
+for(const name of options[k]||[]){
+p.append(button(name,'option',()=>{
+if(name==='تحويل إلى مشترك')transfer();
+else demo(name)
+}))
 }
 }
-
-async function refresh(){
-try{
-await Promise.all([loadProfile(),loadBalances(),loadHistory()]);
-showMsg('');
-}catch(e){
-showMsg(err(e),'notice error');
-}
-}
-
-function logoutUI(){
-$('auth').classList.remove('hide');
-$('app').classList.add('hide');
-$('bottom').classList.add('hide');
-user=null;
-wallet=null;
-balances={};
-balanceReady=false;
-balanceShown=false;
-}
-
-async function authenticate(){
-const {data,error}=await db.auth.getUser();
-if(error||!data.user){
-logoutUI();
-return;
-}
-user=data.user;
-$('auth').classList.add('hide');
-$('app').classList.remove('hide');
-$('bottom').classList.remove('hide');
-activeView('home');
-await refresh();
-}
-
-function serviceIcon(name){
-if(/يمن موبايل/.test(name))return '📶';
-if(/سبأفون/.test(name))return '📡';
-if(/YOU/.test(name))return '📱';
-if(/فورجي|4G/.test(name))return '🌐';
-if(/إنترنت|فايبر/.test(name))return '🌍';
-if(/مياه/.test(name))return '💧';
-if(/كهرباء/.test(name))return '💡';
-if(/سحب|صراف/.test(name))return '🏧';
-if(/بطاقات|كود/.test(name))return '🎟️';
-return '◈';
-}
-
-function button(text,cls,cb){
-const b=el('button',cls,text);
-b.type='button';
-b.onclick=cb;
-return b;
-}
-
-function openService(key){
-serviceKey=key;
-trail=[];
-if(key==='deposit'||key==='withdraw'){
-renderInfo(key);
-return;
-}
-renderOptions(tree[key],services.find(x=>x[0]===key)?.[1]||'الخدمة');
-}
-
-function renderInfo(key){
-activeView('detail');
-$('detailTitle').textContent=key==='deposit'
-?'إيداع افتراضي'
-:'سحب إداري افتراضي';
+function demo(name){
+view('detail');
+$('detailTitle').textContent=name;
 const p=$('detailContent');
 p.replaceChildren();
-p.append(el('p','notice',key==='deposit'
-?'يتم شحن الأرصدة الافتراضية بواسطة موظف مخوّل من لوحة الإدارة.'
-:'يتم السحب الافتراضي من لوحة الإدارة بواسطة موظف مخوّل. لا يمكن سحب نقود حقيقية.'));
+p.append(el('div','notice',
+'هذه الخدمة قيد التجهيز؛ لا يتم تنفيذ أي سداد أو سحب أو دفع حقيقي.'
+));
+const f=el('form');
+const inp=el('input');
+inp.placeholder='رقم الخدمة أو الحساب (للتجربة فقط)';
+const amount=el('input');
+amount.type='number';
+amount.placeholder='المبلغ الافتراضي';
+const b=el('button','full','استمرار');
+b.type='submit';
+f.append(inp,amount,b);
+f.onsubmit=e=>{
+e.preventDefault();
+msg('الخدمة قيد التجهيز، لم يتم خصم أي رصيد.','notice')
+};
+p.append(f)
 }
-
-function renderOptions(obj,title){
-activeView('detail');
-$('detailTitle').textContent=title;
+function transfer(){
+view('detail');
+$('detailTitle').textContent='تحويل إلى مشترك';
 const p=$('detailContent');
 p.replaceChildren();
-if(!obj)return;
-p.append(el('p','muted','اختر الخدمة للانتقال إلى الخطوة التالية.'));
-for(const [name,next]of Object.entries(obj)){
-const b=button('', 'option',()=>{
-trail.push({obj,title});
-if(next==='TRANSFER')renderTransfer();
-else if(next)renderOptions(next,name);
-else renderDemo(name);
-});
-b.append(
-el('span','symbol',serviceIcon(name)),
-el('span','',name),
-el('span','arrow','‹')
-);
-p.append(b);
+p.append(el('p','muted','تحويل بين أرصدة تدريبية افتراضية فقط.'));
+const f=el('form');
+function field(label,type='text'){
+const l=el('label','',label);
+const x=el('input');
+x.type=type;
+x.required=true;
+f.append(l,x);
+return x
 }
-}
-
-function back(){
-if(trail.length){
-const prev=trail.pop();
-renderOptions(prev.obj,prev.title);
-}else activeView('home');
-}
-
-function field(form,label,type='text',required=true){
-const l=el('label','',label),i=el('input');
-i.type=type;
-i.required=required;
-i.placeholder='أدخل '+label;
-i.autocomplete='off';
-if(type==='number'){
-i.min='1';
-i.step='1';
-}
-form.append(l,i);
-return i;
-}
-
-function currencyField(form){
-const l=el('label','','العملة');
-const s=el('select');
+const recipient=field('رقم محفظة المستفيد');
+recipient.inputMode='numeric';
+const label=el('label','','العملة');
+const currency=el('select');
 for(const [v,n]of [
 ['YER','ريال يمني YER'],
 ['SAR','ريال سعودي SAR'],
@@ -508,239 +654,218 @@ for(const [v,n]of [
 ]){
 const o=el('option','',n);
 o.value=v;
-s.append(o);
+currency.append(o)
 }
-form.append(l,s);
-return s;
-}
-
-function renderDemo(name){
-activeView('detail');
-$('detailTitle').textContent=name;
-const p=$('detailContent');
-p.replaceChildren();
-p.append(el('div','notice','هذه الخدمة قيد التجهيز. يمكنك تجربة إدخال البيانات، ولكن لا توجد عمليات دفع أو سحب أو شحن حقيقية.'));
-const form=el('form');
-form.onsubmit=e=>{
-e.preventDefault();
-form.querySelector('.notice.success')?.remove();
-form.append(el('div','notice success','ستُفعّل هذه الخدمة قريبًا. لم تُنفّذ أي عملية ولم يُخصم أي رصيد.'));
-};
-if(/باقات/.test(name)){
-const tabs=el('div','subtabs');
-for(const n of ['يومية','أسبوعية','شهرية','أخرى']){
-const b=button(n,'',()=>{
-tabs.querySelectorAll('button').forEach(x=>x.classList.remove('selected'));
-b.classList.add('selected');
-});
-if(n==='يومية')b.classList.add('selected');
-tabs.append(b);
-}
-form.append(tabs);
-const l=el('label','','الباقة');
-const sel=el('select');
-for(const v of ['اختر الباقة','باقة تدريبية 1','باقة تدريبية 2']){
-const o=el('option','',v);
-o.value=v==='اختر الباقة'?'':v;
-sel.append(o);
-}
-sel.required=true;
-form.append(l,sel);
-}
-if(/عبر جيبي|عبر محافظ أخرى/.test(name)){
-currencyField(form);
-field(form,'رقم نقطة البيع','text');
-}else if(/بطاقات|كود شراء/.test(name)){
-field(form,'نوع البطاقة أو الكود');
-}else if(/سحب|الصراف/.test(name)){
-currencyField(form);
-field(form,'رقم المحفظة أو رقم الطلب');
-}else if(/رسوم|تبرعات|الزكاة|تمويل/.test(name)){
-field(form,'رقم المرجع أو المستفيد');
-}else{
-field(form,/فورجي/.test(name)
-?'رقم المشترك'
-:/إنترنت|فايبر|ثابت/.test(name)
-?'رقم الهاتف أو الاشتراك'
-:'رقم الموبايل','tel');
-}
-field(form,'المبلغ الافتراضي','number',false);
-field(form,'ملاحظات','text',false);
-const submit=el('button','full','استمرار');
-submit.type='submit';
-form.append(submit);
-p.append(form);
-}
-
-function renderTransfer(){
-activeView('detail');
-$('detailTitle').textContent='تحويل إلى مشترك';
-const p=$('detailContent');
-p.replaceChildren();
-p.append(el('p','muted','تحويل فعلي داخل الأرصدة الافتراضية للمشتركين فقط.'));
-const form=el('form');
-const recipient=field(form,'رقم محفظة المستفيد','text');
-const currency=currencyField(form);
-const amount=field(form,'المبلغ الافتراضي','number');
-const note=field(form,'ملاحظات','text',false);
-recipient.inputMode='numeric';
+f.append(label,currency);
+const amount=field('مبلغ الحوالة','number');
+amount.min='1';
+amount.max='1000000000';
+amount.step='1';
+const note=field('ملاحظات (اختياري)');
+note.required=false;
 note.maxLength=250;
-const send=el('button','full','تنفيذ التحويل الافتراضي');
-send.type='submit';
-form.append(send);
-form.onsubmit=async e=>{
-e.preventDefault();
-const n=Number(amount.value),r=recipient.value.trim();
-if(!wallet||!/^[0-9]{6,12}$/.test(r)||r===wallet||!Number.isSafeInteger(n)||n<=0||n>1000000000){
-showMsg('تحقق من رقم المستفيد والمبلغ. لا يمكن التحويل إلى محفظتك.','notice error');
-return;
+const l=el('label');
+const check=el('input');
+check.type='checkbox';
+l.append(
+check,
+document.createTextNode(' خصم العمولة من مبلغ الحوالة نفسه')
+);
+f.append(l);
+const preview=el('div','notice','أدخل المبلغ لعرض العمولة');
+f.append(preview);
+function calc(){
+const n=Number(amount.value);
+if(!Number.isSafeInteger(n)||n<=0){
+preview.textContent='أدخل مبلغًا صحيحًا';
+return
 }
-if(!confirm('تأكيد تحويل '+money(n)+' '+currency.value+' إلى '+r+'؟'))return;
+const v=fee(n,currency.value);
+preview.textContent=
+'العمولة: '+money(v)+' '+currency.value+
+' | صافي المستفيد: '+money(n-(check.checked?v:0))+
+' | إجمالي الخصم من المرسل: '+money(n+(check.checked?0:v))
+}
+amount.oninput=calc;
+currency.onchange=calc;
+check.onchange=calc;
+const send=el('button','full','مراجعة وتأكيد التحويل الافتراضي');
+send.type='submit';
+f.append(send);
+f.onsubmit=async e=>{
+e.preventDefault();
+const n=Number(amount.value);
+const r=recipient.value.trim();
+if(
+!wallet||
+!/^[0-9]{6,12}$/.test(r)||
+r===wallet||
+!Number.isSafeInteger(n)||
+n<=0||
+n>1000000000
+){
+msg('تحقق من رقم المحفظة والمبلغ','notice error');
+return
+}
+const v=fee(n,currency.value);
+const mode=check.checked?'inside':'outside';
+const debit=n+(mode==='outside'?v:0);
+if(balanceReady&&debit>Number(balances[currency.value]||0)){
+msg('الرصيد الافتراضي غير كافٍ لإجمالي الخصم','notice error');
+return
+}
+if(!confirm(
+'تأكيد التحويل الافتراضي؟\n'+
+'المبلغ المدخل: '+money(n)+' '+currency.value+'\n'+
+'العمولة: '+money(v)+'\n'+
+'يصل المستفيد: '+money(n-(mode==='inside'?v:0))+'\n'+
+'يخصم من رصيدك: '+money(debit)
+))return;
 send.disabled=true;
 try{
-const {data,error}=await db.rpc('jeby_transfer',{
+const {data,error:e}=await db.rpc('jeby_transfer_v2',{
 p_wallet_number:Number(r),
 p_currency:currency.value,
 p_amount:n,
-p_note:note.value.trim()
+p_note:note.value.trim(),
+p_fee_mode:mode
 });
-if(error)throw error;
+if(e)throw e;
 amount.value='';
 note.value='';
+check.checked=false;
+calc();
 await refresh();
-showMsg('تم التحويل الافتراضي. رقم العملية: '+data,'notice success');
+msg('نجح التحويل الافتراضي. رقم العملية: '+data,'notice success')
 }catch(ex){
-showMsg('لم يتم التحويل: '+err(ex),'notice error');
+msg('لم يتم التحويل: '+error(ex),'notice error')
 }finally{
-send.disabled=false;
+send.disabled=false
 }
 };
-p.append(form);
+p.append(f)
 }
-
-for(const [key,title,icon]of services){
-const b=button('', 'service',()=>openService(key));
-b.append(el('span','ic',icon),el('span','',title));
-$('serviceGrid').append(b);
+for(const [k,n,icon]of services){
+const b=button(icon+' '+n,'service',()=>service(k));
+$('serviceGrid').append(b)
 }
-
-$('back').onclick=back;
-$('currency').onchange=drawBalance;
+$('back').onclick=()=>view('home');
+$('currency').onchange=balanceDraw;
 $('toggleBalance').onclick=()=>{
 balanceShown=!balanceShown;
-drawBalance();
-};
-$('copyWallet').onclick=()=>{
-if(wallet&&navigator.clipboard?.writeText){
-navigator.clipboard.writeText(wallet)
-.then(()=>showMsg('تم نسخ رقم المحفظة','notice success'))
-.catch(()=>showMsg('رقم المحفظة: '+wallet));
-}else showMsg('رقم المحفظة: '+wallet);
+balanceDraw()
 };
 $('refresh').onclick=refresh;
 $('reloadHistory').onclick=loadHistory;
-
+$('historyCurrency').onchange=renderHistory;
+$('historyType').onchange=renderHistory;
+$('copyWallet').onclick=async()=>{
+try{
+await navigator.clipboard.writeText(wallet);
+msg('تم نسخ رقم المحفظة','notice success')
+}catch(e){
+msg('رقم المحفظة: '+wallet)
+}
+};
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{
 const v=b.dataset.tab;
 if(v==='services'){
-activeView('home');
-$('serviceGrid').scrollIntoView({behavior:'smooth',block:'start'});
+view('home');
+$('serviceGrid').scrollIntoView({behavior:'smooth'})
 }else{
-activeView(v);
+view(v);
 if(v==='reports')loadHistory();
-window.scrollTo({top:0,behavior:'smooth'});
+window.scrollTo({top:0,behavior:'smooth'})
 }
 });
-
 $('signIn').onclick=async()=>{
 if(!db)return;
-setBusy('signIn',true);
+$('signIn').disabled=true;
 try{
-const {error}=await db.auth.signInWithPassword({
+const {error:e}=await db.auth.signInWithPassword({
 email:$('email').value.trim(),
 password:$('password').value
 });
-if(error)throw error;
-await authenticate();
+if(e)throw e;
+await authenticate()
 }catch(e){
-showMsg(err(e),'notice error');
+msg(error(e),'notice error')
 }finally{
-setBusy('signIn',false);
+$('signIn').disabled=false
 }
 };
-
 $('signUp').onclick=async()=>{
 if(!db)return;
 const name=$('fullName').value.trim();
 const email=$('email').value.trim();
 const password=$('password').value;
 if(!name||!email||password.length<10){
-showMsg('أدخل الاسم والبريد وكلمة مرور لا تقل عن 10 أحرف','notice error');
-return;
+msg('أدخل الاسم والبريد وكلمة مرور من 10 أحرف على الأقل','notice error');
+return
 }
-setBusy('signUp',true);
+$('signUp').disabled=true;
 try{
-const {data,error}=await db.auth.signUp({
+const {data,error:e}=await db.auth.signUp({
 email,password,
 options:{
 data:{full_name:name},
 emailRedirectTo:location.origin+'/participant.html'
 }
 });
-if(error)throw error;
+if(e)throw e;
 if(data.session)await authenticate();
-else showMsg('راجع بريدك الإلكتروني لتأكيد الحساب','notice success');
+else msg('راجع بريدك الإلكتروني لتأكيد الحساب','notice success')
 }catch(e){
-showMsg(err(e),'notice error');
+msg(error(e),'notice error')
 }finally{
-setBusy('signUp',false);
+$('signUp').disabled=false
 }
 };
-
 $('signOut').onclick=async()=>{
 try{
-const {error}=await db.auth.signOut();
-if(error)throw error;
+const {error:e}=await db.auth.signOut();
+if(e)throw e;
 logoutUI();
-showMsg('تم تسجيل الخروج','notice success');
+msg('تم تسجيل الخروج','notice success')
 }catch(e){
-showMsg(err(e),'notice error');
+msg(error(e),'notice error')
 }
 };
-
 $('changePassword').onclick=async()=>{
 const old=$('currentPassword').value;
-const pass=$('newPassword').value;
-const confirmPass=$('confirmPassword').value;
-if(!old||pass.length<10||pass!==confirmPass||pass===old){
-showMsg('تأكد من كلمة المرور الحالية، وأن الجديدة 10 أحرف على الأقل ومطابقة للتأكيد ومختلفة عن القديمة.','notice error');
-return;
+const p=$('newPassword').value;
+const c=$('confirmPassword').value;
+if(!old||p.length<10||p!==c||p===old){
+msg('تحقق من كلمة المرور الجديدة وتأكيدها','notice error');
+return
 }
-setBusy('changePassword',true);
+const b=$('changePassword');
+b.disabled=true;
 try{
-const {error:checkError}=await db.auth.signInWithPassword({
+const {error:e}=await db.auth.signInWithPassword({
 email:user.email,
 password:old
 });
-if(checkError)throw Error('كلمة المرور الحالية غير صحيحة');
-const {error}=await db.auth.updateUser({password:pass});
-if(error)throw error;
-['currentPassword','newPassword','confirmPassword'].forEach(id=>$(id).value='');
-showMsg('تم تغيير كلمة المرور بنجاح','notice success');
+if(e)throw Error('كلمة المرور الحالية غير صحيحة');
+const {error:x}=await db.auth.updateUser({password:p});
+if(x)throw x;
+['currentPassword','newPassword','confirmPassword'].forEach(id=>
+$(id).value=''
+);
+msg('تم تغيير كلمة المرور','notice success')
 }catch(e){
-showMsg(err(e),'notice error');
+msg(error(e),'notice error')
 }finally{
-setBusy('changePassword',false);
+b.disabled=false
 }
 };
-
 (async()=>{
 try{
 if(!window.supabase)throw Error('تعذر تحميل مكتبة الاتصال');
 db=window.supabase.createClient(SUPABASE_URL,KEY);
-await authenticate();
+await authenticate()
 }catch(e){
-showMsg(err(e),'notice error');
+msg(error(e),'notice error')
 }
 })();
 </script>
