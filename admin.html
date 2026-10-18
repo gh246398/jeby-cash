@@ -48,6 +48,7 @@ footer{text-align:center;color:#766b70;padding:15px}
 </header>
 <main>
 <div id="message" class="notice hidden" role="status"></div>
+
 <section id="loginBox" class="card">
 <h2>دخول المدير</h2>
 <label>البريد الإلكتروني</label>
@@ -56,6 +57,7 @@ footer{text-align:center;color:#766b70;padding:15px}
 <input id="password" type="password">
 <button id="loginBtn" class="full">دخول</button>
 </section>
+
 <div id="dashboard" class="hidden">
 <section class="card">
 <h2>ملخص الإدارة</h2>
@@ -71,6 +73,14 @@ footer{text-align:center;color:#766b70;padding:15px}
 <p class="note">مؤشرات العمليات مبنية على السجلات المحمّلة حتى 1000 عملية، ولا تمثل بالضرورة جميع العمليات التاريخية. العمولات افتراضية.</p>
 <button id="refreshBtn" class="gold full">تحديث المحافظ والتقارير</button>
 </section>
+
+<section class="card" id="walletManageSection">
+<h2>إدارة المشتركين والمحافظ</h2>
+<p class="note">تعديل الاسم أو إيقاف المحفظة أو إعادة تفعيلها دون تغيير الرصيد أو سجل العمليات. الإيقاف يمنع حركة الرصيد.</p>
+<input id="manageSearch" placeholder="ابحث باسم المشترك أو رقم المحفظة">
+<div id="manageList"></div>
+</section>
+
 <section class="card">
 <h2>إدارة الأرصدة الافتراضية</h2>
 <label>رقم محفظة المشترك</label>
@@ -92,11 +102,13 @@ footer{text-align:center;color:#766b70;padding:15px}
 <textarea id="note" rows="2" maxlength="250"></textarea>
 <button id="executeBtn" class="full">تنفيذ العملية الافتراضية</button>
 </section>
+
 <section class="card">
 <h2>محافظ المشتركين</h2>
 <input id="search" placeholder="ابحث بالاسم أو رقم المحفظة">
 <div id="walletList">جارٍ التحميل...</div>
 </section>
+
 <section class="card">
 <h2>تقرير العمليات والعمولات</h2>
 <p class="note">يظهر للإدارة فقط عبر التحقق من صلاحية الحساب في قاعدة البيانات.</p>
@@ -117,75 +129,80 @@ footer{text-align:center;color:#766b70;padding:15px}
 <label>رقم العملية أو محفظة المشترك</label>
 <input id="filterSearch" placeholder="بحث">
 <div class="row">
-<div>
-<label>من تاريخ</label>
-<input id="dateFrom" type="date">
-</div>
-<div>
-<label>إلى تاريخ</label>
-<input id="dateTo" type="date">
-</div>
+<div><label>من تاريخ</label><input id="dateFrom" type="date"></div>
+<div><label>إلى تاريخ</label><input id="dateTo" type="date"></div>
 </div>
 <button id="exportBtn" class="gold full">تصدير السجلات المعروضة CSV</button>
 <p id="reportCount" class="muted"></p>
 <div id="txList">جارٍ التحميل...</div>
 </section>
+
 <section class="card">
 <button id="logoutBtn" class="full gold">تسجيل الخروج</button>
 </section>
 </div>
 </main>
 <footer>جيبي كاش — نظام محاكاة تعليمية ولا يقدم خدمات مالية حقيقية</footer>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 'use strict';
-const SUPABASE_URL='https://hpsuqttshdcebacpkrrt.supabase.co',
-KEY='sb_publishable_uSb5y_wtc2oi0qq7YLG83Q_muNekrs9',
-$=id=>document.getElementById(id);
-let db,currentUser=null,wallets=[],txs=[];
+
+const SUPABASE_URL='https://hpsuqttshdcebacpkrrt.supabase.co';
+const KEY='sb_publishable_uSb5y_wtc2oi0qq7YLG83Q_muNekrs9';
+const $=id=>document.getElementById(id);
+
+let db,currentUser=null,wallets=[],txs=[],walletStatuses=[];
 const fmt=n=>Number(n||0).toLocaleString('en-US');
+
 function el(t,txt,cls=''){
 const e=document.createElement(t);
 e.textContent=txt;
 e.className=cls;
-return e
+return e;
 }
+
 function notify(t,kind=''){
 const m=$('message');
 m.textContent=t;
 m.className='notice '+kind;
 m.classList.toggle('hidden',!t);
-if(t)window.scrollTo({top:0,behavior:'smooth'})
+if(t)window.scrollTo({top:0,behavior:'smooth'});
 }
+
 const error=e=>e?.message||'خطأ غير متوقع';
+
 function loginUI(){
 $('loginBox').classList.remove('hidden');
 $('dashboard').classList.add('hidden');
-currentUser=null
+currentUser=null;
 }
+
 async function isAdmin(u){
 const {data,error:e}=await db.from('jeby_admins')
 .select('user_id').eq('user_id',u.id).maybeSingle();
 if(e)throw e;
-return !!data
+return !!data;
 }
+
 async function session(){
 const {data,error:e}=await db.auth.getUser();
 if(e||!data.user){
 loginUI();
-return
+return;
 }
 if(!await isAdmin(data.user)){
 loginUI();
 notify('هذا الحساب غير معتمد للإدارة','error');
-return
+return;
 }
 currentUser=data.user;
 $('loginBox').classList.add('hidden');
 $('dashboard').classList.remove('hidden');
 $('adminEmail').textContent=currentUser.email||'';
-await refresh()
+await refresh();
 }
+
 async function refresh(){
 if(!currentUser)return;
 $('refreshBtn').disabled=true;
@@ -195,17 +212,19 @@ if(e)throw e;
 wallets=data||[];
 $('walletCount').textContent=fmt(wallets.length);
 renderWallets();
+await loadWalletStatuses();
 await loadTxs();
-notify('')
+notify('');
 }catch(e){
-notify('تعذر تحديث البيانات: '+error(e),'error')
+notify('تعذر تحديث البيانات: '+error(e),'error');
 }finally{
-$('refreshBtn').disabled=false
+$('refreshBtn').disabled=false;
 }
 }
+
 function renderWallets(){
-const q=$('search').value.trim().toLowerCase(),
-box=$('walletList');
+const q=$('search').value.trim().toLowerCase();
+const box=$('walletList');
 box.replaceChildren();
 const arr=wallets.filter(w=>
 String(w.wallet_number).includes(q)||
@@ -213,7 +232,7 @@ String(w.full_name||'').toLowerCase().includes(q)
 );
 if(!arr.length){
 box.textContent='لا توجد محافظ مطابقة';
-return
+return;
 }
 for(const w of arr){
 const d=el('div','','item');
@@ -222,17 +241,19 @@ el('strong',w.full_name||'مشترك'),
 el('p','رقم المحفظة: '+w.wallet_number)
 );
 const a=el('div','','amounts');
-for(const c of ['yer','sar','usd'])
+for(const c of ['yer','sar','usd']){
 a.append(el('span',c.toUpperCase()+': '+fmt(w[c])));
+}
 const b=el('button','اختيار المحفظة','gold');
 b.onclick=()=>{
 $('targetWallet').value=w.wallet_number;
-notify('تم اختيار المحفظة '+w.wallet_number)
+notify('تم اختيار المحفظة '+w.wallet_number);
 };
 d.append(a,b);
-box.append(d)
+box.append(d);
 }
 }
+
 async function loadTxs(){
 const box=$('txList');
 box.textContent='جارٍ تحميل التقرير...';
@@ -240,20 +261,21 @@ const {data,error:e}=await db.rpc('jeby_admin_transactions');
 if(e){
 box.textContent='لا يمكن عرض العمليات: '+error(e);
 txs=[];
-return
+return;
 }
 txs=data||[];
-renderTxs()
+renderTxs();
 }
+
 function filtered(){
-const c=$('filterCurrency').value,
-k=$('filterKind').value,
-q=$('filterSearch').value.trim().toLowerCase(),
-start=$('dateFrom').value,
-end=$('dateTo').value;
+const c=$('filterCurrency').value;
+const k=$('filterKind').value;
+const q=$('filterSearch').value.trim().toLowerCase();
+const start=$('dateFrom').value;
+const end=$('dateTo').value;
 return txs.filter(t=>{
-const from=wallets.find(w=>w.user_id===t.from_user_id),
-to=wallets.find(w=>w.user_id===t.to_user_id);
+const from=wallets.find(w=>w.user_id===t.from_user_id);
+const to=wallets.find(w=>w.user_id===t.to_user_id);
 return(!c||t.currency===c)&&
 (!k||t.kind===k)&&
 (!start||t.created_at.slice(0,10)>=start)&&
@@ -263,9 +285,10 @@ String(t.id).includes(q)||
 String(from?.wallet_number||'').includes(q)||
 String(to?.wallet_number||'').includes(q)||
 String(from?.full_name||'').toLowerCase().includes(q)||
-String(to?.full_name||'').toLowerCase().includes(q))
-})
+String(to?.full_name||'').toLowerCase().includes(q));
+});
 }
+
 function renderTxs(){
 const box=$('txList');
 box.replaceChildren();
@@ -273,19 +296,20 @@ const arr=filtered();
 $('reportCount').textContent='عدد العمليات المطابقة ضمن السجلات المتاحة: '+arr.length;
 $('txCount').textContent=fmt(txs.length);
 $('transferCount').textContent=fmt(txs.filter(t=>t.kind==='transfer').length);
-for(const c of ['YER','SAR','USD'])
+for(const c of ['YER','SAR','USD']){
 $(c.toLowerCase()+'Fees').textContent=fmt(
 txs.filter(t=>t.currency===c)
 .reduce((n,t)=>n+Number(t.fee_amount||0),0)
 );
+}
 if(!arr.length){
 box.textContent='لا توجد عمليات مطابقة أو ليست هناك صلاحية لقراءة سجل العمليات';
-return
+return;
 }
 for(const t of arr.slice(0,150)){
-const from=wallets.find(w=>w.user_id===t.from_user_id),
-to=wallets.find(w=>w.user_id===t.to_user_id),
-d=el('div','','item');
+const from=wallets.find(w=>w.user_id===t.from_user_id);
+const to=wallets.find(w=>w.user_id===t.to_user_id);
+const d=el('div','','item');
 d.append(
 el('strong','#'+t.id+' — '+(
 t.kind==='transfer'?'تحويل':
@@ -296,15 +320,17 @@ el('p',new Date(t.created_at).toLocaleString('ar')+
 el('p','من: '+(from?.full_name||from?.wallet_number||'—')+
 ' | إلى: '+(to?.full_name||to?.wallet_number||'—'),'muted')
 );
-if(t.kind==='transfer')
+if(t.kind==='transfer'){
 d.append(el('p',
 'العمولة: '+fmt(t.fee_amount)+' '+t.currency+
 ' | الصافي: '+fmt(t.recipient_amount??t.amount)+
 ' | الخصم: '+fmt(t.sender_debit??t.amount),'muted'));
+}
 if(t.note)d.append(el('p',t.note,'muted'));
-box.append(d)
+box.append(d);
 }
 }
+
 function csvExport(){
 const rows=[[
 'id','date','type','currency','amount','fee',
@@ -312,8 +338,8 @@ const rows=[[
 'from_wallet','to_wallet','note'
 ]];
 for(const t of filtered()){
-const f=wallets.find(w=>w.user_id===t.from_user_id),
-to=wallets.find(w=>w.user_id===t.to_user_id);
+const f=wallets.find(w=>w.user_id===t.from_user_id);
+const to=wallets.find(w=>w.user_id===t.to_user_id);
 rows.push([
 t.id,t.created_at,t.kind,t.currency,t.amount,
 t.fee_amount||0,t.fee_mode||'',
@@ -321,7 +347,7 @@ t.recipient_amount??t.amount,
 t.sender_debit??t.amount,
 f?.wallet_number||'',
 to?.wallet_number||'',t.note||''
-])
+]);
 }
 const esc=x=>'"'+String(x).replace(/"/g,'""')+'"';
 const blob=new Blob([
@@ -331,8 +357,79 @@ const a=document.createElement('a');
 a.href=window.URL.createObjectURL(blob);
 a.download='jeby-transactions.csv';
 a.click();
-setTimeout(()=>window.URL.revokeObjectURL(a.href),1000)
+setTimeout(()=>window.URL.revokeObjectURL(a.href),1000);
 }
+
+async function loadWalletStatuses(){
+const {data,error:e}=await db.rpc('jeby_admin_wallet_status');
+if(e){
+$('manageList').textContent='تعذر تحميل حالات المحافظ: '+error(e);
+return;
+}
+walletStatuses=data||[];
+renderWalletManage();
+}
+
+function renderWalletManage(){
+const q=$('manageSearch').value.trim().toLowerCase();
+const box=$('manageList');
+box.replaceChildren();
+for(const w of walletStatuses.filter(w=>
+String(w.wallet_number).includes(q)||
+w.full_name.toLowerCase().includes(q)
+)){
+const d=el('div','','item');
+d.append(
+el('strong',w.full_name+' — '+w.wallet_number),
+el('p',w.is_frozen?
+'موقوفة — السبب: '+(w.freeze_reason||'غير محدد'):
+'نشطة','muted')
+);
+
+const rename=el('button','تعديل الاسم');
+rename.onclick=async()=>{
+const value=prompt('الاسم الجديد للمحفظة '+w.wallet_number,w.full_name);
+if(value===null)return;
+await manageWallet(w,'rename',value);
+};
+
+const status=el('button',
+w.is_frozen?'إعادة تفعيل المحفظة':'إيقاف المحفظة','gold');
+
+status.onclick=async()=>{
+let reason='';
+if(!w.is_frozen){
+reason=prompt('أدخل سبب إيقاف المحفظة '+w.wallet_number,'');
+if(reason===null)return;
+}else if(!confirm('تأكيد إعادة تفعيل المحفظة '+w.wallet_number+'؟')){
+return;
+}
+await manageWallet(w,w.is_frozen?'unfreeze':'freeze',reason);
+};
+d.append(rename,status);
+box.append(d);
+}
+if(!box.children.length)box.textContent='لا توجد نتائج';
+}
+
+async function manageWallet(w,action,value){
+if(action==='rename'&&!confirm('تأكيد تغيير اسم المحفظة '+w.wallet_number+'؟'))return;
+try{
+const {error:e}=await db.rpc('jeby_admin_manage_wallet',{
+p_wallet_number:w.wallet_number,
+p_action:action,
+p_value:value
+});
+if(e)throw e;
+await refresh();
+notify('تم حفظ التغيير للمحفظة '+w.wallet_number,'success');
+}catch(e){
+notify('تعذر تنفيذ التغيير: '+error(e),'error');
+}
+}
+
+$('manageSearch').oninput=renderWalletManage;
+
 $('loginBtn').onclick=async()=>{
 const b=$('loginBtn');
 b.disabled=true;
@@ -342,33 +439,32 @@ email:$('email').value.trim(),
 password:$('password').value
 });
 if(e)throw e;
-await session()
+await session();
 }catch(e){
-notify('تعذر الدخول: '+error(e),'error')
+notify('تعذر الدخول: '+error(e),'error');
 }finally{
-b.disabled=false
+b.disabled=false;
 }
 };
+
 $('executeBtn').onclick=async()=>{
-const r=$('targetWallet').value.trim(),
-n=Number($('amount').value),
-c=$('currency').value,
-k=$('operation').value,
-note=$('note').value.trim();
-if(
-!currentUser||
+const r=$('targetWallet').value.trim();
+const n=Number($('amount').value);
+const c=$('currency').value;
+const k=$('operation').value;
+const note=$('note').value.trim();
+
+if(!currentUser||
 !/^\d{6,12}$/.test(r)||
 !Number.isSafeInteger(n)||
-n<=0||
-n>1000000000
-){
+n<=0||n>1000000000){
 notify('تحقق من المحفظة والمبلغ','error');
-return
+return;
 }
 const w=wallets.find(x=>String(x.wallet_number)===r);
 if(!w){
 notify('المحفظة غير موجودة ضمن القائمة','error');
-return
+return;
 }
 if(!confirm(
 'تأكيد '+(k==='admin_deposit'?'إيداع':'سحب')+
@@ -389,33 +485,36 @@ if(e)throw e;
 $('amount').value='';
 $('note').value='';
 await refresh();
-notify('تم تنفيذ العملية الافتراضية، رقم العملية: '+data,'success')
+notify('تم تنفيذ العملية الافتراضية، رقم العملية: '+data,'success');
 }catch(e){
-notify('لم تُنفذ العملية: '+error(e),'error')
+notify('لم تُنفذ العملية: '+error(e),'error');
 }finally{
-b.disabled=false
+b.disabled=false;
 }
 };
+
 $('refreshBtn').onclick=refresh;
 $('search').oninput=renderWallets;
 for(const id of [
 'filterCurrency','filterKind','filterSearch','dateFrom','dateTo'
-])$(id).oninput=renderTxs;
+])$(''+id).oninput=renderTxs;
 $('exportBtn').onclick=csvExport;
+
 $('logoutBtn').onclick=async()=>{
 const {error:e}=await db.auth.signOut();
 if(e)notify(error(e),'error');
 else{
 loginUI();
-notify('تم تسجيل الخروج','success')
+notify('تم تسجيل الخروج','success');
 }
 };
+
 (async()=>{
 try{
 db=window.supabase.createClient(SUPABASE_URL,KEY);
-await session()
+await session();
 }catch(e){
-notify(error(e),'error')
+notify(error(e),'error');
 }
 })();
 </script>
