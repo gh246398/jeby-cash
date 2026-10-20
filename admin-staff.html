@@ -5,274 +5,151 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#571d35">
-<title>جيبي كاش | الموظفون والرقابة</title>
+<title>جيبي كاش | إدارة الموظفين</title>
 <link rel="icon" href="./jeby-logo.png">
-
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;
- background:#f7f3ef;
- color:#30232a;
- font:15px Tahoma,Arial;
- line-height:1.8
-}
-header{
- background:#571d35;
- color:white;
- padding:22px;
- text-align:center;
- border-bottom:5px solid #ad833b
-}
-header img{
- width:85px;
- height:85px;
- object-fit:contain;
- background:white;
- border-radius:14px
-}
-main{
- max-width:840px;
- margin:auto;
- padding:16px
-}
-.card{
- background:white;
- border-radius:16px;
- padding:18px;
- margin-bottom:16px;
- box-shadow:0 3px 12px #0001
-}
+body{margin:0;background:#f7f3ef;color:#30232a;font:15px Tahoma,Arial;line-height:1.8}
+header{background:#571d35;color:white;text-align:center;padding:22px;border-bottom:5px solid #ad833b}
+header img{width:85px;height:85px;object-fit:contain;background:white;border-radius:14px}
+main{max-width:850px;margin:auto;padding:16px}
+.card{background:white;padding:18px;border-radius:16px;margin-bottom:16px;box-shadow:0 3px 12px #0001}
 h2,h3{color:#571d35}
-label{
- display:block;
- font-weight:bold;
- margin-top:12px
-}
-input,select{
- display:block;
- width:100%;
- padding:11px;
- border:1px solid #ccc;
- border-radius:8px;
- font:inherit
-}
-button{
- padding:11px 14px;
- margin:7px 3px;
- border:0;
- border-radius:8px;
- background:#571d35;
- color:white;
- font:inherit;
- cursor:pointer
-}
-button:disabled{
- opacity:.5;
- cursor:not-allowed
-}
+label{display:block;font-weight:bold;margin-top:12px}
+input,select{display:block;width:100%;padding:11px;border:1px solid #d8cdd2;border-radius:9px;font:inherit}
+button{padding:11px 14px;margin:8px 3px;border:0;border-radius:9px;background:#571d35;color:white;font:inherit;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
 .gold{background:#a77c32}
 .hidden{display:none!important}
-.item{
- border-bottom:1px solid #eee;
- padding:12px 0;
- overflow-wrap:anywhere
-}
-.muted{
- color:#766b70;
- font-size:13px
-}
-.notice{
- padding:12px;
- background:#fff1d9;
- border-radius:10px;
- white-space:pre-wrap;
- overflow-wrap:anywhere
-}
+.item{padding:12px 0;border-bottom:1px solid #eee;overflow-wrap:anywhere}
+.muted{color:#766b70;font-size:13px}
+.notice{padding:12px;border-radius:10px;background:#fff1d9;white-space:pre-wrap;overflow-wrap:anywhere}
 .error{background:#ffe2e2}
 .success{background:#e1f5e9}
-.row{
- display:flex;
- gap:8px;
- flex-wrap:wrap
-}
-.row>*{
- flex:1;
- min-width:150px
-}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row>*{flex:1;min-width:135px}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;background:#f7f3ef;padding:10px;border-radius:8px}
 a{color:#571d35}
-pre{
- white-space:pre-wrap;
- overflow-wrap:anywhere;
- font-size:12px;
- background:#f7f3ef;
- padding:10px;
- border-radius:8px
-}
-footer{
- text-align:center;
- padding:15px;
- color:#766b70
-}
+footer{text-align:center;padding:15px;color:#766b70}
 </style>
 </head>
-
 <body>
-
 <header>
 <img src="./jeby-logo.png" alt="شعار جيبي كاش">
 <h1>جيبي كاش | JEBY CASH</h1>
-<div>إدارة الموظفين والأدوار والرقابة</div>
+<div>إدارة الموظفين والمناصب والصلاحيات</div>
 <div>نظام محاكاة تعليمية</div>
 </header>
 
 <main>
-
 <div id="notice" class="notice hidden" role="status"></div>
 
 <section id="login" class="card">
-<h2>دخول الإدارة</h2>
-
+<h2>تسجيل دخول الإدارة</h2>
 <label for="email">البريد الإلكتروني</label>
-<input
- id="email"
- type="email"
- autocomplete="username"
->
-
+<input id="email" type="email" autocomplete="username">
 <label for="password">كلمة المرور</label>
-<input
- id="password"
- type="password"
- autocomplete="current-password"
->
-
+<input id="password" type="password" autocomplete="current-password">
 <button id="signIn">دخول</button>
 </section>
 
 <div id="app" class="hidden">
 
 <section class="card">
-<h2>بيانات الحساب الإداري</h2>
-
+<h2>الحساب الإداري</h2>
 <p id="who"></p>
 <p id="permissions" class="muted"></p>
-
-<p>
-<a href="./admin.html">
-العودة إلى لوحة الإدارة الرئيسية
-</a>
-</p>
-
-<button id="refresh" class="gold">
-تحديث البيانات
-</button>
-
-<button id="signOut">
-تسجيل الخروج
-</button>
+<p><a href="./admin.html">العودة إلى لوحة الإدارة الرئيسية</a></p>
+<button id="refresh" class="gold">تحديث البيانات</button>
+<button id="signOut">تسجيل الخروج</button>
 </section>
 
 <section id="staffSection" class="card hidden">
-
-<h2>تسجيل موظف جديد</h2>
-
+<h2>إنشاء حساب موظف جديد</h2>
 <p class="muted">
-يجب أن يمتلك الموظف حسابًا مسجلًا
-برقم هاتف يمني موثّق في نظام المصادقة.
-تسجيل الموظف لا يمنحه منصبًا تلقائيًا.
+أنشئ حساب الموظف مباشرة من لوحة الإدارة.
+يمكن اختيار دعوة البريد الإلكتروني أو إنشاء حساب
+برقم الهاتف اليمني. إرسال رمز الهاتف يحتاج
+إلى تفعيل خدمة SMS في Supabase.
 </p>
 
 <label for="staffName">اسم الموظف</label>
-<input
- id="staffName"
- maxlength="120"
- placeholder="الاسم الكامل"
->
+<input id="staffName" maxlength="120" placeholder="الاسم الكامل">
 
+<label for="activationMode">طريقة التفعيل</label>
+<select id="activationMode">
+<option value="email">البريد الإلكتروني — إرسال دعوة</option>
+<option value="phone">الهاتف اليمني — بانتظار خدمة SMS</option>
+</select>
+
+<div id="emailField">
+<label for="staffEmail">البريد الإلكتروني</label>
+<input id="staffEmail" type="email" placeholder="employee@example.com">
+</div>
+
+<div id="phoneField" class="hidden">
 <label for="staffPhone">رقم الهاتف اليمني</label>
-<input
- id="staffPhone"
- inputmode="tel"
- placeholder="+967XXXXXXXXX"
->
+<input id="staffPhone" type="tel" inputmode="tel" placeholder="+967XXXXXXXXX">
+</div>
 
-<button id="register">
-تسجيل الموظف
-</button>
+<label for="staffRole">منصب الموظف</label>
+<select id="staffRole">
+<option value="">دون منصب — تعيين لاحقًا</option>
+<option value="executive_director">مدير تنفيذي</option>
+<option value="finance_manager">مدير مالي</option>
+<option value="operations_staff">موظف عمليات</option>
+<option value="auditor">مراجع</option>
+</select>
+
+<p class="muted">
+لا يمكن منح منصب مساوٍ لمنصب المدير الحالي أو أعلى منه.
+في حال تعذر منح المنصب، سيظهر تنبيه بعد إنشاء الحساب.
+</p>
+
+<button id="register">إنشاء حساب الموظف</button>
 
 <h2>دليل الموظفين</h2>
 <div id="staffList"></div>
-
 </section>
 
 <section id="rolesSection" class="card hidden">
-
-<h2>إدارة المناصب والصلاحيات</h2>
-
-<p class="muted">
-اختر الموظف من دليل الموظفين،
-ثم أدخل رمز المنصب المسجل في قاعدة البيانات.
-يتم التحقق من صلاحية منح المنصب أو سحبه
-داخل قاعدة البيانات.
-</p>
+<h2>إدارة مناصب الموظفين الحاليين</h2>
+<p class="muted">اختر الموظف من الدليل، ثم حدد المنصب المطلوب.</p>
 
 <label for="target">معرف الموظف</label>
-<input
- id="target"
- readonly
- placeholder="اختر موظفًا من القائمة"
->
+<input id="target" readonly placeholder="اختر موظفًا من الدليل">
 
-<label for="role">رمز المنصب</label>
-<input
- id="role"
- maxlength="80"
- placeholder="role_code"
->
+<label for="role">المنصب</label>
+<select id="role">
+<option value="">اختر المنصب</option>
+<option value="executive_director">مدير تنفيذي</option>
+<option value="finance_manager">مدير مالي</option>
+<option value="operations_staff">موظف عمليات</option>
+<option value="auditor">مراجع</option>
+</select>
 
 <div class="row">
 <button id="grant">منح المنصب</button>
 <button id="revoke" class="gold">سحب المنصب</button>
 </div>
-
 </section>
 
 <section id="auditSection" class="card hidden">
-
 <h2>سجل الرقابة الإدارية</h2>
-
-<p class="muted">
-عرض العمليات الإدارية المسجلة
-والمصرح لهذا الحساب بالاطلاع عليها.
-</p>
-
-<button id="loadAudit">
-تحديث سجل الرقابة
-</button>
-
+<button id="loadAudit">تحديث سجل الرقابة</button>
 <div id="auditList"></div>
-
 </section>
 
 </div>
 </main>
 
 <footer>
-جيبي كاش — أرصدة وعمليات تدريبية فقط
-ولا يقدم خدمات مالية حقيقية
+جيبي كاش — عمليات وأرصدة افتراضية للتدريب فقط
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-
 <script>
 'use strict';
-
-/*
- JEBY CASH
- Staff Administration
- Supabase connection
-*/
 
 const SUPABASE_URL =
  'https://hpsuqttshdcebacpkrrt.supabase.co';
@@ -286,570 +163,437 @@ let db = null;
 let currentUser = null;
 let access = null;
 
-function showMessage(message,kind=''){
+function notify(message,kind=''){
  const box=$('notice');
  box.textContent=String(message||'');
  box.className='notice '+kind;
  box.classList.toggle('hidden',!message);
 }
 
-function makeNode(tag,text='',className=''){
- const element=document.createElement(tag);
- element.textContent=String(text??'');
- element.className=className;
- return element;
+function node(tag,text='',cls=''){
+ const e=document.createElement(tag);
+ e.textContent=String(text??'');
+ e.className=cls;
+ return e;
 }
 
-function hasPermission(permission){
- return Array.isArray(access?.permission_codes)
-   && access.permission_codes.includes(permission);
+function asArray(value){
+ if(Array.isArray(value))return value;
+ if(typeof value==='string'){
+  try{
+   const x=JSON.parse(value);
+   if(Array.isArray(x))return x;
+  }catch(e){}
+ }
+ return [];
 }
 
-function requirePermission(permission){
- if(!currentUser || !hasPermission(permission)){
-   throw new Error(
-     'ليس لديك تصريح لتنفيذ العملية: '+permission
-   );
+function can(permission){
+ return asArray(access?.permission_codes)
+  .includes(permission);
+}
+
+function guard(permission){
+ if(!currentUser||!can(permission)){
+  throw Error('لا تملك الصلاحية: '+permission);
  }
 }
 
-async function callRPC(functionName,parameters){
- if(!db){
-   throw new Error('الاتصال بقاعدة البيانات غير جاهز');
- }
-
- const response=await db.rpc(
-   functionName,
-   parameters
- );
-
- if(response.error){
-   throw response.error;
- }
-
- return response.data;
+async function rpc(name,args){
+ const {data,error}=await db.rpc(name,args);
+ if(error)throw error;
+ return data;
 }
 
-function setBusy(buttonId,value){
- $(buttonId).disabled=value;
+function busy(id,value){
+ $(id).disabled=value;
 }
 
 function showLogin(){
  currentUser=null;
  access=null;
-
  $('login').classList.remove('hidden');
  $('app').classList.add('hidden');
 }
 
-function normalizeArray(value){
- if(Array.isArray(value))return value;
- if(typeof value==='string'){
-   try{
-     const parsed=JSON.parse(value);
-     if(Array.isArray(parsed))return parsed;
-   }catch(e){}
- }
- return [];
-}
+async function start(){
+ const {data,error}=await db.auth.getUser();
 
-async function initializeSession(){
-
- const response=await db.auth.getUser();
-
- if(response.error || !response.data.user){
-   showLogin();
-   return;
+ if(error||!data.user){
+  showLogin();
+  return;
  }
 
- const user=response.data.user;
+ const raw=await rpc('jeby_my_admin_access');
+ const a=Array.isArray(raw)?raw[0]:raw;
 
- const raw=await callRPC(
-   'jeby_my_admin_access'
- );
-
- const adminAccess=Array.isArray(raw)
-   ?raw[0]
-   :raw;
-
- if(!adminAccess){
-   showLogin();
-   showMessage(
-     'هذا الحساب ليس له تصريح إداري معتمد',
-     'error'
-   );
-   return;
+ if(!a){
+  showLogin();
+  notify('هذا الحساب غير معتمد للإدارة','error');
+  return;
  }
 
- currentUser=user;
- access=adminAccess;
+ currentUser=data.user;
+ access=a;
 
- const roleCodes=normalizeArray(
-   access.role_codes
- );
-
- const permissionCodes=normalizeArray(
-   access.permission_codes
- );
-
- access.permission_codes=permissionCodes;
+ const roles=asArray(a.role_codes);
+ const permissions=asArray(a.permission_codes);
 
  $('login').classList.add('hidden');
  $('app').classList.remove('hidden');
 
  $('who').textContent=
-   (access.display_name||
-    currentUser.email||
-    'حساب إداري')
-   +' — '+
-   (access.admin_number||'');
+  (a.display_name||currentUser.email||'حساب إداري')+
+  ' — الرقم الإداري: '+(a.admin_number||'—');
 
  $('permissions').textContent=
-   'المناصب: '+
-   (roleCodes.join('، ')||'غير محددة')+
-   ' | الصلاحيات: '+
-   (permissionCodes.join('، ')||'غير محددة');
+  'المناصب: '+(roles.join('، ')||'لا يوجد')+
+  ' | الصلاحيات: '+(permissions.join('، ')||'لا يوجد');
 
- const manageAllowed=hasPermission('admin.manage');
- const auditAllowed=hasPermission('audit.read');
+ const manage=can('admin.manage');
+ const audit=can('audit.read');
 
- $('staffSection').classList.toggle(
-   'hidden',!manageAllowed
- );
+ $('staffSection').classList.toggle('hidden',!manage);
+ $('rolesSection').classList.toggle('hidden',!manage);
+ $('auditSection').classList.toggle('hidden',!audit);
 
- $('rolesSection').classList.toggle(
-   'hidden',!manageAllowed
- );
-
- $('auditSection').classList.toggle(
-   'hidden',!auditAllowed
- );
-
- if(manageAllowed){
-   try{
-     await loadStaff();
-   }catch(e){
-     $('staffList').textContent=
-       'تعذر تحميل الموظفين: '+e.message;
-   }
+ if(manage){
+  try{
+   await loadStaff();
+  }catch(e){
+   $('staffList').textContent=e.message;
+  }
  }
 
- if(auditAllowed){
-   try{
-     await loadAudit();
-   }catch(e){
-     $('auditList').textContent=
-       'تعذر تحميل سجل الرقابة: '+e.message;
-   }
+ if(audit){
+  try{
+   await loadAudit();
+  }catch(e){
+   $('auditList').textContent=e.message;
+  }
  }
 
- showMessage('');
+ notify('');
 }
 
 async function loadStaff(){
+ guard('admin.manage');
 
- requirePermission('admin.manage');
-
- const raw=await callRPC(
-   'jeby_admin_staff_directory'
- );
-
- const staff=normalizeArray(raw);
-
+ const raw=await rpc('jeby_admin_staff_directory');
+ const staff=asArray(raw);
  const box=$('staffList');
+
  box.replaceChildren();
 
  for(const person of staff){
+  const item=node('div','','item');
+  const roles=asArray(person.role_codes);
 
-   const item=makeNode('div','','item');
+  item.append(
+   node('strong',
+    (person.display_name||'موظف')+
+    ' — '+(person.admin_number||'')),
+   node('p',
+    'الحالة: '+
+    (person.active?'نشط':'غير نشط')+
+    ' | المناصب: '+
+    (roles.join('، ')||'لا يوجد'),
+    'muted')
+  );
 
-   const roles=normalizeArray(
-     person.role_codes
-   );
+  const select=node('button','اختيار الموظف');
 
-   item.append(
-     makeNode(
-       'strong',
-       (person.display_name||'موظف')+
-       ' — '+
-       (person.admin_number||'')
-     ),
-     makeNode(
-       'p',
-       'الحالة: '+
-       (person.active?'نشط':'غير نشط')+
-       ' | المناصب: '+
-       (roles.join('، ')||'لا يوجد'),
-       'muted'
-     )
-   );
+  select.onclick=()=>{
+   $('target').value=person.user_id||'';
+   notify('تم اختيار الموظف: '+person.display_name);
+  };
 
-   const select=makeNode(
-     'button',
-     'اختيار الموظف'
-   );
-
-   select.onclick=()=>{
-
-     $('target').value=
-       person.user_id||'';
-
-     showMessage(
-       'تم اختيار الموظف: '+
-       (person.display_name||'')
-     );
-   };
-
-   item.append(select);
-   box.append(item);
+  item.append(select);
+  box.append(item);
  }
 
  if(!staff.length){
-   box.textContent='لا توجد حسابات موظفين';
+  box.textContent='لا توجد حسابات موظفين';
  }
 }
 
 async function loadAudit(){
+ guard('audit.read');
 
- requirePermission('audit.read');
-
- const raw=await callRPC(
-   'jeby_admin_audit_feed',
-   {p_limit:50}
+ const raw=await rpc(
+  'jeby_admin_audit_feed',
+  {p_limit:50}
  );
-
- const records=normalizeArray(raw);
 
  const box=$('auditList');
  box.replaceChildren();
 
- for(const record of records){
+ for(const record of asArray(raw)){
+  const item=node('div','','item');
 
-   const item=makeNode('div','','item');
-
-   const date=record.created_at
+  item.append(
+   node('strong',
+    (record.action_code||'عملية إدارية')+
+    ' — #'+(record.id||'')),
+   node('p',
+    record.created_at
      ?new Date(record.created_at).toLocaleString('ar')
-     :'غير محدد';
+     :'—',
+    'muted'),
+   node('p',
+    'المنفذ: '+(record.actor_id||'—')+
+    ' | المستهدف: '+
+    (record.target_user_id||'—'),
+    'muted'),
+   node('pre',
+    JSON.stringify(record.details??{},null,2))
+  );
 
-   item.append(
-     makeNode(
-       'strong',
-       (record.action_code||'عملية إدارية')+
-       ' — #'+(record.id||'')
-     ),
-     makeNode('p',date,'muted'),
-     makeNode(
-       'p',
-       'المنفذ: '+
-       (record.actor_id||'—')+
-       ' | المستهدف: '+
-       (record.target_user_id||'—'),
-       'muted'
-     ),
-     makeNode(
-       'pre',
-       JSON.stringify(
-         record.details??{},
-         null,
-         2
-       )
-     )
-   );
-
-   box.append(item);
+  box.append(item);
  }
 
- if(!records.length){
-   box.textContent='لا توجد سجلات متاحة';
+ if(!box.children.length){
+  box.textContent='لا توجد سجلات متاحة';
  }
 }
 
-$('signIn').onclick=async()=>{
+$('activationMode').onchange=()=>{
+ const email=$('activationMode').value==='email';
+ $('emailField').classList.toggle('hidden',!email);
+ $('phoneField').classList.toggle('hidden',email);
+};
 
- setBusy('signIn',true);
+$('signIn').onclick=async()=>{
+ busy('signIn',true);
 
  try{
+  const {error}=await db.auth.signInWithPassword({
+   email:$('email').value.trim(),
+   password:$('password').value
+  });
 
-   const email=$('email').value.trim();
-   const password=$('password').value;
-
-   if(!email || !password){
-     throw new Error(
-       'أدخل البريد الإلكتروني وكلمة المرور'
-     );
-   }
-
-   const result=
-     await db.auth.signInWithPassword({
-       email,
-       password
-     });
-
-   if(result.error){
-     throw result.error;
-   }
-
-   await initializeSession();
+  if(error)throw error;
+  await start();
 
  }catch(e){
-
-   showMessage(
-     'تعذر تسجيل الدخول: '+e.message,
-     'error'
-   );
-
+  notify('تعذر الدخول: '+e.message,'error');
  }finally{
-
-   setBusy('signIn',false);
-
+  busy('signIn',false);
  }
 };
 
 $('register').onclick=async()=>{
-
- setBusy('register',true);
+ busy('register',true);
 
  try{
+  guard('admin.manage');
 
-   requirePermission('admin.manage');
+  const name=$('staffName').value.trim();
+  const mode=$('activationMode').value;
+  const email=$('staffEmail').value.trim();
+  const phone=$('staffPhone').value.trim();
+  const role=$('staffRole').value;
 
-   const name=$('staffName').value.trim();
+  if(name.length<3||name.length>120){
+   throw Error('أدخل اسم الموظف الصحيح');
+  }
 
-   const phone=$('staffPhone').value.trim();
+  if(
+   mode==='email'&&
+   !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  ){
+   throw Error('أدخل بريدًا إلكترونيًا صحيحًا');
+  }
 
-   if(name.length<3){
-     throw new Error(
-       'أدخل الاسم الكامل للموظف'
-     );
+  if(
+   mode==='phone'&&
+   !/^(\+967|00967|967|0)?[0-9]{9}$/.test(phone)
+  ){
+   throw Error('أدخل رقم هاتف يمنيًا صحيحًا');
+  }
+
+  if(!confirm(
+   'تأكيد إنشاء حساب الموظف: '+name+'؟'
+  ))return;
+
+  const {data,error}=await db.functions.invoke(
+   'jeby-create-staff',
+   {
+    body:{
+     name,
+     mode,
+     email:mode==='email'?email:undefined,
+     phone:mode==='phone'?phone:undefined,
+     role
+    }
    }
+  );
 
-   if(!/^(\+967|00967|967|0)?[0-9]{9}$/.test(phone)){
-     throw new Error(
-       'أدخل رقم هاتف يمنيًا صحيحًا'
-     );
-   }
+  if(error){
+   let detail=error.message;
 
-   if(!confirm(
-     'تأكيد تسجيل الموظف: '+name+'؟'
-   )){
-     return;
-   }
+   try{
+    if(error.context?.json){
+     const x=await error.context.json();
+     detail=x.error||detail;
+    }
+   }catch(e){}
 
-   const result=await callRPC(
-     'jeby_admin_register_staff_by_phone',
-     {
-       p_phone:phone,
-       p_name:name
-     }
-   );
+   throw Error(detail);
+  }
 
-   await loadStaff();
+  if(!data?.ok){
+   throw Error(data?.error||'لم تكتمل العملية');
+  }
 
-   $('staffName').value='';
-   $('staffPhone').value='';
+  await loadStaff();
 
-   showMessage(
-     'تم تسجيل الموظف بنجاح. النتيجة: '+
-     JSON.stringify(result),
-     'success'
-   );
+  $('staffName').value='';
+  $('staffEmail').value='';
+  $('staffPhone').value='';
+  $('staffRole').value='';
+
+  const warning=data.warning
+   ?' تنبيه: '+data.warning
+   :'';
+
+  notify(
+   'تم إنشاء الحساب. الرقم الإداري: '+
+   data.admin_number+
+   (mode==='email'
+    ?' — دعوة البريد تعتمد على إعداد خدمة الإرسال.'
+    :' — تفعيل الهاتف ينتظر إعداد SMS والتحقق.')+
+   warning,
+   'success'
+  );
 
  }catch(e){
-
-   showMessage(
-     'تعذر تسجيل الموظف: '+e.message,
-     'error'
-   );
-
+  notify(
+   'تعذر إنشاء الموظف: '+e.message,
+   'error'
+  );
  }finally{
-
-   setBusy('register',false);
-
+  busy('register',false);
  }
 };
 
 async function changeRole(mode){
-
- const buttonId=
-   mode==='grant'?'grant':'revoke';
-
- setBusy(buttonId,true);
+ const buttonId=mode==='grant'?'grant':'revoke';
+ busy(buttonId,true);
 
  try{
+  guard('admin.manage');
 
-   requirePermission('admin.manage');
+  const target=$('target').value.trim();
+  const role=$('role').value;
 
-   const target=$('target').value.trim();
+  const uuid=
+   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-   const role=$('role').value.trim();
+  if(!uuid.test(target)){
+   throw Error('اختر الموظف من الدليل');
+  }
 
-   const uuidPattern=
-     /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  if(!role){
+   throw Error('اختر المنصب');
+  }
 
-   if(!uuidPattern.test(target)){
-     throw new Error(
-       'اختر موظفًا صحيحًا من القائمة'
-     );
+  const action=mode==='grant'?'منح':'سحب';
+
+  if(!confirm(
+   'تأكيد '+action+' المنصب للموظف؟'
+  ))return;
+
+  await rpc(
+   mode==='grant'
+    ?'jeby_admin_grant_role'
+    :'jeby_admin_revoke_role',
+   {
+    p_target:target,
+    p_role:role
    }
+  );
 
-   if(!role){
-     throw new Error(
-       'أدخل رمز المنصب'
-     );
-   }
+  await loadStaff();
 
-   const actionText=
-     mode==='grant'?'منح':'سحب';
-
-   if(!confirm(
-     'هل تؤكد '+actionText+
-     ' المنصب '+role+
-     ' للموظف المحدد؟'
-   )){
-     return;
-   }
-
-   await callRPC(
-     mode==='grant'
-       ?'jeby_admin_grant_role'
-       :'jeby_admin_revoke_role',
-     {
-       p_target:target,
-       p_role:role
-     }
-   );
-
-   await loadStaff();
-
-   showMessage(
-     'تم تنفيذ عملية '+actionText+
-     ' المنصب بنجاح',
-     'success'
-   );
+  notify(
+   'تم '+action+' المنصب بنجاح',
+   'success'
+  );
 
  }catch(e){
-
-   showMessage(
-     'تعذر تعديل المنصب: '+e.message,
-     'error'
-   );
-
+  notify(
+   'تعذر تعديل المنصب: '+e.message,
+   'error'
+  );
  }finally{
-
-   setBusy(buttonId,false);
-
+  busy(buttonId,false);
  }
 }
 
-$('grant').onclick=()=>{
- changeRole('grant');
-};
-
-$('revoke').onclick=()=>{
- changeRole('revoke');
-};
+$('grant').onclick=()=>changeRole('grant');
+$('revoke').onclick=()=>changeRole('revoke');
 
 $('refresh').onclick=async()=>{
-
- setBusy('refresh',true);
+ busy('refresh',true);
 
  try{
-   await initializeSession();
+  await start();
  }catch(e){
-   showMessage(
-     'تعذر تحديث البيانات: '+e.message,
-     'error'
-   );
+  notify(e.message,'error');
  }finally{
-   setBusy('refresh',false);
+  busy('refresh',false);
  }
 };
 
 $('loadAudit').onclick=async()=>{
-
- setBusy('loadAudit',true);
+ busy('loadAudit',true);
 
  try{
-   await loadAudit();
-   showMessage(
-     'تم تحديث سجل الرقابة',
-     'success'
-   );
+  await loadAudit();
+  notify('تم تحديث سجل الرقابة','success');
  }catch(e){
-   showMessage(
-     'تعذر تحديث السجل: '+e.message,
-     'error'
-   );
+  notify(e.message,'error');
  }finally{
-   setBusy('loadAudit',false);
+  busy('loadAudit',false);
  }
 };
 
 $('signOut').onclick=async()=>{
-
  try{
+  const {error}=await db.auth.signOut();
+  if(error)throw error;
 
-   const result=await db.auth.signOut();
-
-   if(result.error){
-     throw result.error;
-   }
-
-   showLogin();
-
-   $('password').value='';
-
-   showMessage(
-     'تم تسجيل الخروج بنجاح',
-     'success'
-   );
+  showLogin();
+  $('password').value='';
+  notify('تم تسجيل الخروج','success');
 
  }catch(e){
-
-   showMessage(
-     'تعذر تسجيل الخروج: '+e.message,
-     'error'
-   );
-
+  notify(e.message,'error');
  }
 };
 
-/*
- Initialize Supabase
- Important: SUPABASE_URL does not shadow
- the browser's native URL constructor.
-*/
-
-(async function(){
-
+(async()=>{
  try{
+  if(!window.supabase){
+   throw Error('تعذر تحميل مكتبة Supabase');
+  }
 
-   if(!window.supabase){
-     throw new Error(
-       'تعذر تحميل مكتبة Supabase'
-     );
-   }
+  db=window.supabase.createClient(
+   SUPABASE_URL,
+   SUPABASE_KEY
+  );
 
-   db=window.supabase.createClient(
-     SUPABASE_URL,
-     SUPABASE_KEY
-   );
-
-   await initializeSession();
+  await start();
 
  }catch(e){
-
-   showLogin();
-
-   showMessage(
-     'تعذر الاتصال: '+e.message,
-     'error'
-   );
-
+  showLogin();
+  notify(
+   'تعذر الاتصال: '+e.message,
+   'error'
+  );
  }
-
 })();
 </script>
-
 </body>
 </html>
