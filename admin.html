@@ -179,10 +179,10 @@ currentUser=null;
 }
 
 async function isAdmin(u){
-const {data,error:e}=await db.from('jeby_admins')
-.select('user_id').eq('user_id',u.id).maybeSingle();
+const {data,error:e}=await db.rpc('jeby_my_admin_access');
 if(e)throw e;
-return !!data;
+const access=Array.isArray(data)?data[0]:data;
+return !!access && access.is_legacy_admin===true;
 }
 
 async function session(){
