@@ -49,3 +49,207 @@ let updating=false;function update(){if(updating)return;updating=true;try{ensure
 async function boot(){const obs=new MutationObserver(update);obs.observe(document.body,{subtree:true,childList:true,characterData:true});ensureLauncher();for(let i=0;i<24&&!state.ready;i++){if(api()&&me()){await load();break;}await new Promise(r=>setTimeout(r,500));}update();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
+
+
+/*
+ JEBY CASH
+ Safe Classification Removal - V1
+ Educational simulation only.
+*/
+(function () {
+  "use strict";
+
+  if (window.JEBY_SAFE_CLASSIFICATION_REMOVE_V1) return;
+  window.JEBY_SAFE_CLASSIFICATION_REMOVE_V1 = true;
+
+  function getDB() {
+    try {
+      return typeof db !== "undefined" ? db : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function getUser() {
+    try {
+      return typeof user !== "undefined" ? user : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function getTransactionId(row) {
+    const title = row.querySelector("strong")?.textContent || "";
+    const match = title.match(/رقم\s+(\d+)/);
+    return match ? Number(match[1]) : null;
+  }
+
+  async function checkClassification(transactionId) {
+    const client = getDB();
+    const current = getUser();
+
+    if (!client || !current?.id) return false;
+
+    const { data, error } = await client
+      .from("jeby_account_classification")
+      .select("account_id")
+      .eq("transaction_id", transactionId)
+      .eq("user_id", current.id)
+      .maybeSingle();
+
+    if (error) {
+      console.warn("JEBY classification check:", error.message);
+      return false;
+    }
+
+    return !!data;
+  }
+
+  async function removeClassification(transactionId, button) {
+    const client = getDB();
+    const current = getUser();
+
+    if (!client || !current?.id) {
+      alert("يرجى تسجيل الدخول أولًا.");
+      return;
+    }
+
+    const confirmed = confirm(
+      "هل تريد إزالة التصنيف المحاسبي للعملية رقم " +
+      transactionId +
+      "؟\n\n" +
+      "سيتم إزالة ارتباط العملية بالحساب المحاسبي فقط.\n" +
+      "لن تُحذف العملية المالية ولن يتغير الرصيد."
+    );
+
+    if (!confirmed) return;
+
+    button.disabled = true;
+    button.textContent = "جارٍ إزالة التصنيف...";
+
+    try {
+      const { error } = await client.rpc(
+        "jeby_chart_remove_classification",
+        {
+          p_transaction_id: transactionId
+        }
+      );
+
+      if (error) {
+        throw error;
+      }
+
+      button.remove();
+
+      alert(
+        "تمت إزالة التصنيف المحاسبي بنجاح.\n" +
+        "العملية المالية والرصيد لم يتغيرا."
+      );
+
+    } catch (error) {
+      button.disabled = false;
+      button.textContent = "🗑️ إزالة التصنيف";
+
+      alert(
+        "تعذرت إزالة التصنيف المحاسبي:\n" +
+        (error.message || "خطأ غير معروف")
+      );
+    }
+  }
+
+  async function enhanceRow(row) {
+    if (row.dataset.jebyRemoveReady === "1") return;
+
+    const classificationButton =
+      row.querySelector(".jc-flexible-button");
+
+    if (!classificationButton) return;
+
+    const transactionId = getTransactionId(row);
+    if (!transactionId) return;
+
+    row.dataset.jebyRemoveReady = "1";
+
+    const hasClassification =
+      await checkClassification(transactionId);
+
+    if (!row.isConnected) return;
+
+    if (!hasClassification) {
+      row.dataset.jebyRemoveReady = "0";
+      return;
+    }
+
+    if (row.querySelector(".jeby-remove-classification")) return;
+
+    const removeButton = document.createElement("button");
+    removeButton.type = "button";
+    removeButton.className = "jeby-remove-classification";
+    removeButton.textContent = "🗑️ إزالة التصنيف";
+
+    removeButton.style.cssText = [
+      "width:100%",
+      "margin-top:8px",
+      "padding:11px",
+      "border:1px solid #b58b42",
+      "border-radius:10px",
+      "background:#fff7f2",
+      "color:#571d35",
+      "font:13px Tahoma,Arial",
+      "cursor:pointer"
+    ].join(";");
+
+    removeButton.addEventListener("click", function () {
+      removeClassification(transactionId, removeButton);
+    });
+
+    classificationButton.insertAdjacentElement(
+      "afterend",
+      removeButton
+    );
+  }
+
+  let scanning = false;
+
+  async function scanHistory() {
+    if (scanning) return;
+    scanning = true;
+
+    try {
+      const history = document.getElementById("historyList");
+      if (!history) return;
+
+      const rows = history.querySelectorAll(".tx");
+
+      for (const row of rows) {
+        await enhanceRow(row);
+      }
+    } finally {
+      scanning = false;
+    }
+  }
+
+  function start() {
+    const observer = new MutationObserver(function () {
+      scanHistory();
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
+    scanHistory();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      start,
+      { once: true }
+    );
+  } else {
+    start();
+  }
+})();
+
