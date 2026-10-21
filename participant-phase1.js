@@ -1,8 +1,8 @@
 
 /*
- JEBY CASH — Participant Dashboard V5
- Payroll, Advances, Bonuses and Gratuities
- Educational simulation only
+ JEBY CASH — Participant Dashboard V6
+ Compact services + Payroll Statement
+ EDUCATIONAL SIMULATION ONLY
 */
 
 (function () {
@@ -11,17 +11,17 @@
   const $ = id => document.getElementById(id);
 
   function el(tag, cls = "", text = "") {
-    const e = document.createElement(tag);
-    if (cls) e.className = cls;
-    if (text) e.textContent = text;
-    return e;
+    const x = document.createElement(tag);
+    if (cls) x.className = cls;
+    if (text !== "") x.textContent = text;
+    return x;
   }
 
-  function addCSS() {
-    if ($("jeby-v5-css")) return;
+  function css() {
+    if ($("jc-v6-css")) return;
 
     const s = el("style");
-    s.id = "jeby-v5-css";
+    s.id = "jc-v6-css";
     s.textContent = `
       #serviceGrid,.jc-grid {
         display:grid!important;
@@ -47,31 +47,17 @@
         overflow-wrap:anywhere;
         box-shadow:none!important;
       }
-      .jc-icon {
-        font-size:22px;
-        line-height:1.2;
-      }
-      .jc-label {
-        font-size:10px;
-        line-height:1.5;
-      }
-      .jc-section {
-        padding:14px 12px;
-        margin-bottom:13px;
-      }
-      .jc-section h2 {
-        font-size:16px;
-        margin:0 0 7px;
-      }
+      .jc-icon{font-size:22px;line-height:1.2}
+      .jc-label{font-size:10px;line-height:1.5}
+      .jc-section{padding:14px 12px;margin-bottom:13px}
+      .jc-section h2{font-size:16px;margin:0 0 7px}
       .jc-desc {
         font-size:11px;
         color:#80737a;
         margin:0 0 12px;
         line-height:1.7;
       }
-      .jc-hidden {
-        display:none!important;
-      }
+      .jc-hidden{display:none!important}
       .jc-overlay {
         position:fixed;
         inset:0;
@@ -80,62 +66,98 @@
         display:flex;
         align-items:center;
         justify-content:center;
-        padding:10px;
+        padding:9px;
       }
       .jc-modal {
         width:100%;
-        max-width:560px;
-        max-height:94vh;
+        max-width:720px;
+        max-height:95vh;
         overflow:auto;
-        background:white;
-        border-radius:17px;
-        padding:16px;
+        background:#fff;
+        border-radius:16px;
+        padding:15px;
         color:#342a30;
-        box-shadow:0 12px 40px #0003;
       }
-      .jc-modal h2 {
-        font-size:19px;
-        margin:0 0 8px;
-      }
-      .jc-modal h3 {
-        font-size:14px;
-        margin:14px 0 7px;
-      }
+      .jc-modal h2{font-size:18px;margin:0 0 7px}
       .jc-modal label {
+        display:block;
         font-size:12px;
-        margin:9px 0 5px;
+        margin:8px 0 5px;
       }
       .jc-modal input,.jc-modal select {
         width:100%;
-        padding:10px;
-        font-size:13px;
+        min-width:0;
+        padding:9px 7px;
+        font-size:12px;
+        border-radius:9px;
       }
-      .jc-row {
+      .jc-formrow {
         display:grid;
         grid-template-columns:1fr 1fr;
         gap:9px;
       }
-      .jc-beneficiary {
-        border:1px solid #eadfe3;
-        background:#fdfaf8;
-        border-radius:12px;
-        padding:10px;
-        margin:9px 0;
+      .jc-tablewrap {
+        overflow-x:auto;
+        margin-top:12px;
+        border:1px solid #e9dedf;
+        border-radius:11px;
       }
-      .jc-beneficiary-head {
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        gap:8px;
+      .jc-table {
+        width:100%;
+        min-width:320px;
+        border-collapse:collapse;
+        table-layout:fixed;
+        font-size:11px;
+      }
+      .jc-table th {
+        background:#571d35;
+        color:white;
+        padding:9px 4px;
+        font-size:11px;
+        text-align:center;
+      }
+      .jc-table td {
+        padding:7px 4px;
+        border-bottom:1px solid #eee;
+        vertical-align:middle;
+      }
+      .jc-table td input {
+        padding:8px 4px;
+        font-size:11px;
+      }
+      .jc-table td:first-child{width:31%}
+      .jc-table td:nth-child(2){width:38%}
+      .jc-table td:nth-child(3){width:23%}
+      .jc-table td:last-child{width:8%}
+      .jc-owner {
+        font-size:11px;
+        line-height:1.6;
+        overflow-wrap:anywhere;
+      }
+      .jc-ok{color:#18734b}
+      .jc-bad{color:#b22a39}
+      .jc-pending{color:#86682b}
+      .jc-remove {
+        background:#f9e7e7;
+        color:#8b2635;
+        padding:5px 4px;
+        border-radius:7px;
+        font-size:12px;
       }
       .jc-summary {
-        background:#f8f1e7;
+        background:#faf4ea;
         border:1px solid #e7d3b3;
-        border-radius:12px;
-        padding:12px;
+        border-radius:11px;
+        padding:11px;
         margin-top:12px;
-        font-size:13px;
+        font-size:12px;
         line-height:2;
+      }
+      .jc-summary strong{color:#571d35}
+      .jc-words {
+        margin-top:6px;
+        font-weight:bold;
+        line-height:1.9;
       }
       .jc-actions {
         display:flex;
@@ -144,26 +166,30 @@
       }
       .jc-actions button {
         flex:1;
-        font-size:12px;
         padding:11px 5px;
+        font-size:12px;
       }
       .jc-muted {
         color:#76676f;
         font-size:12px;
         line-height:1.8;
       }
-      .jc-danger {
-        color:#a32635;
+      .jc-error {
+        margin-top:10px;
+        padding:10px;
         background:#fff0f0;
-        border:1px solid #f1caca;
-        border-radius:10px;
-        padding:9px;
+        color:#962735;
+        border:1px solid #efc8ce;
+        border-radius:9px;
         font-size:12px;
+        line-height:1.9;
       }
-      .jc-remove {
-        background:#f9e7e7;
-        color:#8b2635;
-        padding:5px 10px;
+      .jc-pill {
+        display:inline-block;
+        padding:4px 8px;
+        border-radius:7px;
+        background:#f5ece7;
+        color:#571d35;
         font-size:11px;
       }
       @media(max-width:340px) {
@@ -175,14 +201,14 @@
     document.head.append(s);
   }
 
-  function tile(icon, label, fn) {
+  function tile(icon, title, action) {
     const b = el("button", "jc-tile");
     b.type = "button";
     b.append(
       el("span", "jc-icon", icon),
-      el("span", "jc-label", label)
+      el("span", "jc-label", title)
     );
-    b.addEventListener("click", fn);
+    b.addEventListener("click", action);
     return b;
   }
 
@@ -198,13 +224,13 @@
     return { box, grid };
   }
 
-  function findButton(parent, text) {
+  function findButton(parent, title) {
     if (!parent) return null;
     return [...parent.querySelectorAll("button")]
-      .find(b => b.textContent.includes(text)) || null;
+      .find(b => b.textContent.includes(title)) || null;
   }
 
-  function openTab(name) {
+  function tab(name) {
     const b = document.querySelector(
       '[data-tab="' + name + '"]'
     );
@@ -216,19 +242,20 @@
     if (b) b.click();
   }
 
-  function message(title, content) {
-    const overlay = el("div", "jc-overlay");
-    const modal = el("div", "jc-modal");
+  function info(title, description) {
+    const back = el("div", "jc-overlay");
+    const panel = el("div", "jc-modal");
     const close = el("button", "full", "إغلاق");
     close.type = "button";
-    close.onclick = () => overlay.remove();
-    modal.append(
+    close.onclick = () => back.remove();
+
+    panel.append(
       el("h2", "", title),
-      el("p", "jc-muted", content),
+      el("p", "jc-muted", description),
       close
     );
-    overlay.append(modal);
-    document.body.append(overlay);
+    back.append(panel);
+    document.body.append(back);
   }
 
   const TYPES = {
@@ -244,302 +271,570 @@
     USD: "دولار أمريكي"
   };
 
+  const ONES = [
+    "", "واحد", "اثنان", "ثلاثة", "أربعة",
+    "خمسة", "ستة", "سبعة", "ثمانية", "تسعة",
+    "عشرة", "أحد عشر", "اثنا عشر", "ثلاثة عشر",
+    "أربعة عشر", "خمسة عشر", "ستة عشر",
+    "سبعة عشر", "ثمانية عشر", "تسعة عشر"
+  ];
+
+  const TENS = [
+    "", "", "عشرون", "ثلاثون", "أربعون",
+    "خمسون", "ستون", "سبعون", "ثمانون", "تسعون"
+  ];
+
+  const HUNDREDS = [
+    "", "مائة", "مائتان", "ثلاثمائة",
+    "أربعمائة", "خمسمائة", "ستمائة",
+    "سبعمائة", "ثمانمائة", "تسعمائة"
+  ];
+
+  function underThousand(n) {
+    n = Math.floor(n);
+    const parts = [];
+    const hundreds = Math.floor(n / 100);
+    const remainder = n % 100;
+
+    if (hundreds) parts.push(HUNDREDS[hundreds]);
+
+    if (remainder < 20) {
+      if (remainder) parts.push(ONES[remainder]);
+    } else {
+      const units = remainder % 10;
+      const tens = Math.floor(remainder / 10);
+      if (units) parts.push(ONES[units]);
+      parts.push(TENS[tens]);
+    }
+
+    return parts.join(" و");
+  }
+
+  function scaleText(n, singular, dual, plural) {
+    if (n === 1) return singular;
+    if (n === 2) return dual;
+    if (n >= 3 && n <= 10) {
+      return underThousand(n) + " " + plural;
+    }
+    return underThousand(n) + " " + singular;
+  }
+
+  function integerWords(number) {
+    if (!Number.isSafeInteger(number) || number < 0) {
+      return "المبلغ خارج نطاق التحويل الكتابي";
+    }
+
+    if (number === 0) return "صفر";
+
+    const groups = [];
+    const scales = [
+      null,
+      ["ألف", "ألفان", "آلاف"],
+      ["مليون", "مليونان", "ملايين"],
+      ["مليار", "ملياران", "مليارات"],
+      ["تريليون", "تريليونان", "تريليونات"]
+    ];
+
+    let n = number;
+    let level = 0;
+
+    while (n > 0) {
+      const part = n % 1000;
+
+      if (part) {
+        if (level === 0) {
+          groups.unshift(underThousand(part));
+        } else if (scales[level]) {
+          groups.unshift(
+            scaleText(part, ...scales[level])
+          );
+        } else {
+          return "المبلغ خارج نطاق التحويل الكتابي";
+        }
+      }
+
+      n = Math.floor(n / 1000);
+      level++;
+    }
+
+    return groups.join(" و");
+  }
+
+  function amountWords(cents, currency) {
+    const whole = Math.floor(cents / 100);
+    const fraction = cents % 100;
+
+    let text = integerWords(whole) +
+      " " + CURRENCIES[currency];
+
+    if (fraction) {
+      text += " و" + integerWords(fraction) +
+        " جزءًا من مائة";
+    }
+
+    return text + " فقط لا غير";
+  }
+
+  function parseCents(raw) {
+    const value = String(raw).trim();
+
+    if (!/^\d+(\.\d{1,2})?$/.test(value)) {
+      return null;
+    }
+
+    const [whole, fraction = ""] = value.split(".");
+    const cents =
+      Number(whole) * 100 +
+      Number(fraction.padEnd(2, "0"));
+
+    if (!Number.isSafeInteger(cents) || cents <= 0) {
+      return null;
+    }
+
+    return cents;
+  }
+
+  function money(cents) {
+    return (cents / 100).toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+
+  function field(parent, label, type, options) {
+    const wrap = el("div");
+    const l = el("label", "", label);
+    const input = el(type === "select" ? "select" : "input");
+
+    if (type === "select") {
+      options.forEach(([value, title]) => {
+        const option = el("option", "", title);
+        option.value = value;
+        input.append(option);
+      });
+    } else {
+      input.type = type;
+    }
+
+    wrap.append(l, input);
+    parent.append(wrap);
+    return input;
+  }
+
   function payroll() {
-    if ($("jc-payroll-modal")) return;
+    if ($("jc-payroll-v6")) return;
 
     const overlay = el("div", "jc-overlay");
-    overlay.id = "jc-payroll-modal";
+    overlay.id = "jc-payroll-v6";
 
-    const modal = el("div", "jc-modal");
-    modal.setAttribute("role", "dialog");
-    modal.setAttribute("aria-modal", "true");
-    modal.setAttribute(
+    const panel = el("div", "jc-modal");
+    panel.setAttribute("role", "dialog");
+    panel.setAttribute("aria-modal", "true");
+    panel.setAttribute(
       "aria-label",
-      "رواتب وحوافز الموظفين"
+      "كشف الصرف الجماعي"
     );
 
-    const titleRow = el("div", "jc-beneficiary-head");
-    titleRow.append(
-      el("h2", "", "👥 رواتب وحوافز الموظفين")
+    const head = el("div");
+    head.style.display = "flex";
+    head.style.justifyContent = "space-between";
+    head.style.alignItems = "center";
+    head.style.gap = "8px";
+
+    const heading = el(
+      "h2",
+      "",
+      "👥 رواتب وحوافز الموظفين"
     );
 
-    const close = el("button", "jc-remove", "✕ إغلاق");
+    const close = el("button", "jc-remove", "إغلاق ✕");
     close.type = "button";
     close.onclick = () => overlay.remove();
-    titleRow.append(close);
-    modal.append(titleRow);
 
-    modal.append(
+    head.append(heading, close);
+    panel.append(head);
+
+    panel.append(
       el(
         "p",
         "jc-muted",
-        "إعداد أوامر صرف تدريبية افتراضية. " +
-        "المراجعة متاحة، أما التنفيذ المالي " +
-        "فغير مفعّل حتى ربط قاعدة البيانات."
+        "كشف صرف تدريبي. تُعرض أسماء المحافظ " +
+        "المتحقق منها فقط، ولا يتم خصم أي مبلغ " +
+        "قبل تفعيل التنفيذ الآمن."
       )
     );
 
-    function field(label, type, parent, options) {
-      const wrap = el("div");
-      const lab = el("label", "", label);
-      const input = el(type === "select" ? "select" : "input");
+    const controls = el("div", "jc-formrow");
 
-      if (type === "select") {
-        options.forEach(([value, text]) => {
-          const opt = el("option", "", text);
-          opt.value = value;
-          input.append(opt);
-        });
-      } else {
-        input.type = type;
-      }
-
-      wrap.append(lab, input);
-      parent.append(wrap);
-      return input;
-    }
-
-    const top = el("div", "jc-row");
     const kind = field(
+      controls,
       "نوع الصرف",
       "select",
-      top,
       Object.entries(TYPES)
     );
 
     const mode = field(
+      controls,
       "طريقة الصرف",
       "select",
-      top,
       [
         ["single", "حساب واحد"],
         ["multiple", "حسابات متعددة"]
       ]
     );
 
-    modal.append(top);
+    panel.append(controls);
 
-    const second = el("div", "jc-row");
+    const secondary = el("div", "jc-formrow");
 
     const currency = field(
-      "عملة الصرف",
+      secondary,
+      "العملة",
       "select",
-      second,
       Object.entries(CURRENCIES)
-        .map(([code, name]) => [code, name])
     );
 
     const period = field(
-      "الفترة أو المرجع",
-      "text",
-      second
+      secondary,
+      "الفترة / المرجع",
+      "text"
     );
     period.placeholder = "مثال: أكتوبر 2026";
 
-    modal.append(second);
+    panel.append(secondary);
 
-    const rowsTitle = el(
-      "h3",
-      "",
-      "بيانات المستفيدين"
+    const reference = el(
+      "p",
+      "jc-pill",
+      "رقم العملية: يُنشأ عند التنفيذ الفعلي"
     );
-    modal.append(rowsTitle);
+    reference.style.marginTop = "12px";
+    panel.append(reference);
 
-    const rows = el("div");
-    modal.append(rows);
+    const tableWrap = el("div", "jc-tablewrap");
+    const table = el("table", "jc-table");
+
+    const thead = el("thead");
+    const hr = el("tr");
+
+    [
+      "رقم المحفظة",
+      "اسم صاحب المحفظة",
+      "المبلغ",
+      ""
+    ].forEach(t => {
+      hr.append(el("th", "", t));
+    });
+
+    thead.append(hr);
+    table.append(thead);
+
+    const tbody = el("tbody");
+    table.append(tbody);
+    tableWrap.append(table);
+    panel.append(tableWrap);
 
     const add = el(
       "button",
       "light full",
-      "＋ إضافة مستفيد"
+      "＋ إضافة مستفيد إلى الكشف"
     );
     add.type = "button";
-    modal.append(add);
+    panel.append(add);
 
     const summary = el("div", "jc-summary");
-    modal.append(summary);
+    panel.append(summary);
 
     const errors = el("div");
     errors.setAttribute("role", "alert");
-    modal.append(errors);
+    panel.append(errors);
 
     const actions = el("div", "jc-actions");
 
     const review = el(
       "button",
       "",
-      "مراجعة أمر الصرف"
+      "مراجعة الكشف"
     );
+    review.type = "button";
 
     const execute = el(
       "button",
       "gold",
-      "تنفيذ الصرف"
+      "اعتماد وصرف الكشف"
     );
+    execute.type = "button";
     execute.disabled = true;
     execute.title =
-      "يتطلب ربطًا آمنًا بقاعدة البيانات";
+      "يتطلب عملية صرف جماعي آمنة في قاعدة البيانات";
 
     actions.append(review, execute);
-    modal.append(actions);
+    panel.append(actions);
 
-    const status = el(
-      "p",
-      "jc-muted",
-      "التنفيذ غير متاح في هذه المرحلة؛ " +
-      "لا تُخصم مبالغ من أي محفظة."
+    panel.append(
+      el(
+        "p",
+        "jc-muted",
+        "تنبيه: هذه شاشة إعداد ومراجعة فقط. " +
+        "لم يُفعّل صرف الأرصدة أو إصدار رقم عملية."
+      )
     );
-    modal.append(status);
 
-    const beneficiaries = [];
+    const rows = [];
+    let sequence = 0;
 
-    function createRow() {
-      const card = el("div", "jc-beneficiary");
-      const head = el(
-        "div",
-        "jc-beneficiary-head"
+    function currentDB() {
+      // إعادة استخدام عميل Supabase الخاص بالصفحة.
+      return typeof db !== "undefined" ? db : null;
+    }
+
+    async function lookup(item) {
+      const wallet = item.wallet.value.trim();
+
+      item.lookupSequence++;
+      const ticket = item.lookupSequence;
+
+      item.verified = false;
+      item.owner = "";
+      item.checkedWallet = "";
+
+      if (!wallet) {
+        item.name.textContent = "أدخل رقم المحفظة";
+        item.name.className = "jc-owner jc-pending";
+        return;
+      }
+
+      item.name.textContent = "جارٍ التحقق...";
+      item.name.className = "jc-owner jc-pending";
+
+      const client = currentDB();
+
+      if (!client) {
+        item.name.textContent = "الاتصال غير متاح";
+        item.name.className = "jc-owner jc-bad";
+        return;
+      }
+
+      try {
+        const { data, error } = await client
+          .from("jeby_profiles")
+          .select("full_name,wallet_number")
+          .eq("wallet_number", wallet)
+          .maybeSingle();
+
+        if (
+          ticket !== item.lookupSequence ||
+          item.wallet.value.trim() !== wallet ||
+          !rows.includes(item)
+        ) return;
+
+        if (error) {
+          item.name.textContent =
+            "تعذر التحقق من الاسم";
+          item.name.className = "jc-owner jc-bad";
+          return;
+        }
+
+        if (!data || !data.full_name) {
+          item.name.textContent =
+            "محفظة غير موجودة أو غير متاحة للتحقق";
+          item.name.className = "jc-owner jc-bad";
+          return;
+        }
+
+        item.verified = true;
+        item.owner = data.full_name;
+        item.checkedWallet = wallet;
+        item.name.textContent = data.full_name;
+        item.name.className = "jc-owner jc-ok";
+
+      } catch (_) {
+        if (ticket !== item.lookupSequence) return;
+        item.name.textContent = "فشل التحقق";
+        item.name.className = "jc-owner jc-bad";
+      }
+    }
+
+    function addRow() {
+      if (rows.length >= 100) {
+        info(
+          "الحد الأقصى",
+          "يمكن إعداد كشف يضم حتى 100 مستفيد."
+        );
+        return;
+      }
+
+      const tr = el("tr");
+      const walletCell = el("td");
+      const nameCell = el("td");
+      const amountCell = el("td");
+      const removeCell = el("td");
+
+      const wallet = el("input");
+      wallet.type = "text";
+      wallet.placeholder = "رقم المحفظة";
+      wallet.autocomplete = "off";
+      wallet.setAttribute(
+        "aria-label",
+        "رقم محفظة المستفيد"
       );
 
-      const number = el("strong", "", "");
+      const name = el(
+        "div",
+        "jc-owner jc-pending",
+        "بانتظار رقم المحفظة"
+      );
+
+      const amount = el("input");
+      amount.type = "text";
+      amount.inputMode = "decimal";
+      amount.placeholder = "0.00";
+      amount.setAttribute(
+        "aria-label",
+        "مبلغ المستفيد"
+      );
+
       const remove = el(
         "button",
         "jc-remove",
-        "حذف"
+        "×"
       );
       remove.type = "button";
-
-      head.append(number, remove);
-      card.append(head);
-
-      const wallet = field(
-        "رقم محفظة المستفيد",
-        "text",
-        card
+      remove.setAttribute(
+        "aria-label",
+        "حذف المستفيد"
       );
-      wallet.placeholder = "رقم المحفظة";
-      wallet.autocomplete = "off";
 
-      const pair = el("div", "jc-row");
-      const name = field(
-        "اسم المستفيد (اختياري)",
-        "text",
-        pair
-      );
-      const amount = field(
-        "المبلغ",
-        "number",
-        pair
-      );
-      amount.min = "0.01";
-      amount.step = "0.01";
-      amount.placeholder = "0.00";
-      card.append(pair);
+      walletCell.append(wallet);
+      nameCell.append(name);
+      amountCell.append(amount);
+      removeCell.append(remove);
 
-      const note = field(
-        "البيان (اختياري)",
-        "text",
-        card
+      tr.append(
+        walletCell,
+        nameCell,
+        amountCell,
+        removeCell
       );
-      note.placeholder = "ملاحظة عن العملية";
+
+      tbody.append(tr);
 
       const item = {
-        card, wallet, name, amount, note
+        tr, wallet, name, amount,
+        verified: false,
+        owner: "",
+        checkedWallet: "",
+        lookupSequence: 0
       };
 
-      beneficiaries.push(item);
-      rows.append(card);
+      rows.push(item);
 
-      [wallet, name, amount, note].forEach(
-        input => input.addEventListener(
-          "input",
-          update
-        )
-      );
+      let debounce;
+
+      wallet.addEventListener("input", () => {
+        clearTimeout(debounce);
+        item.lookupSequence++;
+        item.verified = false;
+        item.checkedWallet = "";
+        item.owner = "";
+        item.name.textContent = "بانتظار التحقق";
+        item.name.className = "jc-owner jc-pending";
+        debounce = setTimeout(() => lookup(item), 450);
+        update();
+      });
+
+      wallet.addEventListener("blur", () => {
+        clearTimeout(debounce);
+        if (
+          wallet.value.trim() &&
+          item.checkedWallet !== wallet.value.trim()
+        ) {
+          lookup(item);
+        }
+      });
+
+      amount.addEventListener("input", update);
 
       remove.onclick = () => {
-        if (beneficiaries.length <= 1) return;
-
-        const i = beneficiaries.indexOf(item);
-        if (i >= 0) beneficiaries.splice(i, 1);
-
-        card.remove();
-        renumber();
+        if (rows.length === 1) return;
+        item.lookupSequence++;
+        const i = rows.indexOf(item);
+        if (i >= 0) rows.splice(i, 1);
+        tr.remove();
         update();
       };
 
-      renumber();
       update();
     }
 
-    function renumber() {
-      beneficiaries.forEach((item, i) => {
-        const label = item.card.querySelector(
-          ".jc-beneficiary-head strong"
-        );
-        if (label) {
-          label.textContent =
-            "المستفيد " + (i + 1);
+    function calculate() {
+      let total = 0;
+      let validAmounts = true;
+
+      rows.forEach(item => {
+        const cents = parseCents(item.amount.value);
+
+        if (item.amount.value.trim() && cents === null) {
+          validAmounts = false;
         }
 
-        const remove = item.card.querySelector(
-          ".jc-remove"
-        );
-        if (remove) {
-          remove.disabled =
-            beneficiaries.length === 1;
+        if (cents !== null) {
+          total += cents;
         }
       });
+
+      if (!Number.isSafeInteger(total)) {
+        validAmounts = false;
+      }
+
+      return { total, validAmounts };
     }
 
     function update() {
       add.hidden = mode.value === "single";
 
-      if (
-        mode.value === "single" &&
-        beneficiaries.length > 1
-      ) {
-        // عند العودة للفردي لا نحذف بيانات
-        // المستفيدين الآخرين دون موافقة.
-        mode.value = "multiple";
-        add.hidden = false;
-      }
+      const result = calculate();
+      const total = result.total;
 
-      const total = beneficiaries.reduce(
-        (sum, item) => {
-          const amount = Number(item.amount.value);
-          return sum + (
-            Number.isFinite(amount) && amount > 0
-              ? amount : 0
-          );
-        },
-        0
-      );
+      const count = rows.length;
+      const label = TYPES[kind.value];
+
+      const words = result.validAmounts
+        ? amountWords(total, currency.value)
+        : "راجع المبالغ المدخلة";
 
       summary.replaceChildren(
+        el("div", "", "نوع العملية: " + label),
         el(
           "div",
           "",
-          "نوع الصرف: " + TYPES[kind.value]
+          "عدد المستفيدين في الكشف: " + count
         ),
         el(
           "div",
           "",
-          "عدد المستفيدين: " +
-          beneficiaries.length
+          "إجمالي الكشف رقمًا: " +
+          money(total) + " " + currency.value
+        ),
+        el(
+          "div",
+          "jc-words",
+          "إجمالي الكشف كتابةً: " + words
         ),
         el(
           "div",
           "",
-          "إجمالي المبالغ: " +
-          total.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-          }) + " " + currency.value
+          "البيان: " + label +
+          " لعدد (" + count + ") مستفيد" +
+          (period.value.trim()
+            ? " — " + period.value.trim()
+            : "")
         ),
         el(
           "div",
           "",
-          "العمولات: لم تُحتسب بعد"
+          "العمولات: غير محسوبة — " +
+          "تحدد عند تفعيل الصرف"
         )
       );
 
@@ -548,39 +843,44 @@
 
     function validate() {
       const issues = [];
-      const wallets = new Set();
+      const seen = new Set();
+      const calc = calculate();
 
-      if (!beneficiaries.length) {
-        issues.push("أضف مستفيدًا واحدًا على الأقل.");
+      if (!calc.validAmounts) {
+        issues.push("يوجد مبلغ غير صحيح أو كبير جدًا.");
       }
 
-      beneficiaries.forEach((item, i) => {
-        const n = i + 1;
+      rows.forEach((item, i) => {
         const wallet = item.wallet.value.trim();
-        const raw = item.amount.value.trim();
-        const amount = Number(raw);
+        const cents = parseCents(item.amount.value);
+        const n = i + 1;
 
         if (!wallet) {
           issues.push(
-            "أدخل محفظة المستفيد " + n
+            "المستفيد " + n + ": رقم المحفظة مطلوب."
           );
-        } else if (wallets.has(wallet)) {
+        } else if (seen.has(wallet)) {
           issues.push(
-            "رقم المحفظة مكرر في الصف " + n
+            "المستفيد " + n + ": رقم محفظة مكرر."
           );
         } else {
-          wallets.add(wallet);
+          seen.add(wallet);
         }
 
         if (
-          !raw ||
-          !Number.isFinite(amount) ||
-          amount <= 0 ||
-          !/^\d+(\.\d{1,2})?$/.test(raw)
+          !item.verified ||
+          item.checkedWallet !== wallet
         ) {
           issues.push(
-            "مبلغ المستفيد " + n +
-            " يجب أن يكون موجبًا وبحد أقصى منزلتين عشريتين."
+            "المستفيد " + n +
+            ": لم يتم التحقق من اسم صاحب المحفظة."
+          );
+        }
+
+        if (cents === null) {
+          issues.push(
+            "المستفيد " + n +
+            ": أدخل مبلغًا موجبًا صحيحًا."
           );
         }
       });
@@ -588,27 +888,18 @@
       return issues;
     }
 
-    add.onclick = () => {
-      if (beneficiaries.length >= 100) {
-        message(
-          "حد المستفيدين",
-          "الحد الأقصى في هذه الشاشة 100 مستفيد."
-        );
-        return;
-      }
-      createRow();
-    };
+    add.onclick = addRow;
 
     mode.onchange = () => {
       if (
         mode.value === "single" &&
-        beneficiaries.length > 1
+        rows.length > 1
       ) {
         mode.value = "multiple";
-        message(
-          "تغيير طريقة الصرف",
+        info(
+          "طريقة الصرف",
           "احذف المستفيدين الإضافيين أولًا " +
-          "للتبديل إلى حساب واحد."
+          "للعودة إلى حساب واحد."
         );
       }
       update();
@@ -616,63 +907,107 @@
 
     kind.onchange = update;
     currency.onchange = update;
+    period.oninput = update;
 
     review.onclick = () => {
       const issues = validate();
       errors.replaceChildren();
 
       if (issues.length) {
-        const box = el("div", "jc-danger");
+        const box = el("div", "jc-error");
+
         issues.forEach(issue => {
           box.append(el("div", "", "• " + issue));
         });
+
         errors.append(box);
+        errors.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest"
+        });
         return;
       }
 
-      const count = beneficiaries.length;
-      const total = beneficiaries.reduce(
-        (sum, item) =>
-          sum + Number(item.amount.value),
-        0
+      const { total } = calculate();
+
+      const reviewPanel = el("div", "jc-summary");
+
+      reviewPanel.append(
+        el("strong", "", "مراجعة كشف الصرف"),
+        el(
+          "div",
+          "",
+          "النوع: " + TYPES[kind.value]
+        ),
+        el(
+          "div",
+          "",
+          "المستفيدون: " + rows.length
+        )
       );
 
-      message(
-        "مراجعة أمر الصرف",
-        TYPES[kind.value] +
-        " — " + count + " مستفيد" +
-        " — الإجمالي " +
-        total.toLocaleString("en-US", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        }) +
-        " " + currency.value +
-        ". هذه مراجعة تدريبية فقط؛ " +
-        "لم يُنفذ أي تحويل أو خصم."
+      rows.forEach((item, i) => {
+        reviewPanel.append(
+          el(
+            "div",
+            "",
+            (i + 1) + ". " +
+            item.owner + " — " +
+            item.wallet.value.trim() + " — " +
+            money(parseCents(item.amount.value)) +
+            " " + currency.value
+          )
+        );
+      });
+
+      reviewPanel.append(
+        el(
+          "div",
+          "jc-words",
+          "الإجمالي: " +
+          money(total) + " " + currency.value
+        ),
+        el(
+          "div",
+          "",
+          amountWords(total, currency.value)
+        ),
+        el(
+          "div",
+          "jc-muted",
+          "مراجعة فقط — لم تُنفذ عملية صرف."
+        )
       );
+
+      errors.append(reviewPanel);
+      reviewPanel.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+      });
     };
 
-    overlay.addEventListener("click", e => {
-      if (e.target === overlay) overlay.remove();
+    overlay.addEventListener("click", event => {
+      if (event.target === overlay) overlay.remove();
     });
 
-    overlay.addEventListener("keydown", e => {
-      if (e.key === "Escape") overlay.remove();
+    overlay.addEventListener("keydown", event => {
+      if (event.key === "Escape") overlay.remove();
     });
 
-    createRow();
-    update();
-
-    overlay.append(modal);
+    overlay.append(panel);
     document.body.append(overlay);
+
+    addRow();
+    update();
     kind.focus();
   }
 
   function init() {
     const grid = $("serviceGrid");
-    if (!grid || $("jc-finance-v5")) return;
 
-    addCSS();
+    if (!grid || $("jc-finance-v6")) return;
+
+    css();
 
     const serviceCard = grid.closest(".card");
     if (!serviceCard) return;
@@ -694,21 +1029,21 @@
       "شاركنا رأيك"
     );
 
-    const financial = section(
-      "jc-finance-v5",
+    const finance = section(
+      "jc-finance-v6",
       "الإدارة المالية والتخطيط",
-      "خدمات التخطيط والادخار والصرف الإداري."
+      "خدمات الادخار والتقارير وكشوف الصرف."
     );
 
-    financial.grid.append(
+    finance.grid.append(
       tile("📊", "نظامي المالي", () => {
-        message(
+        info(
           "نظامي المالي",
           "يجري تطوير تصنيف الإيرادات والمصروفات."
         );
       }),
       tile("🎯", "ميزانياتي", () => {
-        message(
+        info(
           "ميزانياتي",
           "يجري تطوير الميزانيات التدريبية."
         );
@@ -720,7 +1055,7 @@
         originalService("إدارة المشاريع");
       }),
       tile("📈", "التقارير", () => {
-        openTab("reports");
+        tab("reports");
       }),
       tile(
         "👥",
@@ -735,9 +1070,9 @@
     });
 
     const personal = section(
-      "jc-personal-v5",
+      "jc-personal-v6",
       "الخدمات الشخصية والمساندة",
-      "التخصيص وإعدادات الحساب والتواصل."
+      "إعدادات المحفظة والتواصل."
     );
 
     if (customize) {
@@ -758,16 +1093,16 @@
 
     personal.grid.append(
       tile("🔐", "الأمان والحساب", () => {
-        openTab("profile");
+        tab("profile");
       })
     );
 
     serviceCard.insertAdjacentElement(
       "afterend",
-      financial.box
+      finance.box
     );
 
-    financial.box.insertAdjacentElement(
+    finance.box.insertAdjacentElement(
       "afterend",
       personal.box
     );
