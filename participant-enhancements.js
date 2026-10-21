@@ -525,3 +525,423 @@
     init();
   }
 })();
+
+
+/*
+ JEBY CASH
+ Header Notifications Bell - V1
+ Educational wallet simulation
+*/
+(function () {
+  "use strict";
+
+  if (window.JEBY_HEADER_BELL_V1) return;
+  window.JEBY_HEADER_BELL_V1 = true;
+
+  const $ = id => document.getElementById(id);
+
+  function getDB() {
+    try {
+      return typeof db !== "undefined" ? db : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function getUser() {
+    try {
+      return typeof user !== "undefined" ? user : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function make(tag, text) {
+    const element = document.createElement(tag);
+    if (text !== undefined) element.textContent = text;
+    return element;
+  }
+
+  const style = make("style");
+  style.textContent = `
+    .jeby-header-notifications {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .jeby-header-bell {
+      position: relative;
+      flex-shrink: 0;
+      width: 43px;
+      height: 43px;
+      border: 1px solid #ffffff66;
+      border-radius: 12px;
+      background: #ffffff18;
+      color: #fff;
+      font-size: 23px;
+      cursor: pointer;
+    }
+
+    .jeby-bell-count {
+      position: absolute;
+      top: -7px;
+      left: -7px;
+      min-width: 21px;
+      height: 21px;
+      padding: 0 4px;
+      border-radius: 20px;
+      background: #b58b42;
+      color: #fff;
+      font: bold 11px/21px Tahoma, Arial;
+      text-align: center;
+    }
+
+    .jeby-bell-count[hidden] {
+      display: none !important;
+    }
+
+    .jeby-notifications-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100050;
+      background: #0009;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      direction: rtl;
+    }
+
+    .jeby-notifications-panel {
+      width: min(100%, 520px);
+      max-height: 85vh;
+      overflow-y: auto;
+      border-radius: 16px;
+      background: #fff;
+      color: #342a30;
+      padding: 18px;
+      font: 14px/1.8 Tahoma, Arial;
+    }
+
+    .jeby-notification-card {
+      border: 1px solid #e9dedf;
+      border-radius: 10px;
+      padding: 12px;
+      margin: 10px 0;
+    }
+
+    .jeby-notification-unread {
+      background: #fff8e9;
+    }
+
+    .jeby-notification-action {
+      padding: 9px 13px;
+      margin: 5px;
+      border: 1px solid #b58b42;
+      border-radius: 9px;
+      background: #fffaf2;
+      color: #571d35;
+      cursor: pointer;
+      font: 13px Tahoma, Arial;
+    }
+  `;
+
+  document.head.appendChild(style);
+
+  function action(text, handler) {
+    const button = make("button", text);
+    button.type = "button";
+    button.className = "jeby-notification-action";
+    button.addEventListener("click", handler);
+    return button;
+  }
+
+  function createBell() {
+    const header = document.querySelector("header");
+
+    if (!header || $("jeby-header-bell")) return;
+
+    const heading = header.querySelector("h1");
+
+    if (!heading) return;
+
+    const container = make("div");
+    container.className = "jeby-header-notifications";
+
+    const bell = make("button", "🔔");
+    bell.id = "jeby-header-bell";
+    bell.type = "button";
+    bell.className = "jeby-header-bell";
+    bell.setAttribute("aria-label", "مركز الإشعارات");
+
+    const badge = make("span");
+    badge.id = "jeby-bell-count";
+    badge.className = "jeby-bell-count";
+    badge.hidden = true;
+
+    bell.appendChild(badge);
+
+    heading.parentNode.insertBefore(container, heading);
+    container.append(heading, bell);
+
+    bell.addEventListener("click", openNotifications);
+  }
+
+  let countLoading = false;
+
+  async function refreshCount() {
+    if (countLoading) return;
+
+    const client = getDB();
+    const current = getUser();
+    const badge = $("jeby-bell-count");
+
+    if (!badge) return;
+
+    if (!client || !current?.id) {
+      badge.hidden = true;
+      badge.textContent = "";
+      return;
+    }
+
+    countLoading = true;
+
+    try {
+      const { count, error } = await client
+        .from("jeby_notifications")
+        .select("id", { count: "exact", head: true })
+        .eq("recipient_user_id", current.id)
+        .is("read_at", null);
+
+      if (error) {
+        console.warn("JEBY notification count:", error.message);
+        return;
+      }
+
+      badge.hidden = !count;
+      badge.textContent = count > 99
+        ? "99+"
+        : String(count || "");
+
+    } catch (error) {
+      console.warn("JEBY notification count:", error);
+    } finally {
+      countLoading = false;
+    }
+  }
+
+  async function openNotifications() {
+    const existing = $("jeby-notifications-overlay");
+
+    if (existing) return;
+
+    const overlay = make("div");
+    overlay.id = "jeby-notifications-overlay";
+    overlay.className = "jeby-notifications-overlay";
+
+    const panel = make("section");
+    panel.className = "jeby-notifications-panel";
+
+    const title = make("h2", "🔔 مركز الإشعارات");
+    const close = action("إغلاق", () => overlay.remove());
+
+    panel.append(title, close);
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener("click", event => {
+      if (event.target === overlay) overlay.remove();
+    });
+
+    const client = getDB();
+    const current = getUser();
+
+    if (!client || !current?.id) {
+      panel.appendChild(
+        make("p", "يرجى تسجيل الدخول لعرض الإشعارات.")
+      );
+      return;
+    }
+
+    const loading = make("p", "جارٍ تحميل الإشعارات...");
+    panel.appendChild(loading);
+
+    try {
+      const { data, error } = await client
+        .from("jeby_notifications")
+        .select("id,title,body,created_at,read_at")
+        .eq("recipient_user_id", current.id)
+        .order("created_at", { ascending: false })
+        .limit(100);
+
+      loading.remove();
+
+      if (error) {
+        panel.appendChild(
+          make("p", "تعذر تحميل الإشعارات: " + error.message)
+        );
+        return;
+      }
+
+      const notifications = data || [];
+
+      if (!notifications.length) {
+        panel.appendChild(make("p", "لا توجد إشعارات حاليًا."));
+        return;
+      }
+
+      const unread = notifications.filter(n => !n.read_at);
+
+      if (unread.length) {
+        const markAll = action(
+          "✓ تحديد الكل كمقروء",
+          async () => {
+            markAll.disabled = true;
+
+            const ids = notifications
+              .filter(n => !n.read_at)
+              .map(n => n.id);
+
+            if (!ids.length) {
+              markAll.remove();
+              return;
+            }
+
+            const { error: updateError } = await client
+              .from("jeby_notifications")
+              .update({
+                read_at: new Date().toISOString()
+              })
+              .eq("recipient_user_id", current.id)
+              .in("id", ids);
+
+            if (updateError) {
+              markAll.disabled = false;
+              alert("تعذر تحديث الإشعارات.");
+              return;
+            }
+
+            notifications.forEach(n => {
+              n.read_at = n.read_at || new Date().toISOString();
+            });
+
+            panel
+              .querySelectorAll(".jeby-notification-unread")
+              .forEach(card => {
+                card.classList.remove(
+                  "jeby-notification-unread"
+                );
+              });
+
+            panel
+              .querySelectorAll("[data-mark-one]")
+              .forEach(button => button.remove());
+
+            markAll.remove();
+            await refreshCount();
+          }
+        );
+
+        panel.appendChild(markAll);
+      }
+
+      for (const notification of notifications) {
+        const card = make("article");
+        card.className = "jeby-notification-card";
+
+        if (!notification.read_at) {
+          card.classList.add("jeby-notification-unread");
+        }
+
+        const itemTitle = make(
+          "strong",
+          notification.title || "إشعار"
+        );
+
+        const body = make(
+          "p",
+          notification.body || ""
+        );
+
+        const date = make(
+          "small",
+          new Date(
+            notification.created_at
+          ).toLocaleString("ar-YE")
+        );
+
+        card.append(itemTitle, body, date);
+
+        if (!notification.read_at) {
+          const mark = action("✓ مقروء", async () => {
+            mark.disabled = true;
+
+            const { error: updateError } = await client
+              .from("jeby_notifications")
+              .update({
+                read_at: new Date().toISOString()
+              })
+              .eq("recipient_user_id", current.id)
+              .eq("id", notification.id);
+
+            if (updateError) {
+              mark.disabled = false;
+              alert("تعذر تحديث الإشعار.");
+              return;
+            }
+
+            notification.read_at = new Date().toISOString();
+            card.classList.remove(
+              "jeby-notification-unread"
+            );
+            mark.remove();
+
+            await refreshCount();
+          });
+
+          mark.dataset.markOne = "1";
+          card.appendChild(mark);
+        }
+
+        panel.appendChild(card);
+      }
+
+    } catch (error) {
+      loading.remove();
+      panel.appendChild(
+        make("p", "حدث خطأ أثناء تحميل الإشعارات.")
+      );
+      console.warn(error);
+    }
+  }
+
+  function start() {
+    createBell();
+    refreshCount();
+
+    let lastUserId = getUser()?.id || null;
+
+    setInterval(() => {
+      const currentId = getUser()?.id || null;
+
+      if (currentId !== lastUserId) {
+        lastUserId = currentId;
+      }
+
+      refreshCount();
+    }, 15000);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      start,
+      { once: true }
+    );
+  } else {
+    start();
+  }
+})();
+
