@@ -7,218 +7,295 @@
 <meta name="theme-color" content="#571d35">
 <title>جيبي كاش | المشتركين</title>
 <link rel="icon" href="./jeby-logo.png" type="image/png">
+
 <style>
 :root{
---wine:#571d35;
---gold:#b58b42;
---bg:#f8f4f0;
---line:#e9dedf
+  --wine:#571d35;
+  --gold:#b58b42;
+  --bg:#f8f4f0;
+  --line:#e9dedf;
 }
+
 *{box-sizing:border-box}
+
 body{
-margin:0;
-background:var(--bg);
-color:#342a30;
-font:15px Tahoma,Arial,sans-serif;
-padding-bottom:75px
+  margin:0;
+  background:var(--bg);
+  color:#342a30;
+  font:15px Tahoma,Arial,sans-serif;
+  padding-bottom:75px;
 }
+
 header{
-background:linear-gradient(135deg,#46162b,#732b48);
-color:white;
-padding:20px;
-border-bottom:4px solid var(--gold)
+  background:linear-gradient(135deg,#46162b,#732b48);
+  color:white;
+  padding:20px;
+  border-bottom:4px solid var(--gold);
 }
+
 header h1{margin:0;font-size:25px}
 header small{color:#efd5a1}
-.wrap{max-width:680px;margin:auto;padding:15px}
+
+.wrap{
+  max-width:680px;
+  margin:auto;
+  padding:15px;
+}
+
 .card{
-background:#fff;
-border:1px solid var(--line);
-border-radius:18px;
-padding:18px;
-margin-bottom:15px;
-box-shadow:0 5px 22px #40142c09
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:15px;
+  box-shadow:0 5px 22px #40142c09;
 }
-h2{font-size:20px;color:var(--wine);margin:0 0 14px}
+
+h2{
+  font-size:20px;
+  color:var(--wine);
+  margin:0 0 14px;
+}
+
 h3{color:var(--wine)}
-.muted{color:#76676f;font-size:13px;line-height:1.8}
-.hide{display:none!important}
-label{display:block;font-weight:bold;margin:12px 0 7px}
-input,select,textarea{
-width:100%;
-border:1px solid #d8cdd2;
-border-radius:12px;
-padding:13px;
-font:inherit;
-background:#fff
+
+.muted{
+  color:#76676f;
+  font-size:13px;
+  line-height:1.8;
 }
+
+.hide{display:none!important}
+
+label{
+  display:block;
+  font-weight:bold;
+  margin:12px 0 7px;
+}
+
+input,select,textarea{
+  width:100%;
+  border:1px solid #d8cdd2;
+  border-radius:12px;
+  padding:13px;
+  font:inherit;
+  background:#fff;
+}
+
 input[type=number],
 input[type=password],
 input[type=email]{
-direction:ltr;
-text-align:left
+  direction:ltr;
+  text-align:left;
 }
+
 input[type=checkbox]{
-width:auto;
-accent-color:var(--wine)
+  width:auto;
+  accent-color:var(--wine);
 }
+
 button{
-border:0;
-border-radius:12px;
-padding:12px 15px;
-background:var(--wine);
-color:white;
-font:inherit;
-cursor:pointer
+  border:0;
+  border-radius:12px;
+  padding:12px 15px;
+  background:var(--wine);
+  color:white;
+  font:inherit;
+  cursor:pointer;
 }
+
 button:disabled{opacity:.5}
-.full{width:100%;margin-top:12px}
-.light{background:#f5ece7;color:var(--wine)}
+
+.full{
+  width:100%;
+  margin-top:12px;
+}
+
+.light{
+  background:#f5ece7;
+  color:var(--wine);
+}
+
 .gold{background:var(--gold)}
-.row{display:flex;align-items:center;gap:10px}
+
+.row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
 .between{justify-content:space-between}
+
 .grid{
-display:grid;
-grid-template-columns:repeat(3,minmax(0,1fr));
-gap:10px
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
 }
+
 .service{
-background:#fcf8f5;
-border:1px solid #eee0d7;
-color:var(--wine);
-min-height:100px;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-gap:8px;
-font-size:12px;
-text-align:center
+  background:#fcf8f5;
+  border:1px solid #eee0d7;
+  color:var(--wine);
+  min-height:100px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  font-size:12px;
+  text-align:center;
 }
+
 .wallet{
-background:linear-gradient(135deg,#5a1e38,#842d51);
-color:white;
-border-radius:18px;
-padding:20px
+  background:linear-gradient(135deg,#5a1e38,#842d51);
+  color:white;
+  border-radius:18px;
+  padding:20px;
 }
+
 .wallet .muted{color:#f0d7df}
+
 .wallet strong{
-display:block;
-font-size:29px;
-margin:10px 0
+  display:block;
+  font-size:29px;
+  margin:10px 0;
 }
+
 .wallet button{
-background:#ffffff25;
-border:1px solid #ffffff55;
-font-size:12px;
-padding:8px
+  background:#ffffff25;
+  border:1px solid #ffffff55;
+  font-size:12px;
+  padding:8px;
 }
+
 .notice{
-background:#fff2d8;
-border:1px solid #e4c899;
-border-radius:12px;
-padding:13px;
-line-height:1.9;
-color:#624521
+  background:#fff2d8;
+  border:1px solid #e4c899;
+  border-radius:12px;
+  padding:13px;
+  line-height:1.9;
+  color:#624521;
 }
+
 .error{
-background:#ffe5e5;
-border-color:#efb6b6;
-color:#802323
+  background:#ffe5e5;
+  border-color:#efb6b6;
+  color:#802323;
 }
+
 .success{
-background:#e2f5e9;
-border-color:#a6dcb8;
-color:#195c33
+  background:#e2f5e9;
+  border-color:#a6dcb8;
+  color:#195c33;
 }
+
 .tx{
-border-bottom:1px solid #eee;
-padding:13px 0
+  border-bottom:1px solid #eee;
+  padding:13px 0;
 }
+
 .tx:last-child{border:0}
 .tx strong{color:var(--wine)}
+
 .bottom{
-position:fixed;
-bottom:0;
-right:0;
-left:0;
-background:white;
-display:flex;
-justify-content:space-around;
-border-top:1px solid #e5d8dc;
-z-index:4
+  position:fixed;
+  bottom:0;
+  right:0;
+  left:0;
+  background:white;
+  display:flex;
+  justify-content:space-around;
+  border-top:1px solid #e5d8dc;
+  z-index:4;
 }
+
 .bottom button{
-background:transparent;
-color:#715b65;
-flex:1;
-padding:12px 5px;
-font-size:12px;
-border-radius:0
+  background:transparent;
+  color:#715b65;
+  flex:1;
+  padding:12px 5px;
+  font-size:12px;
+  border-radius:0;
 }
+
 .bottom button.active{
-color:var(--wine);
-font-weight:bold;
-border-top:3px solid var(--gold)
+  color:var(--wine);
+  font-weight:bold;
+  border-top:3px solid var(--gold);
 }
+
 .toast{
-position:sticky;
-top:0;
-z-index:8;
-margin-bottom:12px
+  position:sticky;
+  top:0;
+  z-index:8;
+  margin-bottom:12px;
 }
+
 .option{
-width:100%;
-background:#fcf8f5;
-color:var(--wine);
-border:1px solid #eee0d7;
-margin:6px 0;
-text-align:right
+  width:100%;
+  background:#fcf8f5;
+  color:var(--wine);
+  border:1px solid #eee0d7;
+  margin:6px 0;
+  text-align:right;
 }
+
 .kv{
-display:flex;
-justify-content:space-between;
-gap:8px;
-border-bottom:1px solid #eee;
-padding:10px 0;
-align-items:flex-start
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  border-bottom:1px solid #eee;
+  padding:10px 0;
+  align-items:flex-start;
 }
+
 .kv span:last-child{
-font-weight:bold;
-text-align:left;
-overflow-wrap:anywhere
+  font-weight:bold;
+  text-align:left;
+  overflow-wrap:anywhere;
 }
+
 .dialogback{
-position:fixed;
-inset:0;
-background:#0009;
-z-index:30;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:12px
+  position:fixed;
+  inset:0;
+  background:#0009;
+  z-index:30;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px;
 }
+
 .dialog{
-background:white;
-width:100%;
-max-width:520px;
-max-height:90vh;
-overflow:auto;
-border-radius:18px;
-padding:20px
+  background:white;
+  width:100%;
+  max-width:520px;
+  max-height:90vh;
+  overflow:auto;
+  border-radius:18px;
+  padding:20px;
 }
+
 .actions{
-display:flex;
-gap:8px;
-flex-wrap:wrap
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
 }
+
 .actions button{flex:1}
+
 @media print{
-header,.bottom,.wrap,.actions,.closePrint{
-display:none!important
+  header,
+  .bottom,
+  .wrap,
+  .actions,
+  .closePrint{
+    display:none!important;
+  }
+
+  .printOnly{display:block!important}
 }
-.printOnly{display:block!important}
-}
+
 .printOnly{display:none}
 </style>
 </head>
@@ -226,17 +303,18 @@ display:none!important
 <body>
 
 <header>
-<div class="row between">
-<div>
-<h1>جيبي كاش <small>JEBY CASH</small></h1>
-<small>محفظتك في جيبك</small>
-</div>
-<img
-src="./jeby-logo.png"
-alt="شعار جيبي كاش"
-style="width:62px;height:62px;object-fit:contain;background:white;border-radius:12px;padding:3px"
->
-</div>
+  <div class="row between">
+    <div>
+      <h1>جيبي كاش <small>JEBY CASH</small></h1>
+      <small>محفظتك في جيبك</small>
+    </div>
+
+    <img
+      src="./jeby-logo.png"
+      alt="شعار جيبي كاش"
+      style="width:62px;height:62px;object-fit:contain;background:white;border-radius:12px;padding:3px"
+    >
+  </div>
 </header>
 
 <main class="wrap">
@@ -244,146 +322,148 @@ style="width:62px;height:62px;object-fit:contain;background:white;border-radius:
 <div id="msg" class="toast hide" role="status"></div>
 
 <section id="auth" class="card">
-<h2>دخول المشتركين</h2>
+  <h2>دخول المشتركين</h2>
 
-<label for="fullName">الاسم الكامل (للتسجيل فقط)</label>
-<input id="fullName" autocomplete="name">
+  <label for="fullName">الاسم الكامل (للتسجيل فقط)</label>
+  <input id="fullName" autocomplete="name">
 
-<label for="email">البريد الإلكتروني</label>
-<input id="email" type="email" autocomplete="email">
+  <label for="email">البريد الإلكتروني</label>
+  <input id="email" type="email" autocomplete="email">
 
-<label for="password">كلمة المرور</label>
-<input id="password" type="password" minlength="10">
+  <label for="password">كلمة المرور</label>
+  <input id="password" type="password" minlength="10">
 
-<button id="signIn" class="full">تسجيل الدخول</button>
-<button id="signUp" class="full gold">إنشاء حساب</button>
+  <button id="signIn" class="full">تسجيل الدخول</button>
+  <button id="signUp" class="full gold">إنشاء حساب</button>
 
-<p class="muted">
-قد يتطلب إنشاء الحساب تأكيد البريد الإلكتروني.
-جميع العمليات والأرصدة افتراضية تعليمية.
-</p>
+  <p class="muted">
+    قد يتطلب إنشاء الحساب تأكيد البريد الإلكتروني.
+    جميع العمليات والأرصدة افتراضية تعليمية.
+  </p>
 </section>
 
 <div id="app" class="hide">
 
 <section id="homeView">
 
-<div class="card">
-<div class="wallet">
+  <div class="card">
+    <div class="wallet">
 
-<div class="row between">
-<div>
-<div class="muted">المشترك</div>
-<b id="displayName">—</b>
-</div>
-<button id="copyWallet">نسخ رقم المحفظة</button>
-</div>
+      <div class="row between">
+        <div>
+          <div class="muted">المشترك</div>
+          <b id="displayName">—</b>
+        </div>
+        <button id="copyWallet">نسخ رقم المحفظة</button>
+      </div>
 
-<div class="muted" style="margin-top:14px">
-رقم المحفظة:
-<span id="walletNumber">—</span>
-</div>
+      <div class="muted" style="margin-top:14px">
+        رقم المحفظة:
+        <span id="walletNumber">—</span>
+      </div>
 
-<div class="row between" style="margin-top:13px">
-<span>رصيد المحفظة</span>
-<button id="toggleBalance">◉ إظهار</button>
-</div>
+      <div class="row between" style="margin-top:13px">
+        <span>رصيد المحفظة</span>
+        <button id="toggleBalance">◉ إظهار</button>
+      </div>
 
-<strong id="balanceText">••••••</strong>
+      <strong id="balanceText">••••••</strong>
 
-<div class="row between">
-<select id="currency" style="max-width:65%;color:#571d35">
-<option value="YER">الريال اليمني YER</option>
-<option value="SAR">الريال السعودي SAR</option>
-<option value="USD">الدولار الأمريكي USD</option>
-</select>
-<button id="refresh">↻ تحديث</button>
-</div>
+      <div class="row between">
+        <select id="currency" style="max-width:65%;color:#571d35">
+          <option value="YER">الريال اليمني YER</option>
+          <option value="SAR">الريال السعودي SAR</option>
+          <option value="USD">الدولار الأمريكي USD</option>
+        </select>
 
-</div>
+        <button id="refresh">↻ تحديث</button>
+      </div>
+    </div>
 
-<p class="muted">
-الأرصدة الافتراضية غير قابلة للسحب
-أو الاسترداد النقدي.
-</p>
-</div>
+    <p class="muted">
+      الأرصدة الافتراضية غير قابلة للسحب
+      أو الاسترداد النقدي.
+    </p>
+  </div>
 
-<!-- ملف التحسينات سيضيف مصفوفة الخدمات الذكية هنا -->
+  <!-- خدمات المشتركين الإضافية -->
 
-<div class="card">
-<h2>الخدمات</h2>
-<div id="serviceGrid" class="grid"></div>
-</div>
+  <div class="card">
+    <h2>الخدمات</h2>
+    <div id="serviceGrid" class="grid"></div>
+  </div>
 
 </section>
 
 <section id="detailView" class="card hide">
-<button id="back" class="light">→ رجوع</button>
-<h2 id="detailTitle" style="margin-top:12px">الخدمة</h2>
-<div id="detailContent"></div>
+  <button id="back" class="light">→ رجوع</button>
+  <h2 id="detailTitle" style="margin-top:12px">الخدمة</h2>
+  <div id="detailContent"></div>
 </section>
 
 <section id="reportsView" class="card hide">
-<h2>سجل العمليات والإيصالات</h2>
+  <h2>سجل العمليات والإيصالات</h2>
 
-<div class="row">
-<select id="historyCurrency">
-<option value="">جميع العملات</option>
-<option>YER</option>
-<option>SAR</option>
-<option>USD</option>
-</select>
+  <div class="row">
+    <select id="historyCurrency">
+      <option value="">جميع العملات</option>
+      <option>YER</option>
+      <option>SAR</option>
+      <option>USD</option>
+    </select>
 
-<select id="historyType">
-<option value="">جميع العمليات</option>
-<option value="out">الصادرة</option>
-<option value="in">الواردة</option>
-<option value="admin">الإدارية</option>
-</select>
-</div>
+    <select id="historyType">
+      <option value="">جميع العمليات</option>
+      <option value="out">الصادرة</option>
+      <option value="in">الواردة</option>
+      <option value="admin">الإدارية</option>
+    </select>
+  </div>
 
-<button id="reloadHistory" class="light full">
-تحديث السجل
-</button>
+  <button id="reloadHistory" class="light full">
+    تحديث السجل
+  </button>
 
-<div id="historyList">جارٍ التحميل...</div>
+  <div id="historyList">جارٍ التحميل...</div>
 </section>
 
 <section id="profileView" class="card hide">
-<h2>الملف الشخصي</h2>
+  <h2>الملف الشخصي</h2>
 
-<p><b>الاسم:</b> <span id="profileName">—</span></p>
-<p><b>رقم المحفظة:</b> <span id="profileWallet">—</span></p>
-<p><b>البريد:</b> <span id="profileEmail">—</span></p>
+  <p><b>الاسم:</b> <span id="profileName">—</span></p>
+  <p><b>رقم المحفظة:</b> <span id="profileWallet">—</span></p>
+  <p><b>البريد:</b> <span id="profileEmail">—</span></p>
 
-<h3>الخصوصية والأمان</h3>
+  <h3>الخصوصية والأمان</h3>
 
-<label for="currentPassword">كلمة المرور الحالية</label>
-<input id="currentPassword" type="password">
+  <label for="currentPassword">كلمة المرور الحالية</label>
+  <input id="currentPassword" type="password">
 
-<label for="newPassword">كلمة المرور الجديدة (10 أحرف على الأقل)</label>
-<input id="newPassword" type="password" minlength="10">
+  <label for="newPassword">
+    كلمة المرور الجديدة (10 أحرف على الأقل)
+  </label>
+  <input id="newPassword" type="password" minlength="10">
 
-<label for="confirmPassword">تأكيد كلمة المرور</label>
-<input id="confirmPassword" type="password" minlength="10">
+  <label for="confirmPassword">تأكيد كلمة المرور</label>
+  <input id="confirmPassword" type="password" minlength="10">
 
-<button id="changePassword" class="full">
-تغيير كلمة المرور
-</button>
+  <button id="changePassword" class="full">
+    تغيير كلمة المرور
+  </button>
 
-<button id="signOut" class="full light">
-تسجيل الخروج
-</button>
+  <button id="signOut" class="full light">
+    تسجيل الخروج
+  </button>
 </section>
 
 </div>
 </main>
 
 <nav id="bottom" class="bottom hide">
-<button data-tab="home" class="active">⌂ الرئيسية</button>
-<button data-tab="services">▦ الخدمات</button>
-<button data-tab="reports">▤ التقارير</button>
-<button data-tab="profile">♙ الملف</button>
+  <button data-tab="home" class="active">⌂ الرئيسية</button>
+  <button data-tab="services">▦ الخدمات</button>
+  <button data-tab="reports">▤ التقارير</button>
+  <button data-tab="profile">♙ الملف</button>
 </nav>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -392,10 +472,10 @@ style="width:62px;height:62px;object-fit:contain;background:white;border-radius:
 'use strict';
 
 const SUPABASE_URL =
-'https://hpsuqttshdcebacpkrrt.supabase.co';
+  'https://hpsuqttshdcebacpkrrt.supabase.co';
 
 const KEY =
-'sb_publishable_uSb5y_wtc2oi0qq7YLG83Q_muNekrs9';
+  'sb_publishable_uSb5y_wtc2oi0qq7YLG83Q_muNekrs9';
 
 const $ = id => document.getElementById(id);
 
@@ -413,7 +493,11 @@ const money = n => Number(n).toLocaleString('en-US');
 const el = (tag, cls = '', txt) => {
   const e = document.createElement(tag);
   e.className = cls;
-  if (txt !== undefined) e.textContent = txt;
+
+  if (txt !== undefined) {
+    e.textContent = txt;
+  }
+
   return e;
 };
 
@@ -429,28 +513,43 @@ function msg(t, type = 'notice') {
   x.textContent = t;
   x.className = 'toast ' + type;
   x.classList.toggle('hide', !t);
-  if (t) window.scrollTo({top:0, behavior:'smooth'});
+
+  if (t) {
+    window.scrollTo({
+      top:0,
+      behavior:'smooth'
+    });
+  }
 }
 
-const error = e => e?.message || 'حدث خطأ غير متوقع';
+const error = e =>
+  e?.message || 'حدث خطأ غير متوقع';
 
 function fee(n, c) {
   return c === 'YER'
-    ? (n < 1000000
-      ? 0
-      : 100 + Math.floor((n - 1000000) / 500000) * 50)
+    ? (
+        n < 1000000
+          ? 0
+          : 100 +
+            Math.floor((n - 1000000) / 500000) * 50
+      )
     : Math.floor(n / 1000);
 }
 
 function view(v) {
   ['home','detail','reports','profile'].forEach(x => {
-    $(x + 'View').classList.toggle('hide', x !== v);
+    $(x + 'View').classList.toggle(
+      'hide',
+      x !== v
+    );
   });
 
   document.querySelectorAll('[data-tab]').forEach(b => {
     b.classList.toggle(
       'active',
-      b.dataset.tab === (v === 'detail' ? 'services' : v)
+      b.dataset.tab === (
+        v === 'detail' ? 'services' : v
+      )
     );
   });
 }
@@ -476,7 +575,10 @@ async function loadProfile() {
     .maybeSingle();
 
   if (e) throw e;
-  if (!data) throw Error('بيانات المحفظة غير متوفرة');
+
+  if (!data) {
+    throw Error('بيانات المحفظة غير متوفرة');
+  }
 
   wallet = String(data.wallet_number);
   fullName = data.full_name || '—';
@@ -525,11 +627,14 @@ async function loadHistory() {
       ',to_user_id.eq.' + user.id +
       ',actor_id.eq.' + user.id
     )
-    .order('created_at', {ascending:false})
+    .order('created_at', {
+      ascending:false
+    })
     .limit(100);
 
   if (e) {
-    box.textContent = 'تعذر تحميل السجل: ' + error(e);
+    box.textContent =
+      'تعذر تحميل السجل: ' + error(e);
     return;
   }
 
@@ -539,9 +644,11 @@ async function loadHistory() {
 
 function kind(t) {
   return t.kind === 'transfer'
-    ? (t.from_user_id === user.id
-      ? 'تحويل صادر'
-      : 'تحويل وارد')
+    ? (
+        t.from_user_id === user.id
+          ? 'تحويل صادر'
+          : 'تحويل وارد'
+      )
     : t.kind === 'admin_deposit'
       ? 'إيداع إداري'
       : t.kind === 'admin_withdrawal'
@@ -558,14 +665,19 @@ function renderHistory() {
 
   const arr = transactions.filter(t =>
     (!c || t.currency === c) &&
-    (!k || (
-      k === 'admin'
-        ? t.kind !== 'transfer'
-        : t.kind === 'transfer' &&
-          (k === 'out'
-            ? t.from_user_id === user.id
-            : t.to_user_id === user.id)
-    ))
+    (
+      !k ||
+      (
+        k === 'admin'
+          ? t.kind !== 'transfer'
+          : t.kind === 'transfer' &&
+            (
+              k === 'out'
+                ? t.from_user_id === user.id
+                : t.to_user_id === user.id
+            )
+      )
+    )
   );
 
   if (!arr.length) {
@@ -577,8 +689,16 @@ function renderHistory() {
     const x = el('div', 'tx');
 
     x.append(
-      el('strong', '', kind(t) + ' • رقم ' + t.id),
-      el('div', '', money(t.amount) + ' ' + t.currency),
+      el(
+        'strong',
+        '',
+        kind(t) + ' • رقم ' + t.id
+      ),
+      el(
+        'div',
+        '',
+        money(t.amount) + ' ' + t.currency
+      ),
       el(
         'small',
         'muted',
@@ -587,7 +707,9 @@ function renderHistory() {
     );
 
     if (t.note) {
-      x.append(el('p', 'muted', t.note));
+      x.append(
+        el('p', 'muted', t.note)
+      );
     }
 
     x.append(
@@ -604,11 +726,18 @@ function renderHistory() {
 
 function receipt(t) {
   const isTransfer = t.kind === 'transfer';
-  const isOld = isTransfer && t.fee_mode == null;
+  const isOld =
+    isTransfer && t.fee_mode == null;
 
   const rows = [
-    ['رقم العملية المرجعي', 'JEBY-' + t.id],
-    ['نوع العملية', kind(t)],
+    [
+      'رقم العملية المرجعي',
+      'JEBY-' + t.id
+    ],
+    [
+      'نوع العملية',
+      kind(t)
+    ],
     [
       'التاريخ والوقت',
       new Date(t.created_at).toLocaleString('ar')
@@ -650,7 +779,10 @@ function receipt(t) {
     );
   }
 
-  rows.push(['ملاحظات', t.note || '—']);
+  rows.push([
+    'ملاحظات',
+    t.note || '—'
+  ]);
 
   const body = [
     'جيبي كاش | JEBY CASH',
@@ -659,20 +791,40 @@ function receipt(t) {
     'لا يمثل هذا الإيصال إثبات تحويل أموال حقيقية.'
   ].join('\n');
 
-  const backdrop = el('div', 'dialogback');
-  const panel = el('div', 'dialog');
+  const backdrop = el(
+    'div',
+    'dialogback'
+  );
+
+  const panel = el(
+    'div',
+    'dialog'
+  );
 
   panel.append(
-    el('h2', '', 'تفاصيل العملية'),
-    el('p', 'muted', 'إيصال تعليمي افتراضي')
+    el(
+      'h2',
+      '',
+      'تفاصيل العملية'
+    ),
+    el(
+      'p',
+      'muted',
+      'إيصال تعليمي افتراضي'
+    )
   );
 
   for (const [k,v] of rows) {
-    const line = el('div', 'kv');
+    const line = el(
+      'div',
+      'kv'
+    );
+
     line.append(
       el('span', '', k),
       el('span', '', v)
     );
+
     panel.append(line);
   }
 
@@ -684,67 +836,115 @@ function receipt(t) {
     )
   );
 
-  const acts = el('div', 'actions');
+  const acts = el(
+    'div',
+    'actions'
+  );
 
   acts.append(
-    button('نسخ', 'light', async () => {
-      try {
-        await navigator.clipboard.writeText(body);
-        msg('تم نسخ الإيصال', 'notice success');
-      } catch (e) {
-        msg('تعذر النسخ', 'notice error');
-      }
-    }),
-
-    button('مشاركة', 'light', async () => {
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title:'إيصال جيبي كاش',
-            text:body
-          });
-        } catch (e) {}
-      } else {
+    button(
+      'نسخ',
+      'light',
+      async () => {
         try {
           await navigator.clipboard.writeText(body);
-          msg('تم نسخ الإيصال للمشاركة', 'notice success');
+
+          msg(
+            'تم نسخ الإيصال',
+            'notice success'
+          );
         } catch (e) {
-          msg('المشاركة غير متاحة', 'notice error');
+          msg(
+            'تعذر النسخ',
+            'notice error'
+          );
         }
       }
-    }),
+    ),
 
-    button('طباعة / PDF', '', () => {
-      const w = window.open('', '_blank');
+    button(
+      'مشاركة',
+      'light',
+      async () => {
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title:'إيصال جيبي كاش',
+              text:body
+            });
+          } catch (e) {
+            // ألغى المستخدم المشاركة
+          }
+        } else {
+          try {
+            await navigator.clipboard.writeText(body);
 
-      if (!w) {
-        msg('اسمح بفتح النافذة للطباعة', 'notice error');
-        return;
+            msg(
+              'تم نسخ الإيصال للمشاركة',
+              'notice success'
+            );
+          } catch (e) {
+            msg(
+              'المشاركة غير متاحة',
+              'notice error'
+            );
+          }
+        }
       }
+    ),
 
-      w.document.title = 'JEBY-' + t.id;
+    button(
+      'طباعة / PDF',
+      '',
+      () => {
+        const w = window.open(
+          '',
+          '_blank'
+        );
 
-      const e = w.document.createElement('pre');
-      e.textContent = body;
-      e.style.cssText =
-        'white-space:pre-wrap;direction:rtl;' +
-        'font:17px Tahoma;line-height:2;padding:24px';
+        if (!w) {
+          msg(
+            'اسمح بفتح النافذة للطباعة',
+            'notice error'
+          );
+          return;
+        }
 
-      w.document.body.append(e);
-      w.focus();
-      w.print();
-    })
+        w.document.title =
+          'JEBY-' + t.id;
+
+        const e =
+          w.document.createElement('pre');
+
+        e.textContent = body;
+
+        e.style.cssText =
+          'white-space:pre-wrap;direction:rtl;' +
+          'font:17px Tahoma;line-height:2;padding:24px';
+
+        w.document.body.append(e);
+
+        w.focus();
+        w.print();
+      }
+    )
   );
 
   panel.append(
     acts,
-    button('إغلاق', 'light full', () => backdrop.remove())
+    button(
+      'إغلاق',
+      'light full',
+      () => backdrop.remove()
+    )
   );
 
   backdrop.append(panel);
 
   backdrop.onclick = e => {
-    if (e.target === backdrop) backdrop.remove();
+    if (e.target === backdrop) {
+      backdrop.remove();
+    }
   };
 
   document.body.append(backdrop);
@@ -757,9 +957,13 @@ async function refresh() {
       loadBalances(),
       loadHistory()
     ]);
+
     msg('');
   } catch (e) {
-    msg(error(e), 'notice error');
+    msg(
+      error(e),
+      'notice error'
+    );
   }
 }
 
@@ -773,12 +977,14 @@ function logoutUI() {
   balances = {};
   balanceReady = false;
   balanceShown = false;
+  transactions = [];
 
   $('profileWallet').textContent = '—';
 }
 
 async function authenticate() {
-  const {data, error:e} = await db.auth.getUser();
+  const {data, error:e} =
+    await db.auth.getUser();
 
   if (e || !data.user) {
     logoutUI();
@@ -792,6 +998,7 @@ async function authenticate() {
   $('bottom').classList.remove('hide');
 
   view('home');
+
   await refresh();
 }
 
@@ -876,11 +1083,15 @@ function service(k) {
   $('detailContent').replaceChildren();
 
   $('detailTitle').textContent =
-    services.find(x => x[0] === k)?.[1] || 'الخدمة';
+    services.find(x => x[0] === k)?.[1] ||
+    'الخدمة';
 
   const p = $('detailContent');
 
-  if (k === 'deposit' || k === 'withdraw') {
+  if (
+    k === 'deposit' ||
+    k === 'withdraw'
+  ) {
     p.append(
       el(
         'div',
@@ -890,18 +1101,23 @@ function service(k) {
           : 'السحب الافتراضي يتم من لوحة الإدارة فقط.'
       )
     );
+
     return;
   }
 
   for (const name of options[k] || []) {
     p.append(
-      button(name, 'option', () => {
-        if (name === 'تحويل إلى مشترك') {
-          transfer();
-        } else {
-          demo(name);
+      button(
+        name,
+        'option',
+        () => {
+          if (name === 'تحويل إلى مشترك') {
+            transfer();
+          } else {
+            demo(name);
+          }
         }
-      })
+      )
     );
   }
 }
@@ -923,17 +1139,28 @@ function demo(name) {
   );
 
   const f = el('form');
+
   const inp = el('input');
-  inp.placeholder = 'رقم الخدمة أو الحساب (للتجربة فقط)';
+  inp.placeholder =
+    'رقم الخدمة أو الحساب (للتجربة فقط)';
 
   const amount = el('input');
   amount.type = 'number';
   amount.placeholder = 'المبلغ الافتراضي';
 
-  const b = el('button', 'full', 'استمرار');
+  const b = el(
+    'button',
+    'full',
+    'استمرار'
+  );
+
   b.type = 'submit';
 
-  f.append(inp, amount, b);
+  f.append(
+    inp,
+    amount,
+    b
+  );
 
   f.onsubmit = e => {
     e.preventDefault();
@@ -950,7 +1177,8 @@ function demo(name) {
 function transfer() {
   view('detail');
 
-  $('detailTitle').textContent = 'تحويل إلى مشترك';
+  $('detailTitle').textContent =
+    'تحويل إلى مشترك';
 
   const p = $('detailContent');
   p.replaceChildren();
@@ -966,20 +1194,34 @@ function transfer() {
   const f = el('form');
 
   function field(label, type = 'text') {
-    const l = el('label', '', label);
+    const l = el(
+      'label',
+      '',
+      label
+    );
+
     const x = el('input');
 
     x.type = type;
     x.required = true;
 
     f.append(l, x);
+
     return x;
   }
 
-  const recipient = field('رقم محفظة المستفيد');
+  const recipient = field(
+    'رقم محفظة المستفيد'
+  );
+
   recipient.inputMode = 'numeric';
 
-  const label = el('label', '', 'العملة');
+  const label = el(
+    'label',
+    '',
+    'العملة'
+  );
+
   const currency = el('select');
 
   for (const [v,n] of [
@@ -987,24 +1229,41 @@ function transfer() {
     ['SAR', 'ريال سعودي SAR'],
     ['USD', 'دولار أمريكي USD']
   ]) {
-    const o = el('option', '', n);
+    const o = el(
+      'option',
+      '',
+      n
+    );
+
     o.value = v;
+
     currency.append(o);
   }
 
-  f.append(label, currency);
+  f.append(
+    label,
+    currency
+  );
 
-  const amount = field('مبلغ الحوالة', 'number');
+  const amount = field(
+    'مبلغ الحوالة',
+    'number'
+  );
+
   amount.min = '1';
   amount.max = '1000000000';
   amount.step = '1';
 
-  const note = field('ملاحظات (اختياري)');
+  const note = field(
+    'ملاحظات (اختياري)'
+  );
+
   note.required = false;
   note.maxLength = 250;
 
   const l = el('label');
   const check = el('input');
+
   check.type = 'checkbox';
 
   l.append(
@@ -1027,20 +1286,31 @@ function transfer() {
   function calc() {
     const n = Number(amount.value);
 
-    if (!Number.isSafeInteger(n) || n <= 0) {
-      preview.textContent = 'أدخل مبلغًا صحيحًا';
+    if (
+      !Number.isSafeInteger(n) ||
+      n <= 0
+    ) {
+      preview.textContent =
+        'أدخل مبلغًا صحيحًا';
       return;
     }
 
-    const v = fee(n, currency.value);
+    const v = fee(
+      n,
+      currency.value
+    );
 
     preview.textContent =
       'العمولة: ' +
       money(v) + ' ' + currency.value +
       ' | صافي المستفيد: ' +
-      money(n - (check.checked ? v : 0)) +
+      money(
+        n - (check.checked ? v : 0)
+      ) +
       ' | إجمالي الخصم من المرسل: ' +
-      money(n + (check.checked ? 0 : v));
+      money(
+        n + (check.checked ? 0 : v)
+      );
   }
 
   amount.oninput = calc;
@@ -1074,51 +1344,77 @@ function transfer() {
         'تحقق من رقم المحفظة والمبلغ',
         'notice error'
       );
+
       return;
     }
 
-    const v = fee(n, currency.value);
-    const mode = check.checked ? 'inside' : 'outside';
+    const v = fee(
+      n,
+      currency.value
+    );
+
+    const mode =
+      check.checked
+        ? 'inside'
+        : 'outside';
 
     const debit =
-      n + (mode === 'outside' ? v : 0);
+      n + (
+        mode === 'outside'
+          ? v
+          : 0
+      );
 
     if (
       balanceReady &&
-      debit > Number(balances[currency.value] || 0)
+      debit >
+      Number(
+        balances[currency.value] || 0
+      )
     ) {
       msg(
         'الرصيد الافتراضي غير كافٍ لإجمالي الخصم',
         'notice error'
       );
+
       return;
     }
 
-    if (!confirm(
-      'تأكيد التحويل الافتراضي؟\n' +
-      'المبلغ المدخل: ' +
-      money(n) + ' ' + currency.value + '\n' +
-      'العمولة: ' + money(v) + '\n' +
-      'يصل المستفيد: ' +
-      money(n - (mode === 'inside' ? v : 0)) + '\n' +
-      'يخصم من رصيدك: ' + money(debit)
-    )) {
+    if (
+      !confirm(
+        'تأكيد التحويل الافتراضي؟\n' +
+        'المبلغ المدخل: ' +
+        money(n) + ' ' + currency.value + '\n' +
+        'العمولة: ' + money(v) + '\n' +
+        'يصل المستفيد: ' +
+        money(
+          n - (
+            mode === 'inside'
+              ? v
+              : 0
+          )
+        ) + '\n' +
+        'يخصم من رصيدك: ' +
+        money(debit)
+      )
+    ) {
       return;
     }
 
     send.disabled = true;
 
     try {
-      const {data, error:e} = await db.rpc(
-        'jeby_transfer_v2',
-        {
-          p_wallet_number: Number(r),
-          p_currency: currency.value,
-          p_amount: n,
-          p_note: note.value.trim(),
-          p_fee_mode: mode
-        }
-      );
+      const {data, error:e} =
+        await db.rpc(
+          'jeby_transfer_v2',
+          {
+            p_wallet_number:Number(r),
+            p_currency:currency.value,
+            p_amount:n,
+            p_note:note.value.trim(),
+            p_fee_mode:mode
+          }
+        );
 
       if (e) throw e;
 
@@ -1127,16 +1423,19 @@ function transfer() {
       check.checked = false;
 
       calc();
+
       await refresh();
 
       msg(
-        'نجح التحويل الافتراضي. رقم العملية: ' + data,
+        'نجح التحويل الافتراضي. رقم العملية: ' +
+        data,
         'notice success'
       );
 
     } catch (ex) {
       msg(
-        'لم يتم التحويل: ' + error(ex),
+        'لم يتم التحويل: ' +
+        error(ex),
         'notice error'
       );
     } finally {
@@ -1147,7 +1446,7 @@ function transfer() {
   p.append(f);
 }
 
-/* إنشاء مصفوفة الخدمات الحالية */
+/* إنشاء مصفوفة الخدمات */
 
 for (const [k,n,icon] of services) {
   const b = button(
@@ -1159,7 +1458,7 @@ for (const [k,n,icon] of services) {
   $('serviceGrid').append(b);
 }
 
-/* أزرار التنقل والمحفظة */
+/* التنقل والمحفظة */
 
 $('back').onclick = () => view('home');
 
@@ -1171,43 +1470,58 @@ $('toggleBalance').onclick = () => {
 };
 
 $('refresh').onclick = refresh;
+
 $('reloadHistory').onclick = loadHistory;
-$('historyCurrency').onchange = renderHistory;
-$('historyType').onchange = renderHistory;
+
+$('historyCurrency').onchange =
+  renderHistory;
+
+$('historyType').onchange =
+  renderHistory;
 
 $('copyWallet').onclick = async () => {
   try {
-    await navigator.clipboard.writeText(wallet);
-    msg('تم نسخ رقم المحفظة', 'notice success');
+    await navigator.clipboard.writeText(
+      wallet
+    );
+
+    msg(
+      'تم نسخ رقم المحفظة',
+      'notice success'
+    );
   } catch (e) {
-    msg('رقم المحفظة: ' + wallet);
+    msg(
+      'رقم المحفظة: ' + wallet
+    );
   }
 };
 
-document.querySelectorAll('[data-tab]').forEach(b => {
-  b.onclick = () => {
-    const v = b.dataset.tab;
+document
+  .querySelectorAll('[data-tab]')
+  .forEach(b => {
+    b.onclick = () => {
+      const v = b.dataset.tab;
 
-    if (v === 'services') {
-      view('home');
+      if (v === 'services') {
+        view('home');
 
-      $('serviceGrid').scrollIntoView({
-        behavior:'smooth'
-      });
-    } else {
-      view(v);
+        $('serviceGrid').scrollIntoView({
+          behavior:'smooth'
+        });
+      } else {
+        view(v);
 
-      if (v === 'reports') {
-        loadHistory();
+        if (v === 'reports') {
+          loadHistory();
+        }
+
+        window.scrollTo({
+          top:0,
+          behavior:'smooth'
+        });
       }
-
-      window.scrollTo({
-        top:0,
-        behavior:'smooth'
-      });
-    }
-  };
-});
+    };
+  });
 
 /* تسجيل الدخول */
 
@@ -1217,17 +1531,21 @@ $('signIn').onclick = async () => {
   $('signIn').disabled = true;
 
   try {
-    const {error:e} = await db.auth.signInWithPassword({
-      email: $('email').value.trim(),
-      password: $('password').value
-    });
+    const {error:e} =
+      await db.auth.signInWithPassword({
+        email:$('email').value.trim(),
+        password:$('password').value
+      });
 
     if (e) throw e;
 
     await authenticate();
 
   } catch (e) {
-    msg(error(e), 'notice error');
+    msg(
+      error(e),
+      'notice error'
+    );
   } finally {
     $('signIn').disabled = false;
   }
@@ -1238,30 +1556,44 @@ $('signIn').onclick = async () => {
 $('signUp').onclick = async () => {
   if (!db) return;
 
-  const name = $('fullName').value.trim();
-  const email = $('email').value.trim();
-  const password = $('password').value;
+  const name =
+    $('fullName').value.trim();
 
-  if (!name || !email || password.length < 10) {
+  const email =
+    $('email').value.trim();
+
+  const password =
+    $('password').value;
+
+  if (
+    !name ||
+    !email ||
+    password.length < 10
+  ) {
     msg(
       'أدخل الاسم والبريد وكلمة مرور من 10 أحرف على الأقل',
       'notice error'
     );
+
     return;
   }
 
   $('signUp').disabled = true;
 
   try {
-    const {data, error:e} = await db.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {full_name:name},
-        emailRedirectTo:
-          location.origin + '/participant.html'
-      }
-    });
+    const {data, error:e} =
+      await db.auth.signUp({
+        email,
+        password,
+        options:{
+          data:{
+            full_name:name
+          },
+          emailRedirectTo:
+            location.origin +
+            '/participant.html'
+        }
+      });
 
     if (e) throw e;
 
@@ -1275,7 +1607,10 @@ $('signUp').onclick = async () => {
     }
 
   } catch (e) {
-    msg(error(e), 'notice error');
+    msg(
+      error(e),
+      'notice error'
+    );
   } finally {
     $('signUp').disabled = false;
   }
@@ -1285,7 +1620,8 @@ $('signUp').onclick = async () => {
 
 $('signOut').onclick = async () => {
   try {
-    const {error:e} = await db.auth.signOut();
+    const {error:e} =
+      await db.auth.signOut();
 
     if (e) throw e;
 
@@ -1297,75 +1633,96 @@ $('signOut').onclick = async () => {
     );
 
   } catch (e) {
-    msg(error(e), 'notice error');
+    msg(
+      error(e),
+      'notice error'
+    );
   }
 };
 
 /* تغيير كلمة المرور */
 
-$('changePassword').onclick = async () => {
-  const old = $('currentPassword').value;
-  const p = $('newPassword').value;
-  const c = $('confirmPassword').value;
+$('changePassword').onclick =
+  async () => {
+    const old =
+      $('currentPassword').value;
 
-  if (
-    !old ||
-    p.length < 10 ||
-    p !== c ||
-    p === old
-  ) {
-    msg(
-      'تحقق من كلمة المرور الجديدة وتأكيدها',
-      'notice error'
-    );
-    return;
-  }
+    const p =
+      $('newPassword').value;
 
-  const b = $('changePassword');
-  b.disabled = true;
+    const c =
+      $('confirmPassword').value;
 
-  try {
-    const {error:e} = await db.auth.signInWithPassword({
-      email: user.email,
-      password: old
-    });
+    if (
+      !old ||
+      p.length < 10 ||
+      p !== c ||
+      p === old
+    ) {
+      msg(
+        'تحقق من كلمة المرور الجديدة وتأكيدها',
+        'notice error'
+      );
 
-    if (e) {
-      throw Error('كلمة المرور الحالية غير صحيحة');
+      return;
     }
 
-    const {error:x} = await db.auth.updateUser({
-      password:p
-    });
+    const b =
+      $('changePassword');
 
-    if (x) throw x;
+    b.disabled = true;
 
-    [
-      'currentPassword',
-      'newPassword',
-      'confirmPassword'
-    ].forEach(id => {
-      $(id).value = '';
-    });
+    try {
+      const {error:e} =
+        await db.auth.signInWithPassword({
+          email:user.email,
+          password:old
+        });
 
-    msg(
-      'تم تغيير كلمة المرور',
-      'notice success'
-    );
+      if (e) {
+        throw Error(
+          'كلمة المرور الحالية غير صحيحة'
+        );
+      }
 
-  } catch (e) {
-    msg(error(e), 'notice error');
-  } finally {
-    b.disabled = false;
-  }
-};
+      const {error:x} =
+        await db.auth.updateUser({
+          password:p
+        });
+
+      if (x) throw x;
+
+      [
+        'currentPassword',
+        'newPassword',
+        'confirmPassword'
+      ].forEach(id => {
+        $(id).value = '';
+      });
+
+      msg(
+        'تم تغيير كلمة المرور',
+        'notice success'
+      );
+
+    } catch (e) {
+      msg(
+        error(e),
+        'notice error'
+      );
+    } finally {
+      b.disabled = false;
+    }
+  };
 
 /* تهيئة اتصال قاعدة البيانات */
 
 (async () => {
   try {
     if (!window.supabase) {
-      throw Error('تعذر تحميل مكتبة الاتصال');
+      throw Error(
+        'تعذر تحميل مكتبة الاتصال'
+      );
     }
 
     db = window.supabase.createClient(
@@ -1376,7 +1733,10 @@ $('changePassword').onclick = async () => {
     await authenticate();
 
   } catch (e) {
-    msg(error(e), 'notice error');
+    msg(
+      error(e),
+      'notice error'
+    );
   }
 })();
 
@@ -1392,6 +1752,14 @@ $('changePassword').onclick = async () => {
 -->
 
 <script src="./participant-enhancements.js"></script>
+
+<!--
+  المرحلة الأولى:
+  واجهة الخدمات المالية التعليمية
+  وتقارير المشترك التمهيدية
+-->
+
+<script src="./participant-phase1.js"></script>
 
 </body>
 </html>
