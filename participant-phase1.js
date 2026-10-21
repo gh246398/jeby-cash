@@ -1,193 +1,408 @@
 
 /*
-  JEBY CASH
-  Phase 1 — Subscriber Services
-  Educational simulation only
+ JEBY CASH — Unified Subscriber Dashboard
+ Version 3.0
+ Educational simulation only
 */
 
 (function () {
   "use strict";
 
-  const STYLE_ID = "jeby-phase1-style";
-  const PANEL_ID = "jeby-phase1-panel";
+  const STYLE_ID = "jeby-unified-v3-style";
+  const PERSONAL_SERVICES_ID = "jeby-personal-services";
+  const FINANCIAL_SERVICES_ID = "jeby-financial-services";
+
+  function element(tag, className, text) {
+    const node = document.createElement(tag);
+
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+
+    return node;
+  }
 
   function addStyles() {
     if (document.getElementById(STYLE_ID)) return;
 
-    const style = document.createElement("style");
+    const style = element("style");
     style.id = STYLE_ID;
+
     style.textContent = `
-      #${PANEL_ID} {
-        direction: rtl;
-        margin: 20px auto;
-        padding: 18px;
-        max-width: 1100px;
-        background: #fff;
-        border: 1px solid #e8dce1;
-        border-radius: 16px;
-        font-family: Tahoma, Arial, sans-serif;
+      .jeby-group {
+        margin-bottom: 15px;
       }
 
-      #${PANEL_ID} h2 {
+      .jeby-group-title {
         color: #571d35;
-        margin: 0 0 8px;
+        font-size: 19px;
+        margin: 0 0 9px;
       }
 
-      #${PANEL_ID} .jeby-note {
-        color: #66565d;
-        font-size: 13px;
+      .jeby-group-desc {
+        color: #76676f;
+        font-size: 12px;
         line-height: 1.8;
+        margin: 0 0 15px;
       }
 
-      #${PANEL_ID} .jeby-grid {
+      .jeby-group-grid {
         display: grid;
-        grid-template-columns:
-          repeat(auto-fit, minmax(160px, 1fr));
-        gap: 12px;
-        margin-top: 16px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 9px;
       }
 
-      #${PANEL_ID} .jeby-tile {
-        padding: 20px 12px;
-        border: 1px solid #e8dce1;
-        border-radius: 12px;
-        background: #fcf9f7;
+      .jeby-group-tile {
+        min-width: 0;
+        min-height: 96px;
+        padding: 12px 5px;
+        border: 1px solid #eaded6;
+        border-radius: 13px;
+        background: #fcf8f5;
         color: #571d35;
-        cursor: pointer;
-        font: inherit;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
         text-align: center;
+        font-size: 12px;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
       }
 
-      #${PANEL_ID} .jeby-tile:hover {
-        background: #f3e9e8;
+      .jeby-group-tile:focus-visible {
+        outline: 3px solid #b58b42;
+        outline-offset: 2px;
       }
 
-      #${PANEL_ID} .jeby-icon {
-        display: block;
-        font-size: 30px;
-        margin-bottom: 10px;
+      .jeby-group-icon {
+        font-size: 27px;
+        line-height: 1.2;
       }
 
-      #${PANEL_ID} .jeby-detail {
-        margin-top: 16px;
-        padding: 15px;
-        background: #f8f4f0;
+      .jeby-group-note {
+        background: #fff2d8;
+        border: 1px solid #e4c899;
+        color: #624521;
+        padding: 11px;
         border-radius: 12px;
-        line-height: 2;
+        font-size: 12px;
+        line-height: 1.8;
+        margin-top: 12px;
       }
 
-      #${PANEL_ID} .jeby-detail[hidden] {
-        display: none;
+      #serviceGrid .service {
+        min-width: 0;
+        padding: 10px 5px;
+        overflow-wrap: anywhere;
+      }
+
+      @media (max-width: 360px) {
+        .jeby-group-grid,
+        #serviceGrid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
       }
     `;
 
     document.head.appendChild(style);
   }
 
-  const services = [
-    {
-      title: "نظامي المالي",
-      icon: "📊",
-      description:
-        "تصنيف العمليات المالية ومتابعة الإيرادات " +
-        "والمصروفات والتقارير."
-    },
-    {
-      title: "تقاريري المالية",
-      icon: "📈",
-      description:
-        "تقارير يومية وأسبوعية ونصف شهرية وشهرية، " +
-        "مع تحليل الحركة حسب العملة."
-    },
-    {
-      title: "ميزانياتي",
-      icon: "🎯",
-      description:
-        "إعداد ميزانيات تدريبية للمصروفات " +
-        "ومتابعة الانحرافات."
-    },
-    {
-      title: "مرتبات وحوافز الموظفين",
-      icon: "👥",
-      description:
-        "خدمة مخصصة للحسابات التجارية. " +
-        "تتطلب تفعيل نوع الحساب والصلاحيات " +
-        "قبل السماح بصرف أي مبالغ افتراضية."
-    }
-  ];
+  function createTile(icon, title, action) {
+    const button = element(
+      "button",
+      "jeby-group-tile"
+    );
 
-  function createPanel() {
-    if (document.getElementById(PANEL_ID)) return;
+    button.type = "button";
+
+    const symbol = element(
+      "span",
+      "jeby-group-icon",
+      icon
+    );
+
+    const label = element("span", "", title);
+
+    button.append(symbol, label);
+    button.addEventListener("click", action);
+
+    return button;
+  }
+
+  function showNotice(title, description) {
+    const overlay = element("div", "dialogback");
+    const panel = element("div", "dialog");
+
+    panel.append(
+      element("h2", "", title),
+      element("p", "muted", description)
+    );
+
+    const close = element(
+      "button",
+      "full",
+      "إغلاق"
+    );
+
+    close.type = "button";
+    close.onclick = () => overlay.remove();
+
+    panel.append(close);
+    overlay.append(panel);
+
+    overlay.addEventListener("click", event => {
+      if (event.target === overlay) overlay.remove();
+    });
+
+    document.body.append(overlay);
+  }
+
+  function openReports() {
+    const tab = document.querySelector(
+      '[data-tab="reports"]'
+    );
+
+    if (tab) tab.click();
+  }
+
+  function openProfile() {
+    const tab = document.querySelector(
+      '[data-tab="profile"]'
+    );
+
+    if (tab) tab.click();
+  }
+
+  function makeGroup(id, title, description) {
+    const section = element(
+      "section",
+      "card jeby-group"
+    );
+
+    section.id = id;
+
+    section.append(
+      element("h2", "jeby-group-title", title),
+      element("p", "jeby-group-desc", description)
+    );
+
+    const grid = element(
+      "div",
+      "jeby-group-grid"
+    );
+
+    section.append(grid);
+
+    return { section, grid };
+  }
+
+  function findExistingButton(container, title) {
+    if (!container) return null;
+
+    return Array.from(
+      container.querySelectorAll("button")
+    ).find(button =>
+      button.textContent.includes(title)
+    ) || null;
+  }
+
+  function buildDashboard() {
+    const home = document.getElementById("homeView");
+    const serviceGrid = document.getElementById("serviceGrid");
+
+    if (!home || !serviceGrid) return;
+
+    if (document.getElementById(FINANCIAL_SERVICES_ID)) {
+      return;
+    }
 
     addStyles();
 
-    const panel = document.createElement("section");
-    panel.id = PANEL_ID;
+    // إزالة القسم التمهيدي المكرر.
+    const oldPanel = document.getElementById(
+      "jeby-phase1-panel"
+    );
 
-    const heading = document.createElement("h2");
-    heading.textContent = "خدمات المشترك — المرحلة الأولى";
+    if (oldPanel) oldPanel.remove();
 
-    const note = document.createElement("p");
-    note.className = "jeby-note";
-    note.textContent =
-      "هذه واجهة تمهيدية للخدمات قيد التطوير. " +
-      "لا تنفذ تحويلات أو خصومات أو إضافات إلى الرصيد.";
+    const oldExtras = document.getElementById(
+      "jebyExtras"
+    );
 
-    const grid = document.createElement("div");
-    grid.className = "jeby-grid";
+    // الاحتفاظ بالأزرار القديمة الفعالة.
+    const customize = findExistingButton(
+      oldExtras,
+      "تخصيص خدماتي"
+    );
 
-    const detail = document.createElement("div");
-    detail.className = "jeby-detail";
-    detail.hidden = true;
-    detail.setAttribute("role", "status");
-    detail.setAttribute("aria-live", "polite");
+    const feedback = findExistingButton(
+      oldExtras,
+      "شاركنا رأيك"
+    );
 
-    services.forEach(function (service) {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "jeby-tile";
+    // القسم الأول: العمليات المالية.
+    const originalCard = serviceGrid.closest(".card");
 
-      const icon = document.createElement("span");
-      icon.className = "jeby-icon";
-      icon.textContent = service.icon;
+    if (originalCard) {
+      const heading = originalCard.querySelector("h2");
 
-      const label = document.createElement("span");
-      label.textContent = service.title;
+      if (heading) {
+        heading.textContent = "العمليات المالية";
+      }
 
-      button.appendChild(icon);
-      button.appendChild(label);
+      originalCard.classList.add("jeby-group");
 
-      button.addEventListener("click", function () {
-        detail.hidden = false;
-        detail.textContent =
-          service.title + " — " + service.description +
-          " هذه الخدمة لم تُفعّل بعد.";
-      });
+      const description = element(
+        "p",
+        "jeby-group-desc",
+        "التحويلات والإيداع والسحب والسداد والمشتريات."
+      );
 
-      grid.appendChild(button);
+      if (heading) {
+        heading.insertAdjacentElement(
+          "afterend",
+          description
+        );
+      }
+    }
+
+    // القسم الثاني: الإدارة المالية والتخطيط.
+    const financial = makeGroup(
+      FINANCIAL_SERVICES_ID,
+      "الإدارة المالية والتخطيط",
+      "متابعة أموالك الافتراضية والتخطيط والادخار والتقارير."
+    );
+
+    financial.grid.append(
+      createTile("📊", "نظامي المالي", () => {
+        showNotice(
+          "نظامي المالي",
+          "يجري تطوير تصنيف الإيرادات والمصروفات " +
+          "وربط العمليات بالتقارير المالية التدريبية."
+        );
+      }),
+
+      createTile("🎯", "ميزانياتي", () => {
+        showNotice(
+          "ميزانياتي",
+          "يجري تجهيز الميزانيات التدريبية " +
+          "ومتابعة الانحرافات بين المخطط والفعلي."
+        );
+      }),
+
+      createTile("🏦", "الادخار", () => {
+        const button = findExistingButton(
+          serviceGrid,
+          "الادخار"
+        );
+
+        if (button) button.click();
+      }),
+
+      createTile("📁", "مشاريعي", () => {
+        const button = findExistingButton(
+          serviceGrid,
+          "إدارة المشاريع"
+        );
+
+        if (button) button.click();
+      }),
+
+      createTile("📈", "التقارير", openReports)
+    );
+
+    // الرواتب: لا تظهر دون صلاحية تجارية موثوقة.
+    // يُضاف الزر هنا مستقبلًا بعد التحقق من نوع الحساب
+    // على الخادم وتفعيل صلاحيات خدمة الرواتب.
+    //
+    // الاسم المعتمد:
+    // "رواتب وحوافز الموظفين"
+
+    // إخفاء تكرار الادخار والمشاريع في العمليات.
+    // تظل الأزرار الأصلية موجودة لتعمل وظائفها.
+    ["الادخار", "إدارة المشاريع"].forEach(title => {
+      const button = findExistingButton(
+        serviceGrid,
+        title
+      );
+
+      if (button) {
+        button.style.display = "none";
+      }
     });
 
-    panel.appendChild(heading);
-    panel.appendChild(note);
-    panel.appendChild(grid);
-    panel.appendChild(detail);
+    // القسم الثالث: الخدمات الشخصية.
+    const personal = makeGroup(
+      PERSONAL_SERVICES_ID,
+      "الخدمات الشخصية والمساندة",
+      "تخصيص الواجهة والتواصل وإعدادات الحساب."
+    );
 
-    const main = document.querySelector("main");
-
-    if (main) {
-      main.appendChild(panel);
+    if (customize) {
+      customize.className = "jeby-group-tile";
+      personal.grid.append(customize);
     } else {
-      document.body.appendChild(panel);
+      personal.grid.append(
+        createTile("⚙️", "تخصيص خدماتي", () => {
+          showNotice(
+            "تخصيص خدماتي",
+            "خدمة التخصيص غير متاحة حاليًا."
+          );
+        })
+      );
     }
+
+    if (feedback) {
+      feedback.className = "jeby-group-tile";
+      personal.grid.append(feedback);
+    } else {
+      personal.grid.append(
+        createTile("💬", "شاركنا رأيك", () => {
+          showNotice(
+            "شاركنا رأيك",
+            "يجري تجهيز استقبال المقترحات والملاحظات."
+          );
+        })
+      );
+    }
+
+    personal.grid.append(
+      createTile("🔐", "الأمان والحساب", openProfile)
+    );
+
+    // إدراج القسمين بعد العمليات المالية.
+    if (originalCard) {
+      originalCard.insertAdjacentElement(
+        "afterend",
+        financial.section
+      );
+
+      financial.section.insertAdjacentElement(
+        "afterend",
+        personal.section
+      );
+    } else {
+      home.append(financial.section, personal.section);
+    }
+
+    // إزالة قسم الخدمات الذكية القديم بعد نقل أزراره.
+    if (oldExtras) oldExtras.remove();
+
+    // لا يتم تنفيذ أي عملية مالية جديدة من هذا الملف.
+  }
+
+  function init() {
+    buildDashboard();
   }
 
   if (document.readyState === "loading") {
     document.addEventListener(
       "DOMContentLoaded",
-      createPanel,
+      init,
       { once: true }
     );
   } else {
-    createPanel();
+    init();
   }
 })();
