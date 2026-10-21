@@ -1,7 +1,7 @@
 
 /*
- JEBY CASH — Participant Dashboard V6
- Compact services + Payroll Statement
+ JEBY CASH — Participant Dashboard V7
+ Secure Wallet Name Lookup + Payroll Statement
  EDUCATIONAL SIMULATION ONLY
 */
 
@@ -11,18 +11,18 @@
   const $ = id => document.getElementById(id);
 
   function el(tag, cls = "", text = "") {
-    const x = document.createElement(tag);
-    if (cls) x.className = cls;
-    if (text !== "") x.textContent = text;
-    return x;
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== "") e.textContent = text;
+    return e;
   }
 
-  function css() {
-    if ($("jc-v6-css")) return;
+  function styles() {
+    if ($("jc-v7-css")) return;
 
-    const s = el("style");
-    s.id = "jc-v6-css";
-    s.textContent = `
+    const style = el("style");
+    style.id = "jc-v7-css";
+    style.textContent = `
       #serviceGrid,.jc-grid {
         display:grid!important;
         grid-template-columns:repeat(4,minmax(0,1fr))!important;
@@ -45,18 +45,12 @@
         font:500 10px/1.5 Tahoma,Arial,sans-serif!important;
         text-align:center;
         overflow-wrap:anywhere;
-        box-shadow:none!important;
       }
-      .jc-icon{font-size:22px;line-height:1.2}
+      .jc-icon{font-size:22px}
       .jc-label{font-size:10px;line-height:1.5}
       .jc-section{padding:14px 12px;margin-bottom:13px}
       .jc-section h2{font-size:16px;margin:0 0 7px}
-      .jc-desc {
-        font-size:11px;
-        color:#80737a;
-        margin:0 0 12px;
-        line-height:1.7;
-      }
+      .jc-desc{font-size:11px;color:#80737a;margin:0 0 12px}
       .jc-hidden{display:none!important}
       .jc-overlay {
         position:fixed;
@@ -113,7 +107,6 @@
         background:#571d35;
         color:white;
         padding:9px 4px;
-        font-size:11px;
         text-align:center;
       }
       .jc-table td {
@@ -125,10 +118,10 @@
         padding:8px 4px;
         font-size:11px;
       }
-      .jc-table td:first-child{width:31%}
-      .jc-table td:nth-child(2){width:38%}
-      .jc-table td:nth-child(3){width:23%}
-      .jc-table td:last-child{width:8%}
+      .jc-table th:first-child{width:31%}
+      .jc-table th:nth-child(2){width:38%}
+      .jc-table th:nth-child(3){width:23%}
+      .jc-table th:last-child{width:8%}
       .jc-owner {
         font-size:11px;
         line-height:1.6;
@@ -153,17 +146,8 @@
         font-size:12px;
         line-height:2;
       }
-      .jc-summary strong{color:#571d35}
-      .jc-words {
-        margin-top:6px;
-        font-weight:bold;
-        line-height:1.9;
-      }
-      .jc-actions {
-        display:flex;
-        gap:8px;
-        margin-top:12px;
-      }
+      .jc-words{font-weight:bold;line-height:1.9}
+      .jc-actions{display:flex;gap:8px;margin-top:12px}
       .jc-actions button {
         flex:1;
         padding:11px 5px;
@@ -198,7 +182,7 @@
         }
       }
     `;
-    document.head.append(s);
+    document.head.append(style);
   }
 
   function tile(icon, title, action) {
@@ -208,7 +192,7 @@
       el("span", "jc-icon", icon),
       el("span", "jc-label", title)
     );
-    b.addEventListener("click", action);
+    b.onclick = action;
     return b;
   }
 
@@ -224,17 +208,10 @@
     return { box, grid };
   }
 
-  function findButton(parent, title) {
+  function findButton(parent, name) {
     if (!parent) return null;
     return [...parent.querySelectorAll("button")]
-      .find(b => b.textContent.includes(title)) || null;
-  }
-
-  function tab(name) {
-    const b = document.querySelector(
-      '[data-tab="' + name + '"]'
-    );
-    if (b) b.click();
+      .find(b => b.textContent.includes(name)) || null;
   }
 
   function originalService(name) {
@@ -242,16 +219,21 @@
     if (b) b.click();
   }
 
-  function info(title, description) {
+  function tab(name) {
+    document.querySelector(
+      '[data-tab="' + name + '"]'
+    )?.click();
+  }
+
+  function info(title, text) {
     const back = el("div", "jc-overlay");
     const panel = el("div", "jc-modal");
     const close = el("button", "full", "إغلاق");
-    close.type = "button";
     close.onclick = () => back.remove();
 
     panel.append(
       el("h2", "", title),
-      el("p", "jc-muted", description),
+      el("p", "jc-muted", text),
       close
     );
     back.append(panel);
@@ -274,37 +256,44 @@
   const ONES = [
     "", "واحد", "اثنان", "ثلاثة", "أربعة",
     "خمسة", "ستة", "سبعة", "ثمانية", "تسعة",
-    "عشرة", "أحد عشر", "اثنا عشر", "ثلاثة عشر",
-    "أربعة عشر", "خمسة عشر", "ستة عشر",
-    "سبعة عشر", "ثمانية عشر", "تسعة عشر"
+    "عشرة", "أحد عشر", "اثنا عشر",
+    "ثلاثة عشر", "أربعة عشر", "خمسة عشر",
+    "ستة عشر", "سبعة عشر", "ثمانية عشر",
+    "تسعة عشر"
   ];
 
   const TENS = [
     "", "", "عشرون", "ثلاثون", "أربعون",
-    "خمسون", "ستون", "سبعون", "ثمانون", "تسعون"
+    "خمسون", "ستون", "سبعون", "ثمانون",
+    "تسعون"
   ];
 
   const HUNDREDS = [
     "", "مائة", "مائتان", "ثلاثمائة",
     "أربعمائة", "خمسمائة", "ستمائة",
-    "سبعمائة", "ثمانمائة", "تسعمائة"
+    "سبعمائة", "سبعمائة", "ثمانمائة",
+    "تسعمائة"
   ];
 
+  // تصحيح قيم المئات
+  HUNDREDS[7] = "سبعمائة";
+  HUNDREDS[8] = "ثمانمائة";
+  HUNDREDS[9] = "تسعمائة";
+
   function underThousand(n) {
-    n = Math.floor(n);
     const parts = [];
-    const hundreds = Math.floor(n / 100);
-    const remainder = n % 100;
+    const h = Math.floor(n / 100);
+    const r = n % 100;
 
-    if (hundreds) parts.push(HUNDREDS[hundreds]);
+    if (h) parts.push(HUNDREDS[h]);
 
-    if (remainder < 20) {
-      if (remainder) parts.push(ONES[remainder]);
+    if (r < 20) {
+      if (r) parts.push(ONES[r]);
     } else {
-      const units = remainder % 10;
-      const tens = Math.floor(remainder / 10);
-      if (units) parts.push(ONES[units]);
-      parts.push(TENS[tens]);
+      const u = r % 10;
+      const t = Math.floor(r / 10);
+      if (u) parts.push(ONES[u]);
+      parts.push(TENS[t]);
     }
 
     return parts.join(" و");
@@ -319,14 +308,12 @@
     return underThousand(n) + " " + singular;
   }
 
-  function integerWords(number) {
-    if (!Number.isSafeInteger(number) || number < 0) {
+  function integerWords(n) {
+    if (!Number.isSafeInteger(n) || n < 0) {
       return "المبلغ خارج نطاق التحويل الكتابي";
     }
+    if (n === 0) return "صفر";
 
-    if (number === 0) return "صفر";
-
-    const groups = [];
     const scales = [
       null,
       ["ألف", "ألفان", "آلاف"],
@@ -335,7 +322,7 @@
       ["تريليون", "تريليونان", "تريليونات"]
     ];
 
-    let n = number;
+    const parts = [];
     let level = 0;
 
     while (n > 0) {
@@ -343,9 +330,9 @@
 
       if (part) {
         if (level === 0) {
-          groups.unshift(underThousand(part));
+          parts.unshift(underThousand(part));
         } else if (scales[level]) {
-          groups.unshift(
+          parts.unshift(
             scaleText(part, ...scales[level])
           );
         } else {
@@ -357,7 +344,7 @@
       level++;
     }
 
-    return groups.join(" و");
+    return parts.join(" و");
   }
 
   function amountWords(cents, currency) {
@@ -383,6 +370,7 @@
     }
 
     const [whole, fraction = ""] = value.split(".");
+
     const cents =
       Number(whole) * 100 +
       Number(fraction.padEnd(2, "0"));
@@ -403,64 +391,61 @@
 
   function field(parent, label, type, options) {
     const wrap = el("div");
-    const l = el("label", "", label);
-    const input = el(type === "select" ? "select" : "input");
+    const lab = el("label", "", label);
+    const input = el(
+      type === "select" ? "select" : "input"
+    );
 
     if (type === "select") {
-      options.forEach(([value, title]) => {
-        const option = el("option", "", title);
-        option.value = value;
-        input.append(option);
+      options.forEach(([value, name]) => {
+        const opt = el("option", "", name);
+        opt.value = value;
+        input.append(opt);
       });
     } else {
       input.type = type;
     }
 
-    wrap.append(l, input);
+    wrap.append(lab, input);
     parent.append(wrap);
     return input;
   }
 
   function payroll() {
-    if ($("jc-payroll-v6")) return;
+    if ($("jc-payroll-v7")) return;
 
     const overlay = el("div", "jc-overlay");
-    overlay.id = "jc-payroll-v6";
+    overlay.id = "jc-payroll-v7";
 
     const panel = el("div", "jc-modal");
     panel.setAttribute("role", "dialog");
     panel.setAttribute("aria-modal", "true");
-    panel.setAttribute(
-      "aria-label",
-      "كشف الصرف الجماعي"
+
+    const header = el("div");
+    header.style.display = "flex";
+    header.style.justifyContent = "space-between";
+    header.style.alignItems = "center";
+
+    const close = el(
+      "button",
+      "jc-remove",
+      "إغلاق ✕"
     );
-
-    const head = el("div");
-    head.style.display = "flex";
-    head.style.justifyContent = "space-between";
-    head.style.alignItems = "center";
-    head.style.gap = "8px";
-
-    const heading = el(
-      "h2",
-      "",
-      "👥 رواتب وحوافز الموظفين"
-    );
-
-    const close = el("button", "jc-remove", "إغلاق ✕");
     close.type = "button";
     close.onclick = () => overlay.remove();
 
-    head.append(heading, close);
-    panel.append(head);
+    header.append(
+      el("h2", "", "👥 رواتب وحوافز الموظفين"),
+      close
+    );
+    panel.append(header);
 
     panel.append(
       el(
         "p",
         "jc-muted",
-        "كشف صرف تدريبي. تُعرض أسماء المحافظ " +
-        "المتحقق منها فقط، ولا يتم خصم أي مبلغ " +
-        "قبل تفعيل التنفيذ الآمن."
+        "كشف صرف تدريبي. يتم التحقق من أسماء " +
+        "المستفيدين عبر خدمة آمنة في Supabase."
       )
     );
 
@@ -513,20 +498,19 @@
 
     const tableWrap = el("div", "jc-tablewrap");
     const table = el("table", "jc-table");
-
     const thead = el("thead");
-    const hr = el("tr");
+    const headerRow = el("tr");
 
     [
       "رقم المحفظة",
       "اسم صاحب المحفظة",
       "المبلغ",
       ""
-    ].forEach(t => {
-      hr.append(el("th", "", t));
+    ].forEach(name => {
+      headerRow.append(el("th", "", name));
     });
 
-    thead.append(hr);
+    thead.append(headerRow);
     table.append(thead);
 
     const tbody = el("tbody");
@@ -565,8 +549,6 @@
     );
     execute.type = "button";
     execute.disabled = true;
-    execute.title =
-      "يتطلب عملية صرف جماعي آمنة في قاعدة البيانات";
 
     actions.append(review, execute);
     panel.append(actions);
@@ -575,19 +557,20 @@
       el(
         "p",
         "jc-muted",
-        "تنبيه: هذه شاشة إعداد ومراجعة فقط. " +
-        "لم يُفعّل صرف الأرصدة أو إصدار رقم عملية."
+        "تنبيه: تنفيذ الصرف غير مفعّل حاليًا. " +
+        "لن يُخصم أي مبلغ من المحافظ."
       )
     );
 
     const rows = [];
-    let sequence = 0;
 
     function currentDB() {
-      // إعادة استخدام عميل Supabase الخاص بالصفحة.
-      return typeof db !== "undefined" ? db : null;
+      return typeof db !== "undefined"
+        ? db
+        : null;
     }
 
+    // التحقق الآمن من اسم صاحب المحفظة
     async function lookup(item) {
       const wallet = item.wallet.value.trim();
 
@@ -604,8 +587,14 @@
         return;
       }
 
-      item.name.textContent = "جارٍ التحقق...";
-      item.name.className = "jc-owner jc-pending";
+      if (
+        !/^\d{6,15}$/.test(wallet) ||
+        !Number.isSafeInteger(Number(wallet))
+      ) {
+        item.name.textContent = "رقم المحفظة غير صحيح";
+        item.name.className = "jc-owner jc-bad";
+        return;
+      }
 
       const client = currentDB();
 
@@ -615,12 +604,14 @@
         return;
       }
 
+      item.name.textContent = "جارٍ التحقق...";
+      item.name.className = "jc-owner jc-pending";
+
       try {
-        const { data, error } = await client
-          .from("jeby_profiles")
-          .select("full_name,wallet_number")
-          .eq("wallet_number", wallet)
-          .maybeSingle();
+        const { data: results, error } = await client
+          .rpc("jeby_lookup_wallet_name", {
+            p_wallet_number: Number(wallet)
+          });
 
         if (
           ticket !== item.lookupSequence ||
@@ -629,15 +620,34 @@
         ) return;
 
         if (error) {
-          item.name.textContent =
-            "تعذر التحقق من الاسم";
+          const msg = String(error.message || "");
+
+          if (
+            msg.includes("limit reached")
+          ) {
+            item.name.textContent =
+              "تجاوزت حد التحقق المسموح لهذه الساعة";
+          } else if (
+            msg.includes("Authentication required")
+          ) {
+            item.name.textContent =
+              "يرجى تسجيل الدخول مجددًا";
+          } else {
+            item.name.textContent =
+              "تعذر التحقق من الاسم";
+          }
+
           item.name.className = "jc-owner jc-bad";
           return;
         }
 
+        const data = Array.isArray(results)
+          ? results[0]
+          : null;
+
         if (!data || !data.full_name) {
           item.name.textContent =
-            "محفظة غير موجودة أو غير متاحة للتحقق";
+            "محفظة غير موجودة";
           item.name.className = "jc-owner jc-bad";
           return;
         }
@@ -648,9 +658,10 @@
         item.name.textContent = data.full_name;
         item.name.className = "jc-owner jc-ok";
 
-      } catch (_) {
+      } catch (e) {
         if (ticket !== item.lookupSequence) return;
-        item.name.textContent = "فشل التحقق";
+
+        item.name.textContent = "فشل الاتصال";
         item.name.className = "jc-owner jc-bad";
       }
     }
@@ -659,12 +670,13 @@
       if (rows.length >= 100) {
         info(
           "الحد الأقصى",
-          "يمكن إعداد كشف يضم حتى 100 مستفيد."
+          "الحد الأقصى للكشف 100 مستفيد."
         );
         return;
       }
 
       const tr = el("tr");
+
       const walletCell = el("td");
       const nameCell = el("td");
       const amountCell = el("td");
@@ -674,10 +686,6 @@
       wallet.type = "text";
       wallet.placeholder = "رقم المحفظة";
       wallet.autocomplete = "off";
-      wallet.setAttribute(
-        "aria-label",
-        "رقم محفظة المستفيد"
-      );
 
       const name = el(
         "div",
@@ -689,10 +697,6 @@
       amount.type = "text";
       amount.inputMode = "decimal";
       amount.placeholder = "0.00";
-      amount.setAttribute(
-        "aria-label",
-        "مبلغ المستفيد"
-      );
 
       const remove = el(
         "button",
@@ -700,10 +704,6 @@
         "×"
       );
       remove.type = "button";
-      remove.setAttribute(
-        "aria-label",
-        "حذف المستفيد"
-      );
 
       walletCell.append(wallet);
       nameCell.append(name);
@@ -720,7 +720,10 @@
       tbody.append(tr);
 
       const item = {
-        tr, wallet, name, amount,
+        tr,
+        wallet,
+        name,
+        amount,
         verified: false,
         owner: "",
         checkedWallet: "",
@@ -733,18 +736,25 @@
 
       wallet.addEventListener("input", () => {
         clearTimeout(debounce);
+
         item.lookupSequence++;
         item.verified = false;
         item.checkedWallet = "";
         item.owner = "";
+
         item.name.textContent = "بانتظار التحقق";
         item.name.className = "jc-owner jc-pending";
-        debounce = setTimeout(() => lookup(item), 450);
+
+        debounce = setTimeout(() => {
+          lookup(item);
+        }, 600);
+
         update();
       });
 
       wallet.addEventListener("blur", () => {
         clearTimeout(debounce);
+
         if (
           wallet.value.trim() &&
           item.checkedWallet !== wallet.value.trim()
@@ -757,9 +767,12 @@
 
       remove.onclick = () => {
         if (rows.length === 1) return;
+
         item.lookupSequence++;
+
         const i = rows.indexOf(item);
         if (i >= 0) rows.splice(i, 1);
+
         tr.remove();
         update();
       };
@@ -769,13 +782,16 @@
 
     function calculate() {
       let total = 0;
-      let validAmounts = true;
+      let valid = true;
 
       rows.forEach(item => {
         const cents = parseCents(item.amount.value);
 
-        if (item.amount.value.trim() && cents === null) {
-          validAmounts = false;
+        if (
+          item.amount.value.trim() &&
+          cents === null
+        ) {
+          valid = false;
         }
 
         if (cents !== null) {
@@ -784,31 +800,32 @@
       });
 
       if (!Number.isSafeInteger(total)) {
-        validAmounts = false;
+        valid = false;
       }
 
-      return { total, validAmounts };
+      return { total, valid };
     }
 
     function update() {
       add.hidden = mode.value === "single";
 
-      const result = calculate();
-      const total = result.total;
-
+      const { total, valid } = calculate();
       const count = rows.length;
-      const label = TYPES[kind.value];
 
-      const words = result.validAmounts
+      const words = valid
         ? amountWords(total, currency.value)
         : "راجع المبالغ المدخلة";
 
       summary.replaceChildren(
-        el("div", "", "نوع العملية: " + label),
         el(
           "div",
           "",
-          "عدد المستفيدين في الكشف: " + count
+          "نوع العملية: " + TYPES[kind.value]
+        ),
+        el(
+          "div",
+          "",
+          "عدد المستفيدين: " + count
         ),
         el(
           "div",
@@ -824,7 +841,7 @@
         el(
           "div",
           "",
-          "البيان: " + label +
+          "البيان: " + TYPES[kind.value] +
           " لعدد (" + count + ") مستفيد" +
           (period.value.trim()
             ? " — " + period.value.trim()
@@ -833,8 +850,7 @@
         el(
           "div",
           "",
-          "العمولات: غير محسوبة — " +
-          "تحدد عند تفعيل الصرف"
+          "العمولات: تُحدد عند تفعيل الصرف"
         )
       );
 
@@ -844,24 +860,26 @@
     function validate() {
       const issues = [];
       const seen = new Set();
-      const calc = calculate();
+      const result = calculate();
 
-      if (!calc.validAmounts) {
-        issues.push("يوجد مبلغ غير صحيح أو كبير جدًا.");
+      if (!result.valid) {
+        issues.push("يوجد مبلغ غير صحيح.");
       }
 
       rows.forEach((item, i) => {
+        const n = i + 1;
         const wallet = item.wallet.value.trim();
         const cents = parseCents(item.amount.value);
-        const n = i + 1;
 
         if (!wallet) {
           issues.push(
-            "المستفيد " + n + ": رقم المحفظة مطلوب."
+            "المستفيد " + n +
+            ": رقم المحفظة مطلوب."
           );
         } else if (seen.has(wallet)) {
           issues.push(
-            "المستفيد " + n + ": رقم محفظة مكرر."
+            "المستفيد " + n +
+            ": رقم المحفظة مكرر."
           );
         } else {
           seen.add(wallet);
@@ -896,12 +914,14 @@
         rows.length > 1
       ) {
         mode.value = "multiple";
+
         info(
           "طريقة الصرف",
           "احذف المستفيدين الإضافيين أولًا " +
           "للعودة إلى حساب واحد."
         );
       }
+
       update();
     };
 
@@ -930,24 +950,24 @@
 
       const { total } = calculate();
 
-      const reviewPanel = el("div", "jc-summary");
+      const result = el("div", "jc-summary");
 
-      reviewPanel.append(
+      result.append(
         el("strong", "", "مراجعة كشف الصرف"),
         el(
           "div",
           "",
-          "النوع: " + TYPES[kind.value]
+          "نوع العملية: " + TYPES[kind.value]
         ),
         el(
           "div",
           "",
-          "المستفيدون: " + rows.length
+          "عدد المستفيدين: " + rows.length
         )
       );
 
       rows.forEach((item, i) => {
-        reviewPanel.append(
+        result.append(
           el(
             "div",
             "",
@@ -960,7 +980,7 @@
         );
       });
 
-      reviewPanel.append(
+      result.append(
         el(
           "div",
           "jc-words",
@@ -979,19 +999,24 @@
         )
       );
 
-      errors.append(reviewPanel);
-      reviewPanel.scrollIntoView({
+      errors.append(result);
+
+      result.scrollIntoView({
         behavior: "smooth",
         block: "nearest"
       });
     };
 
     overlay.addEventListener("click", event => {
-      if (event.target === overlay) overlay.remove();
+      if (event.target === overlay) {
+        overlay.remove();
+      }
     });
 
     overlay.addEventListener("keydown", event => {
-      if (event.key === "Escape") overlay.remove();
+      if (event.key === "Escape") {
+        overlay.remove();
+      }
     });
 
     overlay.append(panel);
@@ -1005,32 +1030,34 @@
   function init() {
     const grid = $("serviceGrid");
 
-    if (!grid || $("jc-finance-v6")) return;
+    if (!grid || $("jc-finance-v7")) return;
 
-    css();
+    styles();
 
-    const serviceCard = grid.closest(".card");
-    if (!serviceCard) return;
+    const card = grid.closest(".card");
+    if (!card) return;
 
-    serviceCard.classList.add("jc-section");
+    card.classList.add("jc-section");
 
-    const heading = serviceCard.querySelector("h2");
+    const heading = card.querySelector("h2");
     if (heading) {
       heading.textContent = "العمليات المالية";
     }
 
     const extras = $("jebyExtras");
+
     const customize = findButton(
       extras,
       "تخصيص خدماتي"
     );
+
     const feedback = findButton(
       extras,
       "شاركنا رأيك"
     );
 
     const finance = section(
-      "jc-finance-v6",
+      "jc-finance-v7",
       "الإدارة المالية والتخطيط",
       "خدمات الادخار والتقارير وكشوف الصرف."
     );
@@ -1042,21 +1069,26 @@
           "يجري تطوير تصنيف الإيرادات والمصروفات."
         );
       }),
+
       tile("🎯", "ميزانياتي", () => {
         info(
           "ميزانياتي",
           "يجري تطوير الميزانيات التدريبية."
         );
       }),
+
       tile("🏦", "الادخار", () => {
         originalService("الادخار");
       }),
+
       tile("📁", "مشاريعي", () => {
         originalService("إدارة المشاريع");
       }),
+
       tile("📈", "التقارير", () => {
         tab("reports");
       }),
+
       tile(
         "👥",
         "رواتب وحوافز الموظفين",
@@ -1070,7 +1102,7 @@
     });
 
     const personal = section(
-      "jc-personal-v6",
+      "jc-personal-v7",
       "الخدمات الشخصية والمساندة",
       "إعدادات المحفظة والتواصل."
     );
@@ -1097,7 +1129,7 @@
       })
     );
 
-    serviceCard.insertAdjacentElement(
+    card.insertAdjacentElement(
       "afterend",
       finance.box
     );
@@ -1107,10 +1139,12 @@
       personal.box
     );
 
-    if (extras) extras.style.display = "none";
+    if (extras) {
+      extras.style.display = "none";
+    }
 
-    const duplicate = $("jeby-phase1-panel");
-    if (duplicate) duplicate.remove();
+    const oldPanel = $("jeby-phase1-panel");
+    if (oldPanel) oldPanel.remove();
   }
 
   if (document.readyState === "loading") {
