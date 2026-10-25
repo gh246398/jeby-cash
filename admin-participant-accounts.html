@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#571d35">
+<title>جيبي كاش | حسابات المشتركين</title>
+<link rel="icon" href="./jeby-logo.png">
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f7f3ef;color:#30232a;font:15px Tahoma,Arial;line-height:1.7}
+header{background:#571d35;color:#fff;text-align:center;padding:20px;border-bottom:5px solid #ad833b}
+header img{width:95px;height:95px;object-fit:contain;background:white;border-radius:15px}
+header h1{margin:8px}
+main{max-width:850px;margin:auto;padding:16px}
+.card{background:white;border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 4px 16px #0001}
+h2,h3{color:#571d35}
+label{display:block;margin:12px 0 5px;font-weight:bold}
+input,select,textarea{width:100%;padding:12px;border:1px solid #d7cbd0;border-radius:9px;font:inherit}
+button{border:0;border-radius:9px;padding:12px;background:#571d35;color:white;font:inherit;cursor:pointer;margin-top:10px}
+button:disabled{opacity:.5;cursor:not-allowed}
+.full{width:100%}
+.gold{background:#a77c32}
+.hidden{display:none!important}
+.note,.muted{font-size:13px;color:#766b70;line-height:1.8}
+.statgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.stat{padding:14px;background:#f8f4ef;border-radius:10px}
+.stat b{display:block;font-size:21px;color:#571d35;margin-top:6px;overflow-wrap:anywhere}
+.item{padding:12px 0;border-bottom:1px solid #eee}
+.item:last-child{border:0}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row>*{flex:1;min-width:120px}
+.amounts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.amounts span{background:#f7f3ef;padding:7px;border-radius:6px}
+.notice{padding:12px;border-radius:10px;background:#fff1d9;white-space:pre-wrap;line-height:1.7}
+.error{background:#ffe1e1}
+.success{background:#e1f5e9}
+footer{text-align:center;color:#766b70;padding:15px}
+</style>
+</head>
+
+<body>
+
+<header>
+  <img src="./jeby-logo.png" alt="شعار جيبي كاش">
+  <h1>حسابات المشتركين</h1>
+</header>
+
+<main>
+
+  <section class="card">
+    <a href="./admin.html">العودة إلى لوحة الإدارة</a>
+
+    <p id="accountMessage" class="notice" role="status">
+      جارٍ التحقق من صلاحية الإدارة…
+    </p>
+  </section>
+
+  <div id="accountControls" class="hidden">
+
+    <section class="card">
+      <h2>إنشاء حساب مشترك</h2>
+
+      <form id="createParticipant">
+
+        <label for="participantName">اسم المشترك</label>
+        <input
+          id="participantName"
+          required
+          minlength="3"
+          maxlength="120"
+          autocomplete="off"
+        >
+
+        <label for="participantPhone">رقم الجوال</label>
+        <input
+          id="participantPhone"
+          type="tel"
+          dir="ltr"
+          placeholder="7xxxxxxxx"
+          autocomplete="off"
+          required
+        >
+
+        <p class="note">
+          كلمة المرور الأولى 123.
+          يلزم تغييرها عند أول دخول قبل استخدام المحفظة.
+        </p>
+
+        <button type="submit" class="full">
+          إنشاء الحساب والمحفظة
+        </button>
+
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>ربط الجوال بحساب حالي</h2>
+
+      <p class="note">
+        يبقى رقم المحفظة وكلمة المرور والرصيد والعمليات كما هي.
+        تحقّق من رقم الطالب قبل الربط.
+      </p>
+
+      <form id="bindParticipant">
+
+        <label for="existingParticipant">المشترك الحالي</label>
+        <select id="existingParticipant" required></select>
+
+        <label for="existingPhone">رقم الجوال</label>
+        <input
+          id="existingPhone"
+          type="tel"
+          dir="ltr"
+          autocomplete="off"
+          required
+        >
+
+        <button type="submit" class="full">
+          ربط الجوال بالحساب نفسه
+        </button>
+
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>حالة ربط الحسابات</h2>
+
+      <button
+        id="reloadParticipants"
+        class="gold"
+        type="button"
+      >
+        تحديث القائمة
+      </button>
+
+      <div id="participantList"></div>
+    </section>
+
+  </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="./participant-auth.js"></script>
+<script src="./admin-participant-accounts.js"></script>
+
+</body>
+</html>
