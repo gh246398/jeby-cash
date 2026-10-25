@@ -1,0 +1,13 @@
+# Candidate configuration.
+# Test in an isolated Supabase project first.
+# Saving this file does not change hosted project settings.
+
+[auth]
+enable_signup = false
+
+[functions.jeby-participant-auth]
+verify_jwt = false
+
+# Login and first password change happen before sign-in.
+# Administrative actions validate the bearer token
+# and admin.manage permission inside the server handler.
