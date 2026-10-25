@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
@@ -324,22 +323,26 @@ button:disabled{opacity:.5}
 <section id="auth" class="card">
   <h2>دخول المشتركين</h2>
 
-  <label for="fullName">الاسم الكامل (للتسجيل فقط)</label>
-  <input id="fullName" autocomplete="name">
-
-  <label for="email">البريد الإلكتروني</label>
-  <input id="email" type="email" autocomplete="email">
-
+  <div id="phoneLoginFields">
+  <label for="email">رقم الجوال</label>
+  <input id="email" type="tel" inputmode="tel" autocomplete="username" dir="ltr">
   <label for="password">كلمة المرور</label>
-  <input id="password" type="password" minlength="10">
-
+  <input id="password" type="password" autocomplete="current-password">
   <button id="signIn" class="full">تسجيل الدخول</button>
-  <button id="signUp" class="full gold">إنشاء حساب</button>
+  <p class="muted">تُنشئ الإدارة حسابك وتسلّمك بيانات الدخول. لا يتطلب الدخول كود تحقق.</p>
+  </div>
 
-  <p class="muted">
-    قد يتطلب إنشاء الحساب تأكيد البريد الإلكتروني.
-    جميع العمليات والأرصدة افتراضية تعليمية.
-  </p>
+  <form id="firstPasswordForm" class="hide">
+  <h3>تغيير كلمة المرور لأول دخول</h3>
+  <label for="firstOldPassword">كلمة المرور القديمة</label>
+  <input id="firstOldPassword" type="password" autocomplete="current-password" required>
+  <label for="firstNewPassword">كلمة المرور الجديدة (10 أحرف على الأقل)</label>
+  <input id="firstNewPassword" type="password" autocomplete="new-password" minlength="10" maxlength="128" required>
+  <label for="firstConfirmPassword">تأكيد كلمة المرور الجديدة</label>
+  <input id="firstConfirmPassword" type="password" autocomplete="new-password" required>
+  <button id="firstSave" class="full" type="submit">حفظ كلمة المرور والدخول</button>
+  <button id="firstCancel" class="full light" type="button">إلغاء الدخول</button>
+  </form>
 </section>
 
 <div id="app" class="hide">
@@ -468,6 +471,7 @@ button:disabled{opacity:.5}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
+<script src="./participant-auth.js"></script>
 <script>
 'use strict';
 
@@ -1523,97 +1527,111 @@ document
     };
   });
 
-/* تسجيل الدخول */
+/* تسجيل الدخول بالجوال وإنشاء الحساب من الإدارة فقط */
+let firstLoginChallenge=null;
+let firstLoginPhone='';
 
-$('signIn').onclick = async () => {
-  if (!db) return;
+function clearFirstLogin(){
+  firstLoginChallenge=null;
+  firstLoginPhone='';
+  $('firstPasswordForm').reset();
+  $('firstPasswordForm').classList.add('hide');
+  $('phoneLoginFields').classList.remove('hide');
+}
 
-  $('signIn').disabled = true;
+$('firstCancel').onclick=clearFirstLogin;
 
-  try {
-    const {error:e} =
-      await db.auth.signInWithPassword({
-        email:$('email').value.trim(),
-        password:$('password').value
-      });
+$('signIn').onclick=async()=>{
+ if(!db)return;
 
-    if (e) throw e;
+ const b=$('signIn');
+ b.disabled=true;
 
-    await authenticate();
+ try{
+  const phone=$('email').value.trim();
 
-  } catch (e) {
-    msg(
-      error(e),
-      'notice error'
-    );
-  } finally {
-    $('signIn').disabled = false;
+  const result=await window.JebyParticipantAuth.login(
+   db,
+   phone,
+   $('password').value
+  );
+
+  $('password').value='';
+
+  if(result.must_change){
+   firstLoginChallenge=result.challenge;
+   firstLoginPhone=phone;
+
+   logoutUI();
+
+   $('phoneLoginFields').classList.add('hide');
+   $('firstPasswordForm').classList.remove('hide');
+   $('firstOldPassword').focus();
+
+  }else{
+   clearFirstLogin();
+   await authenticate();
   }
+
+ }catch(e){
+  msg(error(e),'notice error');
+
+ }finally{
+  b.disabled=false;
+ }
 };
 
-/* إنشاء حساب مشترك */
+$('firstPasswordForm').onsubmit=async e=>{
+ e.preventDefault();
 
-$('signUp').onclick = async () => {
-  if (!db) return;
+ if(!db||!firstLoginChallenge)return;
 
-  const name =
-    $('fullName').value.trim();
+ const password=$('firstNewPassword').value;
+ const confirm=$('firstConfirmPassword').value;
 
-  const email =
-    $('email').value.trim();
+ if(
+  password.length<10||
+  password.length>128||
+  password!==confirm||
+  password===$('firstOldPassword').value
+ ){
+  msg(
+   'تحقق من كلمة المرور الجديدة وتأكيدها',
+   'notice error'
+  );
+  return;
+ }
 
-  const password =
-    $('password').value;
+ const b=$('firstSave');
+ b.disabled=true;
 
-  if (
-    !name ||
-    !email ||
-    password.length < 10
-  ) {
-    msg(
-      'أدخل الاسم والبريد وكلمة مرور من 10 أحرف على الأقل',
-      'notice error'
-    );
+ try{
+  const phone=firstLoginPhone;
 
-    return;
-  }
+  await window.JebyParticipantAuth.firstChange(
+   db,
+   firstLoginChallenge,
+   $('firstOldPassword').value,
+   password,
+   confirm
+  );
 
-  $('signUp').disabled = true;
+  clearFirstLogin();
 
-  try {
-    const {data, error:e} =
-      await db.auth.signUp({
-        email,
-        password,
-        options:{
-          data:{
-            full_name:name
-          },
-          emailRedirectTo:
-            location.origin +
-            '/participant.html'
-        }
-      });
+  await window.JebyParticipantAuth.login(
+   db,
+   phone,
+   password
+  );
 
-    if (e) throw e;
+  await authenticate();
 
-    if (data.session) {
-      await authenticate();
-    } else {
-      msg(
-        'راجع بريدك الإلكتروني لتأكيد الحساب',
-        'notice success'
-      );
-    }
+ }catch(e){
+  msg(error(e),'notice error');
 
-  } catch (e) {
-    msg(
-      error(e),
-      'notice error'
-    );
-  } finally {
-    $('signUp').disabled = false;
-  }
+ }finally{
+  b.disabled=false;
+ }
 };
 
 /* تسجيل الخروج */
@@ -1675,7 +1693,7 @@ $('changePassword').onclick =
     try {
       const {error:e} =
         await db.auth.signInWithPassword({
-          email:user.email,
+          ...(user.phone?{phone:'+'+user.phone.replace(/^\+/, '')}:{email:user.email}),
           password:old
         });
 
@@ -1768,10 +1786,10 @@ $('changePassword').onclick =
 
 <script src="./participant-classification.js"></script>
 <script src="./participant-ledger-table.js"></script>
-<script src="./participant-transfer-parties.js"></script> 
+<script src="./participant-transfer-parties.js"></script>
 <script src="./participant-notification-parties.js"></script>
 <script src="./participant-financial-reports.js"></script>
-<script src="./participant-classification-bridge.js"></script>  
+<script src="./participant-classification-bridge.js"></script>
 <script src="./participant-account-management.js"></script>
 </body>
 </html>
