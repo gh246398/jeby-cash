@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
@@ -37,6 +36,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .error{background:#ffe1e1}
 .success{background:#e1f5e9}
 footer{text-align:center;color:#766b70;padding:15px}
+input[type=checkbox]{width:auto}
 </style>
 </head>
 <body>
@@ -72,15 +72,58 @@ footer{text-align:center;color:#766b70;padding:15px}
 <div class="stat">عمولات USD<b id="usdFees">—</b></div>
 <div class="stat">التحويلات المحمّلة<b id="transferCount">—</b></div>
 </div>
-<p class="note">تعتمد إحصاءات العمليات على السجلات التي تعيدها قاعدة البيانات، وقد لا تشمل جميع السجلات التاريخية. جميع المبالغ افتراضية.</p>
+<p class="note">
+تعتمد الإحصاءات على السجلات التي تعيدها قاعدة البيانات.
+جميع المبالغ افتراضية.
+</p>
 <button id="refreshBtn" class="gold full">تحديث البيانات والتقارير</button>
 </section>
 
 <section class="card">
 <h2>إدارة المشتركين والمحافظ</h2>
-<p class="note">تعديل اسم المشترك، وإيقاف المحفظة أو إعادة تفعيلها، دون حذف رصيدها أو سجل عملياتها.</p>
+<p class="note">
+تعديل اسم المشترك، وإيقاف المحفظة أو إعادة تفعيلها،
+دون حذف رصيدها أو سجل عملياتها.
+</p>
 <input id="manageSearch" placeholder="ابحث بالاسم أو رقم المحفظة">
 <div id="manageList"></div>
+</section>
+
+<section class="card" id="participantProvisionCard">
+<h2>إنشاء حساب مشترك جديد</h2>
+<p class="note">
+هذا القسم مخصص للمشتركين الجدد فقط.
+لا يجوز إنشاء محفظة بديلة لمشترك لديه محفظة قديمة.
+</p>
+
+<label for="newParticipantName">الاسم الكامل</label>
+<input id="newParticipantName" maxlength="120" autocomplete="off">
+
+<label for="newParticipantPhone">رقم الجوال اليمني</label>
+<input id="newParticipantPhone" inputmode="tel"
+placeholder="7XXXXXXXX" autocomplete="off">
+
+<label for="newParticipantPassword">كلمة المرور المؤقتة</label>
+<input id="newParticipantPassword" type="password"
+minlength="12" autocomplete="new-password">
+
+<label>
+<input type="checkbox" id="newParticipantLegacyCheck">
+تحققت من عدم وجود محفظة سابقة لهذا المشترك
+</label>
+
+<div class="notice">
+إنشاء المحافظ الجديدة متوقف مؤقتًا حتى اكتمال
+اختبارات منع التكرار والتحقق من الملكية
+وفرض تغيير كلمة المرور عند أول دخول.
+
+الخدمة الخلفية المنشورة حاليًا تحمل المعرّف:
+hyper-function
+</div>
+
+<button id="newParticipantCreateBtn" class="full" disabled>
+إنشاء المشترك — قيد الاعتماد
+</button>
 </section>
 
 <section class="card">
@@ -113,7 +156,10 @@ footer{text-align:center;color:#766b70;padding:15px}
 
 <section class="card">
 <h2>تقرير العمليات والعمولات</h2>
-<p class="note">البيانات مخصصة للحسابات الإدارية المصرح لها من قاعدة البيانات.</p>
+<p class="note">
+البيانات مخصصة للحسابات الإدارية المصرح لها
+من قاعدة البيانات.
+</p>
 <div class="row">
 <select id="filterCurrency">
 <option value="">جميع العملات</option>
@@ -131,10 +177,18 @@ footer{text-align:center;color:#766b70;padding:15px}
 <label for="filterSearch">رقم العملية أو المحفظة</label>
 <input id="filterSearch" placeholder="بحث">
 <div class="row">
-<div><label for="dateFrom">من تاريخ</label><input id="dateFrom" type="date"></div>
-<div><label for="dateTo">إلى تاريخ</label><input id="dateTo" type="date"></div>
+<div>
+<label for="dateFrom">من تاريخ</label>
+<input id="dateFrom" type="date">
 </div>
-<button id="exportBtn" class="gold full">تصدير السجلات المعروضة CSV</button>
+<div>
+<label for="dateTo">إلى تاريخ</label>
+<input id="dateTo" type="date">
+</div>
+</div>
+<button id="exportBtn" class="gold full">
+تصدير السجلات المعروضة CSV
+</button>
 <p id="reportCount" class="muted"></p>
 <div id="txList">جارٍ التحميل...</div>
 </section>
@@ -146,7 +200,9 @@ footer{text-align:center;color:#766b70;padding:15px}
 </div>
 </main>
 
-<footer>جيبي كاش — نظام محاكاة تعليمية لا يقدم خدمات مالية حقيقية</footer>
+<footer>
+جيبي كاش — نظام محاكاة تعليمية لا يقدم خدمات مالية حقيقية
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
@@ -312,9 +368,11 @@ function renderTxs(){
   box.replaceChildren();
   const arr=filtered();
 
-  $('reportCount').textContent='عدد العمليات المطابقة ضمن السجلات المتاحة: '+arr.length;
+  $('reportCount').textContent=
+    'عدد العمليات المطابقة ضمن السجلات المتاحة: '+arr.length;
   $('txCount').textContent=fmt(txs.length);
-  $('transferCount').textContent=fmt(txs.filter(t=>t.kind==='transfer').length);
+  $('transferCount').textContent=
+    fmt(txs.filter(t=>t.kind==='transfer').length);
 
   for(const c of ['YER','SAR','USD']){
     $(c.toLowerCase()+'Fees').textContent=fmt(
@@ -379,7 +437,6 @@ function csvExport(){
     ]);
   }
 
-  // حماية ملفات CSV من تفسير المدخلات كصيغ Excel
   const esc=x=>{
     let value=String(x??'');
     if(/^[\s\u0000-\u001f]*[=+\-@]/.test(value)){
@@ -402,7 +459,8 @@ function csvExport(){
 async function loadWalletStatuses(){
   const {data,error:e}=await db.rpc('jeby_admin_wallet_status');
   if(e){
-    $('manageList').textContent='تعذر تحميل حالات المحافظ: '+error(e);
+    $('manageList').textContent=
+      'تعذر تحميل حالات المحافظ: '+error(e);
     walletStatuses=[];
     return;
   }
@@ -429,7 +487,9 @@ function renderWalletManage(){
 
     const rename=el('button','تعديل الاسم');
     rename.onclick=async()=>{
-      const value=prompt('الاسم الجديد للمحفظة '+w.wallet_number,w.full_name);
+      const value=prompt(
+        'الاسم الجديد للمحفظة '+w.wallet_number,w.full_name
+      );
       if(value===null)return;
       await manageWallet(w,'rename',value);
     };
@@ -440,12 +500,18 @@ function renderWalletManage(){
     status.onclick=async()=>{
       let reason='';
       if(!w.is_frozen){
-        reason=prompt('أدخل سبب إيقاف المحفظة '+w.wallet_number,'');
+        reason=prompt(
+          'أدخل سبب إيقاف المحفظة '+w.wallet_number,''
+        );
         if(reason===null)return;
-      }else if(!confirm('تأكيد إعادة تفعيل المحفظة '+w.wallet_number+'؟')){
+      }else if(!confirm(
+        'تأكيد إعادة تفعيل المحفظة '+w.wallet_number+'؟'
+      )){
         return;
       }
-      await manageWallet(w,w.is_frozen?'unfreeze':'freeze',reason);
+      await manageWallet(
+        w,w.is_frozen?'unfreeze':'freeze',reason
+      );
     };
 
     d.append(rename,status);
@@ -456,7 +522,10 @@ function renderWalletManage(){
 }
 
 async function manageWallet(w,action,value){
-  if(action==='rename'&&!confirm('تأكيد تغيير اسم المحفظة '+w.wallet_number+'؟'))return;
+  if(action==='rename'&&!confirm(
+    'تأكيد تغيير اسم المحفظة '+w.wallet_number+'؟'
+  ))return;
+
   try{
     const {error:e}=await db.rpc('jeby_admin_manage_wallet',{
       p_wallet_number:w.wallet_number,
@@ -533,7 +602,10 @@ $('executeBtn').onclick=async()=>{
     $('amount').value='';
     $('note').value='';
     await refresh();
-    notify('تم تنفيذ العملية الافتراضية، رقم العملية: '+data,'success');
+    notify(
+      'تم تنفيذ العملية الافتراضية، رقم العملية: '+data,
+      'success'
+    );
   }catch(e){
     notify('لم تُنفذ العملية: '+error(e),'error');
   }finally{
@@ -563,7 +635,9 @@ $('logoutBtn').onclick=async()=>{
 
 (async()=>{
   try{
-    if(!window.supabase)throw new Error('تعذر تحميل مكتبة الاتصال');
+    if(!window.supabase){
+      throw new Error('تعذر تحميل مكتبة الاتصال');
+    }
     db=window.supabase.createClient(SUPABASE_URL,KEY);
     await session();
   }catch(e){
